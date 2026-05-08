@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding Roadmap | THG Training Hub</title>
+  <style>
+    :root{--blue:#1B4FBB;--blue-dark:#143d94;--blue-light:#e8eefb;--orange:#F97316;--orange-bg:#fff4ed;--green:#16a34a;--green-bg:#f0fdf4;--red:#dc2626;--red-bg:#fef2f2;--yellow:#ca8a04;--yellow-bg:#fefce8;--teal:#0d9488;--teal-bg:#f0fdfa;--purple:#7c3aed;--purple-bg:#f3e8ff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-400:#94a3b8;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;--sidebar-w:260px;--header-h:56px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray-50);color:var(--gray-700);font-size:14px;line-height:1.6}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 1px 8px rgba(0,0,0,.25)}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .menu-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px}
+    .topbar-logo{display:flex;align-items:center;gap:8px}
+    .topbar-logo span{color:#fff;font-size:15px;font-weight:700}
+    .badge-internal{background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .search-wrap{display:flex;align-items:center;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;gap:8px}
+    .search-wrap input{background:transparent;border:none;outline:none;color:#fff;font-size:12.5px;width:140px}
+    .search-wrap input::placeholder{color:rgba(255,255,255,.55)}
+    .search-wrap button{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;font-size:14px;padding:0;line-height:1}
+    .user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 6px}
+    .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .user-pill span{color:rgba(255,255,255,.85);font-size:12px}
+    .sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--gray-200);overflow-y:auto;z-index:100;transition:transform .25s ease}
+    .sidebar::-webkit-scrollbar{width:4px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
+    .nav-section{padding:16px 0 4px}
+    .nav-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--gray-400);padding:0 16px 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;text-decoration:none;color:var(--gray-700);font-size:13.5px;font-weight:500;transition:background .15s;position:relative}
+    .nav-item:hover{background:var(--gray-50)}
+    .nav-item.active{background:var(--teal-bg);color:var(--teal);font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--teal);border-radius:0 3px 3px 0}
+    .nav-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+    .nav-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+    .nav-divider{height:1px;background:var(--gray-100);margin:8px 16px}
+    .main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:28px 32px 80px}
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+    .overlay.visible{display:block}
+
+    /* HERO */
+    .onboard-hero{background:linear-gradient(135deg,var(--teal-bg),#e0f7f4);border:1px solid #99f6e4;border-radius:16px;padding:32px;margin-bottom:32px;display:flex;align-items:flex-start;gap:20px}
+    .onboard-hero-icon{font-size:52px;flex-shrink:0}
+    .onboard-hero h1{font-size:24px;font-weight:800;color:var(--gray-900);margin-bottom:6px}
+    .onboard-hero p{font-size:13.5px;color:var(--gray-600);max-width:580px;margin-bottom:14px}
+    .rule-list{display:flex;flex-direction:column;gap:6px}
+    .rule-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--gray-700)}
+    .rule-item .ri{font-size:16px;flex-shrink:0;margin-top:1px}
+
+    /* ROLE SELECTOR */
+    .role-tabs{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .role-tab{padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:600;border:2px solid var(--gray-200);cursor:pointer;transition:border-color .2s,background .2s,color .2s;background:#fff;color:var(--gray-700)}
+    .role-tab:hover{border-color:var(--teal);color:var(--teal)}
+    .role-tab.active{border-color:var(--teal);background:var(--teal);color:#fff}
+    .role-content{display:none}
+    .role-content.active{display:block}
+
+    /* TRACK TIMELINE */
+    .track-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:18px 24px;background:#fff;border-radius:12px;border:1px solid var(--gray-200)}
+    .track-icon{font-size:36px;flex-shrink:0}
+    .track-header h2{font-size:18px;font-weight:800;color:var(--gray-900);margin-bottom:3px}
+    .track-header p{font-size:13px;color:var(--gray-600)}
+    .phase{margin-bottom:24px}
+    .phase-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .phase-badge{padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#fff}
+    .phase-badge.day1{background:var(--teal)}
+    .phase-badge.week1{background:var(--blue)}
+    .phase-badge.month1{background:var(--purple)}
+    .phase-title{font-size:14px;font-weight:700;color:var(--gray-900)}
+    .steps{display:flex;flex-direction:column;gap:10px}
+    .step{display:flex;gap:14px;background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;align-items:flex-start;transition:border-color .2s}
+    .step:hover{border-color:var(--teal)}
+    .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px}
+    .step-num.teal{background:var(--teal)}
+    .step-num.blue{background:var(--blue)}
+    .step-num.purple{background:var(--purple)}
+    .step-body h4{font-size:13.5px;font-weight:700;color:var(--gray-900);margin-bottom:4px}
+    .step-body p{font-size:12.5px;color:var(--gray-600);margin-bottom:6px}
+    .step-links{display:flex;flex-wrap:wrap;gap:6px}
+    .step-link{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:6px;text-decoration:none;transition:opacity .15s}
+    .step-link:hover{opacity:.8}
+    .step-link.teal{background:var(--teal-bg);color:var(--teal)}
+    .step-link.blue{background:var(--blue-light);color:var(--blue)}
+    .step-link.orange{background:var(--orange-bg);color:#c2410c}
+    .step-link.purple{background:var(--purple-bg);color:var(--purple)}
+    .step-link.red{background:var(--red-bg);color:var(--red)}
+    .mandatory-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--red-bg);color:var(--red);margin-left:6px;vertical-align:middle}
+    .optional-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--gray-100);color:var(--gray-400);margin-left:6px;vertical-align:middle}
+
+    /* CHECKLIST */
+    .checklist-wrap{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-top:24px}
+    .checklist-wrap h3{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:14px}
+    .check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;user-select:none}
+    .check-item:last-child{border-bottom:none}
+    .check-item input{width:18px;height:18px;cursor:pointer;accent-color:var(--teal);flex-shrink:0}
+    .check-item label{font-size:13px;color:var(--gray-700);cursor:pointer;flex:1}
+    .check-item.done label{text-decoration:line-through;color:var(--gray-400)}
+    .progress-bar-wrap{margin-top:14px}
+    .progress-bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-600);margin-bottom:6px}
+    .progress-bar{height:6px;background:var(--gray-100);border-radius:4px;overflow:hidden}
+    .progress-fill{height:100%;background:var(--teal);border-radius:4px;transition:width .4s ease}
+
+    /* INFO BOX */
+    .info-box{background:var(--blue-light);border-left:4px solid var(--blue);border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--gray-700)}
+    .info-box strong{color:var(--gray-900)}
+
+    /* BOTTOM NAV */
+    .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);z-index:150;padding:6px 0}
+    .bottom-nav-inner{display:flex;justify-content:space-around}
+    .bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--gray-600);font-size:10px;font-weight:500;min-width:54px;padding:4px 0}
+    .bn-item .bn-icon{font-size:20px;line-height:1}
+    .bn-item.active{color:var(--teal)}
+
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .main{margin-left:0;padding:20px 16px 80px}
+      .bottom-nav{display:block}
+      .onboard-hero{flex-direction:column;gap:12px}
+      .search-wrap input{width:80px}
+    }
+    @media(max-width:480px){.role-tab{padding:8px 14px;font-size:12.5px}}
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">
+      <span>🦅 THG Training Hub</span>
+      <span class="badge-internal">INTERNAL</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <form class="search-wrap" onsubmit="doSearch(event)" autocomplete="off">
+      <button type="submit" aria-label="Tìm kiếm">🔍</button>
+      <input type="search" placeholder="Tìm trong Hub…" name="q">
+    </form>
+    <div class="user-pill">
+      <div class="avatar">TH</div>
+      <span>Team THG</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Tổng quan</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span>Dashboard</a>
+    <a href="onboarding.html" class="nav-item active"><span class="nav-icon">🎓</span>Onboarding Roadmap</a>
+    <a href="search.html" class="nav-item"><span class="nav-icon">🔍</span>Tìm kiếm</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">4 Mảng Dịch Vụ</div>
+    <a href="pod.html" class="nav-item"><span class="nav-icon">🖨️</span>POD</a>
+    <a href="dropship.html" class="nav-item"><span class="nav-icon">📦</span>Dropship</a>
+    <a href="fulfill.html" class="nav-item"><span class="nav-icon">✈️</span>Fulfill TQ→USA</a>
+    <a href="express.html" class="nav-item"><span class="nav-icon">🚚</span>Express</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">SOP Vận Hành</div>
+    <a href="sop-sale.html" class="nav-item"><span class="nav-icon">📣</span>Sale & Marketing</a>
+    <a href="sop-cskh.html" class="nav-item"><span class="nav-icon">🤝</span>CSKH & Operations</a>
+    <a href="sop-finance.html" class="nav-item"><span class="nav-icon">💰</span>Kế toán</a>
+    <a href="sop-cross.html" class="nav-item"><span class="nav-icon">🔗</span>Liên phòng ban</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">Xử Lý Sự Cố</div>
+    <a href="trouble.html" class="nav-item"><span class="nav-icon">🚨</span>Trouble Handling <span class="nav-badge" style="background:#ef4444">34</span></a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="onboard-hero">
+    <div class="onboard-hero-icon">🎓</div>
+    <div>
+      <h1>Onboarding Roadmap – THG Fulfill</h1>
+      <p>Lộ trình học tập có cấu trúc dành cho nhân viên mới. Chọn đúng role của bạn và làm theo từng bước — từ Ngày 1 đến cuối Tháng 1.</p>
+      <div class="rule-list">
+        <div class="rule-item"><span class="ri">📌</span><span><strong>Bắt buộc:</strong> Mọi role phải hoàn thành SOP Liên phòng ban trước tiên (Ngày 1).</span></div>
+        <div class="rule-item"><span class="ri">✅</span><span>Hoàn thành bài kiểm tra cuối mỗi module để xác nhận với quản lý.</span></div>
+        <div class="rule-item"><span class="ri">❓</span><span>Không hiểu điều gì → Tạo request trong Lark, đừng nhắn Telegram nội bộ.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLE TABS -->
+  <div class="role-tabs">
+    <button class="role-tab active" onclick="switchRole('sale')">📣 Sale & Marketing</button>
+    <button class="role-tab" onclick="switchRole('cskh')">🤝 CSKH & Operations</button>
+    <button class="role-tab" onclick="switchRole('finance')">💰 Finance / Kế toán</button>
+  </div>
+
+  <!-- ═══════════════ SALE TRACK ═══════════════ -->
+  <div class="role-content active" id="track-sale">
+    <div class="track-header">
+      <div class="track-icon">📣</div>
+      <div>
+        <h2>Lộ trình Sale & Marketing</h2>
+        <p>Từ tìm leads đến chốt deal và bàn giao khách — nắm quy trình vòng doanh thu của THG.</p>
+      </div>
+    </div>
+
+    <div class="info-box"><strong>Mục tiêu cuối tháng 1:</strong> Tự xử lý được 1 khách mới từ lead đến handoff CSKH. Source đủ 3 leads/tuần. Gửi báo cáo T3/T6 đúng hạn.</div>
+
+    <!-- Day 1 -->
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge day1">Ngày 1 — Bắt buộc cho mọi role</span>
+        <span class="phase-title">Hiểu tổ chức trước khi học nghiệp vụ</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num teal">1</div>
+          <div class="step-body">
+            <h4>SOP Liên Phòng Ban <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>Hiểu cấu trúc 6 phòng ban, kênh Lark, quy trình request, escalation 4 cấp, và RACI. Đây là nền tảng để mọi quy trình khác có nghĩa.</p>
+            <div class="step-links">
+              <a href="sop-cross.html" class="step-link teal">🔗 Đọc ngay →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num teal">2</div>
+          <div class="step-body">
+            <h4>Dashboard – Tổng quan Hub</h4>
+            <p>Làm quen với 4 service lines, 7 SOPs, và cách điều hướng hệ thống training.</p>
+            <div class="step-links">
+              <a href="index.html" class="step-link blue">🏠 Dashboard →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Week 1 -->
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge week1">Tuần 1 — Nghiệp vụ Sale</span>
+        <span class="phase-title">Nắm quy trình từ lead đến handoff</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">3</div>
+          <div class="step-body">
+            <h4>SOP Sale & Marketing <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>SOP-001 Lead Management + SOP-002 Customer Handoff. Đây là 2 SOP cốt lõi của Sale.</p>
+            <div class="step-links">
+              <a href="sop-sale.html" class="step-link orange">📣 Đọc SOP Sale →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num blue">4</div>
+          <div class="step-body">
+            <h4>Tổng quan 4 Service Lines</h4>
+            <p>Hiểu POD, Dropship, Fulfill, Express để có thể tư vấn khách hàng đúng sản phẩm.</p>
+            <div class="step-links">
+              <a href="pod.html" class="step-link orange">🖨️ POD →</a>
+              <a href="dropship.html" class="step-link blue">📦 Dropship →</a>
+              <a href="fulfill.html" class="step-link blue">✈️ Fulfill →</a>
+              <a href="express.html" class="step-link blue">🚚 Express →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num blue">5</div>
+          <div class="step-body">
+            <h4>Chính sách giá & bồi thường</h4>
+            <p>Nắm được mức bồi thường ($20–$50), chính sách hàng cấm, và công thức volume weight để báo giá chính xác.</p>
+            <div class="step-links">
+              <a href="sop-finance.html#refund-flow" class="step-link blue">💰 Chính sách bồi hoàn →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month 1 -->
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge month1">Tuần 2–4 — Thực chiến</span>
+        <span class="phase-title">Xử lý sự cố và nâng cao</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num purple">6</div>
+          <div class="step-body">
+            <h4>Trouble Handling – Top 10 Cases</h4>
+            <p>Đọc 10 case quan trọng nhất (ưu tiên Critical): SKU mismatch, tracking lost, customs hold. Biết phải làm gì khi khách phàn nàn.</p>
+            <div class="step-links">
+              <a href="trouble.html" class="step-link red">🚨 Trouble Cases →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num purple">7</div>
+          <div class="step-body">
+            <h4>SOP Finance – Quy trình công nợ <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>Sale chịu trách nhiệm gửi báo cáo T3/T6 và nhắc nợ D+1. Phải nắm flow thanh toán.</p>
+            <div class="step-links">
+              <a href="sop-finance.html" class="step-link blue">💰 Đọc SOP Finance →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num purple">8</div>
+          <div class="step-body">
+            <h4>Kiểm tra kiến thức cuối tháng <span class="optional-tag">Tự đánh giá</span></h4>
+            <p>Làm bài quiz trong mỗi module đã học. Gửi kết quả cho quản lý để xác nhận hoàn thành.</p>
+            <div class="step-links">
+              <a href="sop-sale.html#quiz" class="step-link orange">✅ Quiz Sale →</a>
+              <a href="pod.html#quiz" class="step-link blue">✅ Quiz POD →</a>
+              <a href="sop-finance.html#quiz" class="step-link blue">✅ Quiz Finance →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist-wrap" id="checklist-sale">
+      <h3>✅ Checklist hoàn thành — Sale Track</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc xong SOP Liên phòng ban & hiểu escalation 4 cấp</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc xong SOP-001 Lead Management</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc xong SOP-002 Customer Handoff</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Hiểu tổng quan 4 service lines (POD / Dropship / Fulfill / Express)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Nắm chính sách bồi thường $20–$50 và điều kiện áp dụng</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc 10 trouble cases đầu tiên (ưu tiên Critical)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc xong SOP Finance – biết báo cáo T3/T6 và nhắc nợ D+1</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Hoàn thành bài quiz SOP Sale + POD, gửi kết quả cho quản lý</label></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label"><span>Tiến độ</span><span id="progress-sale">0/8</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-sale" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CSKH TRACK ═══════════════ -->
+  <div class="role-content" id="track-cskh">
+    <div class="track-header">
+      <div class="track-icon">🤝</div>
+      <div>
+        <h2>Lộ trình CSKH & Operations</h2>
+        <p>Từ tiếp nhận khách đến xử lý khiếu nại, tracking, và phối hợp với kho — nắm toàn bộ vòng đời đơn hàng.</p>
+      </div>
+    </div>
+
+    <div class="info-box"><strong>Mục tiêu cuối tháng 1:</strong> Phản hồi khách trong 30 phút. Tự xử lý được 80% case thường gặp. Biết khi nào cần escalate và escalate lên ai.</div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge day1">Ngày 1 — Bắt buộc</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num teal">1</div>
+          <div class="step-body">
+            <h4>SOP Liên Phòng Ban <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>Hiểu kênh Lark, cách tạo request, escalation 4 cấp và RACI matrix — nền tảng để phối hợp với mọi phòng.</p>
+            <div class="step-links"><a href="sop-cross.html" class="step-link teal">🔗 Đọc ngay →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge week1">Ngày 2–3 — SOP CSKH</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">2</div>
+          <div class="step-body">
+            <h4>SOP CSKH & Operations <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>SOP-003 (POD/Dropship), SOP-004 (Express), SOP-005 (Warehouse). Nắm SLA: 30 phút phản hồi, 48h tracking, 21 ngày lost.</p>
+            <div class="step-links"><a href="sop-cskh.html" class="step-link orange">🤝 Đọc SOP CSKH →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge week1">Ngày 4–5 — Nghiệp vụ dịch vụ</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">3</div>
+          <div class="step-body">
+            <h4>Module POD & Dropship (ưu tiên)</h4>
+            <p>Đây là 2 dịch vụ CSKH thường xuyên xử lý nhất. Nắm catalog, SLA incident, và compensation policy.</p>
+            <div class="step-links">
+              <a href="pod.html" class="step-link orange">🖨️ POD →</a>
+              <a href="dropship.html" class="step-link blue">📦 Dropship →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num blue">4</div>
+          <div class="step-body">
+            <h4>Module Fulfill & Express</h4>
+            <p>Nắm quy trình kho, trọng lượng, prohibited items để giải đáp khách hàng.</p>
+            <div class="step-links">
+              <a href="fulfill.html" class="step-link blue">✈️ Fulfill →</a>
+              <a href="express.html" class="step-link blue">🚚 Express →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge month1">Tuần 2–4 — Thực chiến</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num purple">5</div>
+          <div class="step-body">
+            <h4>Trouble Handling – 34 Cases <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>CSKH là người đầu tiên tiếp nhận sự cố. Đọc toàn bộ 34 cases, ưu tiên Critical trước. Ghi nhớ escalation path của từng loại.</p>
+            <div class="step-links"><a href="trouble.html" class="step-link red">🚨 Trouble Cases →</a></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num purple">6</div>
+          <div class="step-body">
+            <h4>Chính sách bồi thường & refund</h4>
+            <p>Biết chính xác khi nào bồi thường bao nhiêu, deadline claim, và quy trình bồi hoàn 3 hình thức.</p>
+            <div class="step-links"><a href="sop-finance.html#refund-flow" class="step-link blue">💰 Refund Policy →</a></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num purple">7</div>
+          <div class="step-body">
+            <h4>Kiểm tra kiến thức <span class="optional-tag">Tự đánh giá</span></h4>
+            <div class="step-links">
+              <a href="sop-cskh.html#quiz" class="step-link orange">✅ Quiz CSKH →</a>
+              <a href="pod.html#quiz" class="step-link blue">✅ Quiz POD →</a>
+              <a href="dropship.html#quiz" class="step-link blue">✅ Quiz Dropship →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-wrap" id="checklist-cskh">
+      <h3>✅ Checklist hoàn thành — CSKH Track</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP Liên phòng ban — hiểu escalation & kênh Lark</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP-003 POD/Dropship Operations</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP-004 Express Shipping</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP-005 Warehouse Management</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Module POD — nắm SLA incident & compensation</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Module Dropship — nắm tracking & 8-10 ngày vận chuyển</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Trouble Handling — đọc toàn bộ 34 cases</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Hoàn thành quiz CSKH + POD + Dropship</label></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label"><span>Tiến độ</span><span id="progress-cskh">0/8</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-cskh" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FINANCE TRACK ═══════════════ -->
+  <div class="role-content" id="track-finance">
+    <div class="track-header">
+      <div class="track-icon">💰</div>
+      <div>
+        <h2>Lộ trình Finance & Kế toán</h2>
+        <p>Từ quy trình thu tiền, quản lý công nợ, đến báo cáo định kỳ và xử lý tranh chấp thanh toán.</p>
+      </div>
+    </div>
+
+    <div class="info-box"><strong>Mục tiêu cuối tháng 1:</strong> Tự lập báo cáo T3/T6. Xác nhận thanh toán đúng quy trình. Xử lý được case công nợ Level 1–2. Nắm toàn bộ RACI Finance.</div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge day1">Ngày 1 — Bắt buộc</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num teal">1</div>
+          <div class="step-body">
+            <h4>SOP Liên Phòng Ban <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>Finance phối hợp với tất cả phòng — hiểu RACI và Lark request trước khi làm bất kỳ thứ gì.</p>
+            <div class="step-links"><a href="sop-cross.html" class="step-link teal">🔗 Đọc ngay →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge week1">Ngày 2–3 — SOP Finance (ưu tiên #1)</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">2</div>
+          <div class="step-body">
+            <h4>SOP Finance & Công Nợ — TOÀN BỘ <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <p>SOP-006: Quy trình thanh toán, chính sách công nợ, thu hồi nợ D+1 đến D+15, báo cáo tuần/tháng/quý, RACI Finance.</p>
+            <div class="step-links"><a href="sop-finance.html" class="step-link blue">💰 Đọc SOP Finance →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge week1">Ngày 4–5 — Hiểu vòng tiền theo dịch vụ</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">3</div>
+          <div class="step-body">
+            <h4>Phần Compensation của 4 Service Lines</h4>
+            <p>Đọc riêng phần chính sách bồi thường của từng service để xử lý refund đúng mức.</p>
+            <div class="step-links">
+              <a href="pod.html" class="step-link orange">🖨️ POD Compensation →</a>
+              <a href="dropship.html" class="step-link blue">📦 Dropship →</a>
+              <a href="fulfill.html" class="step-link blue">✈️ Fulfill →</a>
+              <a href="express.html" class="step-link blue">🚚 Express →</a>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num blue">4</div>
+          <div class="step-body">
+            <h4>SOP CSKH — Phần Escalation & Bồi Hoàn</h4>
+            <p>Finance nhận yêu cầu bồi hoàn từ CSKH. Cần hiểu quy trình phía CSKH gửi lên.</p>
+            <div class="step-links"><a href="sop-cskh.html" class="step-link orange">🤝 SOP CSKH →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-label">
+        <span class="phase-badge month1">Tuần 2–4 — Thực chiến</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num purple">5</div>
+          <div class="step-body">
+            <h4>Trouble Cases liên quan Finance</h4>
+            <p>Đọc các case có Financial Impact trong trouble.html — đặc biệt fraud, insurance, OMS error.</p>
+            <div class="step-links"><a href="trouble.html" class="step-link red">🚨 Trouble Cases →</a></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num purple">6</div>
+          <div class="step-body">
+            <h4>Kiểm tra kiến thức <span class="mandatory-tag">BẮT BUỘC</span></h4>
+            <div class="step-links">
+              <a href="sop-finance.html#quiz" class="step-link blue">✅ Quiz Finance →</a>
+              <a href="sop-cross.html#quiz" class="step-link teal">✅ Quiz Liên phòng ban →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-wrap" id="checklist-finance">
+      <h3>✅ Checklist hoàn thành — Finance Track</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP Liên phòng ban — RACI & Lark request</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP-006 Finance: Quy trình thanh toán T+0</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>SOP-006: Thu hồi công nợ D+1 → D+15</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Biết cách lập báo cáo tuần (T3/T6) và tháng</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Nắm chính sách bồi hoàn 3 hình thức (cấn trừ / hoàn tiền / kỳ TT)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc compensation policy của 4 service lines</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Đọc trouble cases có Financial Impact</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Hoàn thành quiz Finance + Liên phòng ban</label></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label"><span>Tiến độ</span><span id="progress-finance">0/8</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-finance" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:24px 0;font-size:12px;color:var(--gray-400);border-top:1px solid var(--gray-200);margin-top:32px">
+    THG Internal Training Hub · Onboarding Roadmap v1.0 ·
+    <a href="mailto:info@thgfulfill.com" style="color:var(--blue)">Góp ý</a>
+  </div>
+</main>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="index.html" class="bn-item"><span class="bn-icon">🏠</span>Dashboard</a>
+    <a href="onboarding.html" class="bn-item active"><span class="bn-icon">🎓</span>Onboarding</a>
+    <a href="search.html" class="bn-item"><span class="bn-icon">🔍</span>Tìm kiếm</a>
+    <a href="trouble.html" class="bn-item"><span class="bn-icon">🚨</span>Sự cố</a>
+  </div>
+</nav>
+
+<script>
+function switchRole(role) {
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.role-content').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('track-' + role).classList.add('active');
+  const saved = JSON.parse(localStorage.getItem('thg_checks_' + role) || '[]');
+  restoreChecks(role, saved);
+}
+
+function toggleCheck(item) {
+  const cb = item.querySelector('input');
+  cb.checked = !cb.checked;
+  item.classList.toggle('done', cb.checked);
+  updateProgress();
+  saveChecks();
+}
+
+function updateProgress() {
+  ['sale','cskh','finance'].forEach(role => {
+    const wrap = document.getElementById('checklist-' + role);
+    if (!wrap) return;
+    const total = wrap.querySelectorAll('.check-item').length;
+    const done = wrap.querySelectorAll('.check-item.done').length;
+    document.getElementById('progress-' + role).textContent = done + '/' + total;
+    document.getElementById('fill-' + role).style.width = (done/total*100) + '%';
+  });
+}
+
+function saveChecks() {
+  ['sale','cskh','finance'].forEach(role => {
+    const wrap = document.getElementById('checklist-' + role);
+    if (!wrap) return;
+    const states = [...wrap.querySelectorAll('.check-item')].map(i => i.classList.contains('done'));
+    localStorage.setItem('thg_checks_' + role, JSON.stringify(states));
+  });
+}
+
+function restoreChecks(role, states) {
+  const wrap = document.getElementById('checklist-' + role);
+  if (!wrap) return;
+  wrap.querySelectorAll('.check-item').forEach((item, i) => {
+    if (states[i]) {
+      item.classList.add('done');
+      item.querySelector('input').checked = true;
+    }
+  });
+  updateProgress();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('visible');
+}
+
+function doSearch(e) {
+  e.preventDefault();
+  var q = e.target.querySelector('input').value.trim();
+  if (q) window.location = 'search.html?q=' + encodeURIComponent(q);
+}
+
+// Restore all checklists on load
+window.addEventListener('DOMContentLoaded', () => {
+  ['sale','cskh','finance'].forEach(role => {
+    const saved = JSON.parse(localStorage.getItem('thg_checks_' + role) || '[]');
+    restoreChecks(role, saved);
+  });
+});
+</script>
+</body>
+</html>

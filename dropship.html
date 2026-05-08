@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dropship | THG Training Hub</title>
+  <style>
+    :root {
+      --blue:       #1B4FBB;
+      --blue-dark:  #143d94;
+      --blue-light: #e8eefb;
+      --orange:     #F97316;
+      --orange-bg:  #fff4ed;
+      --green:      #16a34a;
+      --green-bg:   #f0fdf4;
+      --red:        #dc2626;
+      --red-bg:     #fef2f2;
+      --yellow:     #ca8a04;
+      --yellow-bg:  #fefce8;
+      --purple:     #7c3aed;
+      --purple-bg:  #f3e8ff;
+      --gray-50:    #f8fafc;
+      --gray-100:   #f1f5f9;
+      --gray-200:   #e2e8f0;
+      --gray-400:   #94a3b8;
+      --gray-600:   #475569;
+      --gray-700:   #334155;
+      --gray-900:   #0f172a;
+      --sidebar-w:  260px;
+      --header-h:   56px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--gray-50); color: var(--gray-700); font-size: 14px; line-height: 1.6; }
+
+    /* TOPBAR */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: var(--header-h); background: var(--blue); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.25); }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+    .topbar-logo { display: flex; align-items: center; gap: 8px; }
+    .topbar-logo .badge { background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
+    .topbar-logo span { color: #fff; font-size: 15px; font-weight: 700; }
+    .user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border-radius: 20px; padding: 4px 12px 4px 6px; }
+    .user-pill .avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .user-pill span { color: rgba(255,255,255,0.85); font-size: 12px; }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--gray-200); overflow-y: auto; z-index: 100; transition: transform 0.25s ease; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+    .nav-section { padding: 16px 0 4px; }
+    .nav-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gray-400); padding: 0 16px 6px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; text-decoration: none; color: var(--gray-700); font-size: 13.5px; font-weight: 500; transition: background 0.15s; position: relative; }
+    .nav-item:hover { background: var(--gray-50); }
+    .nav-item.active { background: var(--blue-light); color: var(--blue); font-weight: 600; }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px; background: var(--blue); border-radius: 0 3px 3px 0; }
+    .nav-item .nav-icon { font-size: 16px; flex-shrink: 0; width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+    .nav-badge.blue  { background: var(--blue); }
+    .nav-badge.green { background: var(--green); }
+    .nav-divider { height: 1px; background: var(--gray-100); margin: 8px 16px; }
+    .topic-nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 16px 7px 32px; font-size: 12.5px; color: var(--gray-600); text-decoration: none; transition: color 0.15s, background 0.15s; }
+    .topic-nav-item:hover { background: var(--gray-50); color: var(--blue); }
+    .topic-nav-item.current { color: var(--blue); font-weight: 600; }
+    .topic-num { font-size: 10px; font-weight: 700; background: var(--gray-200); color: var(--gray-600); padding: 1px 6px; border-radius: 10px; flex-shrink: 0; }
+    .topic-nav-item.current .topic-num { background: var(--blue-light); color: var(--blue); }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); margin-top: var(--header-h); min-height: calc(100vh - var(--header-h)); padding: 28px 32px 64px; }
+
+    /* BREADCRUMB */
+    .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--gray-400); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* MODULE HERO */
+    .module-hero { background: linear-gradient(135deg, var(--blue-light) 0%, #f0f4ff 100%); border: 1px solid #c7d7f5; border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; display: flex; align-items: flex-start; gap: 20px; }
+    .module-hero-icon { font-size: 48px; flex-shrink: 0; }
+    .module-hero-body { flex: 1; }
+    .module-hero-body .tag { display: inline-block; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 0.5px; }
+    .module-hero-body h1 { font-size: 22px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+    .module-hero-body p  { font-size: 13.5px; color: var(--gray-600); max-width: 600px; }
+    .module-meta-row { display: flex; gap: 20px; margin-top: 16px; flex-wrap: wrap; }
+    .meta-item { font-size: 12px; color: var(--gray-600); }
+    .progress-hero-wrap { flex-shrink: 0; text-align: right; }
+    .progress-circle { width: 72px; height: 72px; }
+    .pct { font-size: 13px; font-weight: 700; color: var(--blue); margin-top: 6px; text-align: center; }
+
+    /* QUICK NAV */
+    .module-progress-nav { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px 20px; margin-bottom: 28px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .mpn-label { font-size: 12px; font-weight: 600; color: var(--gray-400); margin-right: 4px; }
+    .mpn-item { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s; border: 1.5px solid var(--gray-200); color: var(--gray-600); background: var(--gray-50); }
+    .mpn-item:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* CONTENT SECTIONS */
+    .content-section { margin-bottom: 36px; scroll-margin-top: calc(var(--header-h) + 16px); }
+    .section-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--gray-100); }
+    .section-hd .topic-badge { background: var(--blue); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 6px; letter-spacing: 0.5px; flex-shrink: 0; }
+    .section-hd h2 { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+
+    /* NOTE BOXES */
+    .note-box { border-radius: 10px; padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+    .note-box.info   { background: var(--blue-light);  border-left: 4px solid var(--blue);   }
+    .note-box.warn   { background: var(--yellow-bg);   border-left: 4px solid var(--yellow); }
+    .note-box.danger { background: var(--red-bg);      border-left: 4px solid var(--red);    }
+    .note-box.success{ background: var(--green-bg);    border-left: 4px solid var(--green);  }
+    .note-box .nb-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .note-box p { font-size: 13px; line-height: 1.6; }
+    .note-box.info   p { color: #1e3a8a; }
+    .note-box.warn   p { color: #713f12; }
+    .note-box.danger p { color: #991b1b; }
+    .note-box.success p { color: #14532d; }
+
+    /* INFO GRID */
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .info-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 20px; }
+    .info-card .ic-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .info-card .ic-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .ic-icon.orange { background: var(--orange-bg); }
+    .ic-icon.blue   { background: var(--blue-light); }
+    .ic-icon.green  { background: var(--green-bg); }
+    .ic-icon.purple { background: var(--purple-bg); }
+    .ic-icon.yellow { background: var(--yellow-bg); }
+    .info-card h3 { font-size: 13.5px; font-weight: 700; color: var(--gray-900); }
+    .info-card ul { list-style: none; }
+    .info-card ul li { display: flex; gap: 8px; font-size: 12.5px; color: var(--gray-600); margin-bottom: 7px; align-items: flex-start; line-height: 1.5; }
+    .info-card ul li::before { content: '›'; color: var(--blue); font-weight: 700; font-size: 14px; flex-shrink: 0; margin-top: -1px; }
+
+    /* FLOW STEPS */
+    .flow-wrap { display: flex; flex-direction: column; gap: 0; }
+    .flow-step { display: flex; gap: 16px; align-items: flex-start; }
+    .flow-step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .flow-dot { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .flow-line { width: 2px; flex: 1; background: var(--gray-200); margin: 4px 0; min-height: 24px; }
+    .flow-step:last-child .flow-line { display: none; }
+    .flow-body { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; flex: 1; }
+    .flow-body h4 { font-size: 13.5px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+    .flow-body p  { font-size: 12.5px; color: var(--gray-600); line-height: 1.6; }
+    .flow-body ul { list-style: none; margin-top: 6px; }
+    .flow-body ul li { font-size: 12.5px; color: var(--gray-600); margin-bottom: 4px; padding-left: 14px; position: relative; }
+    .flow-body ul li::before { content: '·'; position: absolute; left: 0; color: var(--blue); font-weight: 900; }
+    .flow-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+    .flow-tag.daily  { background: var(--green-bg); color: var(--green); }
+    .flow-tag.weekly { background: var(--yellow-bg); color: var(--yellow); }
+    .flow-tag.ondemand { background: var(--blue-light); color: var(--blue); }
+
+    /* SUPPLIER CARDS */
+    .supplier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .supplier-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 20px; transition: border-color 0.2s, box-shadow 0.2s; }
+    .supplier-card:hover { border-color: var(--blue); box-shadow: 0 4px 14px rgba(27,79,187,0.1); }
+    .supplier-card .sc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .supplier-card .sc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .supplier-card h3 { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .supplier-card p  { font-size: 12.5px; color: var(--gray-600); line-height: 1.5; margin-bottom: 10px; }
+    .supplier-card .sc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sc-tag { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 12px; }
+    .sc-tag.blue { background: var(--blue-light); color: var(--blue); }
+    .sc-tag.orange { background: var(--orange-bg); color: #c2410c; }
+    .sc-tag.green { background: var(--green-bg); color: var(--green); }
+    .sc-tag.purple { background: var(--purple-bg); color: var(--purple); }
+
+    /* SHOP TYPE TABLE */
+    .shop-table-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; overflow-x: auto; margin-bottom: 16px; }
+    .shop-table { width: 100%; border-collapse: collapse; }
+    .shop-table th { background: var(--gray-900); color: #fff; padding: 11px 16px; text-align: left; font-size: 12px; font-weight: 600; }
+    .shop-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); font-size: 12.5px; vertical-align: top; }
+    .shop-table tr:last-child td { border-bottom: none; }
+    .shop-table tr:hover td { background: var(--gray-50); }
+    .shop-type-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+    .shop-type-badge.dautru { background: #fef9c3; color: #713f12; }
+    .shop-type-badge.sieuxuong { background: var(--orange-bg); color: #c2410c; }
+    .shop-type-badge.thuong { background: var(--gray-100); color: var(--gray-600); }
+
+    /* PLATFORM CARDS */
+    .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .platform-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; text-align: center; }
+    .platform-card .pc-icon { font-size: 32px; margin-bottom: 8px; }
+    .platform-card h4 { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+    .platform-card p  { font-size: 11.5px; color: var(--gray-600); }
+
+    /* VIDEO GRID */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+    .video-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: box-shadow 0.2s, transform 0.15s; }
+    .video-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .video-thumb { position: relative; padding-top: 56.25%; background: var(--gray-900); }
+    .video-thumb iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-thumb .thumb-label { position: absolute; bottom: 8px; left: 10px; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .video-info { padding: 14px 16px; }
+    .video-info .ep { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .video-info h4 { font-size: 13.5px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; line-height: 1.4; }
+    .video-info p  { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
+    .video-info .vid-meta { display: flex; gap: 12px; margin-top: 10px; }
+    .video-info .vid-meta span { font-size: 11px; color: var(--gray-400); }
+    .video-link { display: block; text-align: center; padding: 10px; background: var(--blue-light); color: var(--blue); font-size: 12.5px; font-weight: 600; text-decoration: none; border-top: 1px solid var(--gray-100); transition: background 0.2s; }
+    .video-link:hover { background: var(--blue); color: #fff; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+    .faq-q { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--gray-900); transition: background 0.15s; }
+    .faq-q:hover { background: var(--gray-50); }
+    .faq-q .fq-num { background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+    .faq-q .fq-arrow { margin-left: auto; color: var(--gray-400); font-size: 13px; transition: transform 0.2s; flex-shrink: 0; }
+    .faq-a { padding: 0 16px 14px 42px; font-size: 13px; color: var(--gray-600); line-height: 1.7; display: none; }
+    .faq-a.open { display: block; }
+    .faq-a strong { color: var(--blue); }
+
+    /* COMMUNITY TABLE */
+    .community-table-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; overflow-x: auto; }
+    .community-table { width: 100%; border-collapse: collapse; }
+    .community-table th { background: var(--blue); color: #fff; padding: 10px 16px; text-align: left; font-size: 12px; font-weight: 600; }
+    .community-table td { padding: 11px 16px; border-bottom: 1px solid var(--gray-100); font-size: 12.5px; }
+    .community-table tr:last-child td { border-bottom: none; }
+    .community-table tr:hover td { background: var(--gray-50); }
+    .mem-badge { display: inline-block; background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 12px; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--yellow-bg); border: 1px solid #fde68a; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+    .highlight-box h4 { font-size: 13px; font-weight: 700; color: #713f12; margin-bottom: 8px; }
+    .highlight-box p  { font-size: 12.5px; color: #92400e; line-height: 1.6; }
+    .highlight-box ul { list-style: none; margin-top: 8px; }
+    .highlight-box ul li { font-size: 12.5px; color: #92400e; margin-bottom: 5px; padding-left: 14px; position: relative; }
+    .highlight-box ul li::before { content: '›'; position: absolute; left: 0; font-weight: 700; }
+
+    /* PAGE FOOTER */
+    .page-footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--gray-200); margin-top: 20px; }
+    .nav-btns { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+    .btn-nav { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .btn-nav.prev { background: var(--gray-100); color: var(--gray-700); }
+    .btn-nav.prev:hover { background: var(--gray-200); }
+    .btn-nav.next { background: var(--blue); color: #fff; }
+    .btn-nav.next:hover { background: var(--blue-dark); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+      .overlay.visible { display: block; }
+      .main { margin-left: 0; padding: 20px 16px 48px; }
+      .module-hero { flex-direction: column; padding: 20px; }
+      .progress-hero-wrap { display: flex; align-items: center; gap: 12px; }
+    }
+  
+    /* ── SIDEBAR DROPDOWN TOGGLE ── */
+    .nav-section-label{cursor:pointer;user-select:none;display:flex!important;align-items:center}
+    .nav-arrow{margin-left:auto;font-size:9px;opacity:.45;transition:transform .3s ease;display:inline-block;flex-shrink:0;line-height:1;pointer-events:none}
+    .nav-section-body{overflow:hidden;transition:max-height .3s ease}
+    .nav-sub{overflow:hidden;transition:max-height .3s ease}
+  
+/* ── KNOWLEDGE CHECK ── */
+.quiz-section{background:#fff;border:2px solid var(--blue);border-radius:16px;padding:28px;margin-top:36px;margin-bottom:8px}
+.quiz-badge{display:inline-block;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.5px;margin-bottom:10px}
+.quiz-section>h2{font-size:17px;font-weight:800;color:var(--gray-900);margin-bottom:4px}
+.quiz-desc{font-size:13px;color:var(--gray-600);margin-bottom:20px}
+.quiz-q{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.quiz-q-text{font-size:13.5px;font-weight:600;color:var(--gray-900);margin-bottom:10px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:6px}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--gray-700);border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.quiz-opt:hover{background:var(--blue-light);border-color:var(--blue)}
+.quiz-opt input{cursor:pointer;accent-color:var(--blue);margin-top:2px;flex-shrink:0}
+.quiz-opt.correct{background:var(--green-bg)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600}
+.quiz-opt.wrong{background:var(--red-bg)!important;border-color:var(--red)!important;color:var(--red)!important}
+.quiz-q.done .quiz-opt{pointer-events:none}
+.quiz-submit{margin-top:18px;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+.quiz-submit:hover{background:var(--blue-dark)}
+.quiz-submit:disabled{opacity:.5;cursor:default}
+.quiz-result{margin-top:18px;padding:14px 18px;border-radius:10px;font-size:14px;font-weight:600;display:none}
+.quiz-result.pass{background:var(--green-bg);color:var(--green);border:1px solid #86efac}
+.quiz-result.fail{background:var(--orange-bg);color:#c2410c;border:1px solid #fed7aa}
+/* ── SEARCH BAR ── */
+.search-wrap{display:flex;align-items:center;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;gap:8px;min-width:0}
+.search-wrap input{background:transparent;border:none;outline:none;color:#fff;font-size:12.5px;width:160px;min-width:0}
+.search-wrap input::placeholder{color:rgba(255,255,255,.55)}
+.search-wrap button{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0}
+@media(max-width:768px){.search-wrap input{width:90px}.quiz-section{padding:18px 14px}}
+/* ── ONBOARDING NAV BADGE ── */
+.nav-badge.teal{background:#0d9488}
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);z-index:150;padding:6px 0 env(safe-area-inset-bottom,0)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--gray-600);font-size:10px;font-weight:500;min-width:54px;padding:4px 0}
+.bn-item .bn-icon{font-size:20px;line-height:1}
+.bn-item.active{color:var(--blue)}
+@media(max-width:768px){.bottom-nav{display:block}.main{padding-bottom:80px!important}}
+
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">
+      <span>🦅 THG Training Hub</span>
+      <span class="badge">INTERNAL</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="user-pill"><div class="avatar">TH</div><span>Team THG</span></div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Tổng quan</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📅</span> Lịch Training</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">4 Mảng Dịch Vụ</div>
+    <a href="pod.html"      class="nav-item"><span class="nav-icon">🖨️</span> POD – Print on Demand</a>
+    <a href="dropship.html" class="nav-item active"><span class="nav-icon">📦</span> Dropship <span class="nav-badge">Đây</span></a>
+    <div style="padding:4px 0 4px;">
+      <a href="#topic1" class="topic-nav-item"><span class="topic-num">T1</span> Tổng quan Dropship</a>
+      <a href="#topic2" class="topic-nav-item"><span class="topic-num">T2</span> Quy trình Sale hàng ngày</a>
+      <a href="#topic3" class="topic-nav-item"><span class="topic-num">T3</span> Nguồn hàng Trung Quốc</a>
+      <a href="#topic4" class="topic-nav-item"><span class="topic-num">T4</span> Đọc hiểu seller 1688</a>
+      <a href="#topic5" class="topic-nav-item"><span class="topic-num">T5</span> Sàn TMĐT TQ</a>
+      <a href="#topic6" class="topic-nav-item"><span class="topic-num">T6</span> Catalogue & Supplier</a>
+      <a href="#topic7" class="topic-nav-item"><span class="topic-num">T7</span> Cộng đồng Ecommerce</a>
+      <a href="#topic8" class="topic-nav-item"><span class="topic-num">T8</span> Video Training</a>
+      <a href="#topic9" class="topic-nav-item"><span class="topic-num">T9</span> FAQ & Chính sách</a>
+      <a href="#topic10" class="topic-nav-item"><span class="topic-num">T10</span> Xử Lý Sự Cố 🚨</a>
+    </div>
+    <a href="fulfill.html"  class="nav-item"><span class="nav-icon">✈️</span> Fulfill – TQ → USA</a>
+    <a href="express.html"  class="nav-item"><span class="nav-icon">🚚</span> Express – Nội địa</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">SOP Vận Hành</div>
+    <a href="sop-sale.html"    class="nav-item"><span class="nav-icon">📣</span> Sale & Marketing <span class="nav-badge blue">2</span></a>
+    <a href="sop-cskh.html"    class="nav-item"><span class="nav-icon">🤝</span> CSKH & Operations <span class="nav-badge green">3</span></a>
+    <a href="sop-finance.html" class="nav-item"><span class="nav-icon">💰</span> Kế toán <span class="nav-badge" style="background:#dc2626">!</span></a>
+    <a href="sop-cross.html"   class="nav-item"><span class="nav-icon">🔗</span> Liên phòng ban</a>
+    <a href="trouble.html" class="nav-item"><span class="nav-icon">🚨</span> Trouble Handling <span class="nav-badge" style="background:#ef4444">34</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="breadcrumb">
+    <a href="index.html">🏠 Dashboard</a>
+    <span>›</span><span>4 Mảng Dịch Vụ</span>
+    <span>›</span><strong style="color:var(--blue)">📦 Dropship</strong>
+  </div>
+
+  <!-- HERO -->
+  <div class="module-hero">
+    <div class="module-hero-icon">📦</div>
+    <div class="module-hero-body">
+      <span class="tag">MODULE · MẢNG DỊCH VỤ</span>
+      <h1>Dropship – Vận Chuyển Thẳng TQ → Toàn Cầu</h1>
+      <p>Toàn bộ quy trình tìm nguồn hàng, tiếp nhận khách, lên đơn, theo dõi tracking và xử lý trouble cho mảng Dropship. Dành cho Team Sale & CSKH.</p>
+      <div class="module-meta-row">
+        <span class="meta-item">🎥 5 video</span>
+        <span class="meta-item">📄 9 chủ đề</span>
+        <span class="meta-item">⏱ ~2.5 giờ</span>
+        <span class="meta-item">🗂 Cập nhật: 08/2025</span>
+      </div>
+    </div>
+    <div class="progress-hero-wrap">
+      <svg class="progress-circle" viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#e2e8f0" stroke-width="6"/>
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#1B4FBB" stroke-width="6"
+          stroke-dasharray="188.5" stroke-dashoffset="47.1"
+          stroke-linecap="round" transform="rotate(-90 36 36)"/>
+        <text x="36" y="41" text-anchor="middle" font-size="14" font-weight="800" fill="#1B4FBB">75%</text>
+      </svg>
+      <div class="pct">Team tiến độ</div>
+    </div>
+  </div>
+
+  <!-- QUICK NAV -->
+  <div class="module-progress-nav">
+    <span class="mpn-label">Chủ đề:</span>
+    <a href="#topic1" class="mpn-item">T1 Tổng quan</a>
+    <a href="#topic2" class="mpn-item">T2 Quy trình Sale</a>
+    <a href="#topic3" class="mpn-item">T3 Nguồn hàng</a>
+    <a href="#topic4" class="mpn-item">T4 Đọc 1688</a>
+    <a href="#topic5" class="mpn-item">T5 Sàn TQ</a>
+    <a href="#topic6" class="mpn-item">T6 Catalogue</a>
+    <a href="#topic7" class="mpn-item">T7 Cộng đồng</a>
+    <a href="#topic8" class="mpn-item">T8 Video</a>
+    <a href="#topic9" class="mpn-item">T9 FAQ</a>
+    <a href="#topic10" class="mpn-item" style="border-color:#ef4444;color:#ef4444">🚨 T10 Trouble</a>
+  </div>
+
+  <!-- ── TOPIC 1: TỔNG QUAN ── -->
+  <div class="content-section" id="topic1">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 1</span>
+      <h2>Tổng Quan Về Mảng Dropship</h2>
+    </div>
+
+    <div class="note-box info">
+      <span class="nb-icon">💡</span>
+      <p><strong>Dropshipping</strong> là mô hình kinh doanh không cần lưu kho: hàng hóa được gửi <em>thẳng từ nhà cung cấp TQ đến khách hàng quốc tế</em>. THG đóng vai trò sourcing + fulfillment trung gian, giúp seller tối ưu chi phí và thời gian.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🌐</div><h3>THG hỗ trợ Dropship gì?</h3></div>
+        <ul>
+          <li>Tìm kiếm & sourcing hàng hóa từ Trung Quốc (1688, Taobao, Tmall…)</li>
+          <li>Nhập hàng về kho TQ hoặc kho US, đóng gói theo yêu cầu</li>
+          <li>Vận chuyển thẳng từ TQ → USA & toàn cầu (8–10 ngày)</li>
+          <li>Active tracking theo đúng policy TikTok trong 48h</li>
+          <li>Xử lý return, dispute, refund cho seller</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon green">💰</div><h3>Lợi thế của THG</h3></div>
+        <ul>
+          <li>Giá cạnh tranh hơn AliExpress &amp; Dropship.io</li>
+          <li>Basecost = giá cuối, không phát sinh phí ẩn</li>
+          <li>Kho sẵn tại TQ và US — fulfill nhanh theo volume</li>
+          <li>Hỗ trợ Ship By Seller và Ship By TikTok</li>
+          <li>Đền bù $20–$50/đơn nếu lỗi phát sinh từ THG</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon orange">🎯</div><h3>Thị trường & Seller phù hợp</h3></div>
+        <ul>
+          <li>Seller bán trên TikTok Shop US, Etsy, Amazon, eBay, Shopify</li>
+          <li>Seller dropship hàng apparel, phụ kiện, lifestyle từ TQ</li>
+          <li>Seller muốn test sản phẩm nhanh không cần nhập kho</li>
+          <li>Seller đã có volume muốn stock kho US để giao nhanh hơn</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon purple">⏱</div><h3>Timeline vận chuyển</h3></div>
+        <ul>
+          <li><strong>CN → US (Dropship):</strong> 8–10 ngày</li>
+          <li><strong>Tracking active (TikTok):</strong> trong 48h</li>
+          <li><strong>Xử lý đơn nội địa TQ:</strong> 1–3 ngày</li>
+          <li><strong>Fulfill từ kho US:</strong> 1–3 ngày (nếu đã stock)</li>
+          <li><strong>Khiếu nại chất lượng:</strong> trong 3 ngày làm việc</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOPIC 2: QUY TRÌNH SALE HÀNG NGÀY ── -->
+  <div class="content-section" id="topic2">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 2</span>
+      <h2>Quy Trình Công Việc Hàng Ngày Của Sale Dropship</h2>
+    </div>
+
+    <div class="flow-wrap">
+
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot">1</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <span class="flow-tag daily">Hàng ngày</span>
+          <h4>Tìm kiếm khách hàng mới</h4>
+          <ul>
+            <li>Tương tác vào bài post tìm POD/Drop, inbox để chào hàng fulfill dịch vụ</li>
+            <li>Tạo content Facebook, thiết kế trên Canva để đăng bài</li>
+            <li>Đăng bài trang cá nhân + vào các hội nhóm Facebook</li>
+            <li>Duy trì post bài fanpage THG Fulfill (đa nền tảng: Instagram, Thread, Telegram, Zalo…)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot">2</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <span class="flow-tag ondemand">Khi có khách mới</span>
+          <h4>Tiếp nhận khách hàng mới</h4>
+          <ul>
+            <li>Tạo group Telegram cho team THG + team khách, đặt tên &amp; đổi avatar theo mẫu công ty</li>
+            <li>Gửi tài liệu, catalogue cho khách tham khảo</li>
+            <li>Set up cuộc họp để tư vấn rõ hơn về dịch vụ</li>
+            <li>Phản hồi thắc mắc trong group, tạo request check thêm thông tin nếu cần</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot">3</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <span class="flow-tag daily">Hàng ngày</span>
+          <h4>Chăm sóc & lên đơn</h4>
+          <ul>
+            <li>Tiếp nhận yêu cầu trên group Telegram</li>
+            <li>Check file làm việc: đủ thông tin chưa, tính phí xử lý, điền giá vận chuyển, thông báo bill</li>
+            <li>Truyền thông giữa khách &amp; vận hành đảm bảo thông tin hàng hóa</li>
+            <li>Sau lên đơn: check tracking đã trả chưa, THG đã nhận hàng chưa</li>
+            <li>Gửi báo cáo hàng ngày: <em>"Hôm nay khách lên X đơn, confirm giúp em nhé"</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot">4</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <span class="flow-tag weekly">Thứ 3 &amp; Thứ 6 — 16h</span>
+          <h4>Báo cáo tracking định kỳ</h4>
+          <ul>
+            <li>Kiểm tra lộ trình và tình trạng đơn vào <strong>16h Thứ 3 và Thứ 6</strong> hằng tuần</li>
+            <li>Cập nhật đơn đã đến đâu: in transit / delivered / pending…</li>
+            <li>Cập nhật số đơn đã đi + tình hình thanh toán của khách</li>
+            <li>Gửi cho bộ phận Finance nắm thông tin</li>
+            <li>Báo ngay nếu tracking đứng quá lâu</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot">5</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <span class="flow-tag weekly">Hàng tuần</span>
+          <h4>Tạo video &amp; chạy quảng cáo</h4>
+          <ul>
+            <li>Viết 2 kịch bản video/tuần — nội dung về dịch vụ kho bãi tại Mỹ</li>
+            <li>Quay 2 video quảng cáo để quảng bá dịch vụ</li>
+            <li>Lên plan chạy ads tuần/tháng, tạo campaign và theo dõi kết quả</li>
+            <li>Tiếp nhận lead từ fanpage</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TOPIC 3: TÌM NGUỒN HÀNG ── -->
+  <div class="content-section" id="topic3">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 3</span>
+      <h2>Cách Tìm Kiếm Nguồn Hàng Tại Trung Quốc</h2>
+    </div>
+
+    <div class="highlight-box">
+      <h4>🎯 Trước khi tìm hàng — xác định rõ yêu cầu khách hàng:</h4>
+      <ul>
+        <li>Hàng hóa cụ thể là gì? Ship đi thị trường nào?</li>
+        <li>Loại hình kinh doanh của khách (dropship / POD / wholesale…)</li>
+        <li>Loại sản phẩm: quần, áo, váy, đồ thể thao, phụ kiện…</li>
+        <li>Giá mong muốn — giá trần, giá sàn của sản phẩm</li>
+        <li>Thời gian ship mong muốn</li>
+      </ul>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🔍</div><h3>Tìm bằng hình ảnh (hiệu quả nhất)</h3></div>
+        <ul>
+          <li>Tải ảnh sản phẩm cần tìm về máy (chọn ảnh rõ nét, chất lượng cao)</li>
+          <li>Upload lên <strong>1688</strong> để tìm sản phẩm tương tự</li>
+          <li>Lọc theo <strong>doanh số</strong> để tìm supplier uy tín</li>
+          <li>Extension: <strong>1688 AIBUY</strong> và <strong>AliPrice Search by image</strong></li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon orange">📥</div><h3>Mẹo tải ảnh/video từ 1688</h3></div>
+        <ul>
+          <li><strong>Hình ảnh:</strong> Click trái → chọn tải xuống → 1688 mở tab mới → chuột phải → "Save image as"</li>
+          <li><strong>Video (Cốc Cốc):</strong> Di chuột vào video → mũi tên tải xuống</li>
+          <li><strong>Video (Chrome):</strong> Cài extension <em>Video DownloadHelper</em> → chuột phải → chọn kiểu tải</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon green">📊</div><h3>Phân tích chỉ số sản phẩm</h3></div>
+        <ul>
+          <li>Lượt bán 30 ngày + đánh giá: chất lượng thực tế</li>
+          <li>Đọc kỹ review khách: lỗi nào? Vận chuyển hay chất lượng?</li>
+          <li>Mô tả: trọng lượng, chất liệu, size → tính shipping chính xác</li>
+          <li>Lọc theo keyword chuẩn + doanh số → kết quả tối ưu nhất</li>
+          <li>Khu vực xuất hàng: ảnh hưởng thời gian &amp; phí ship nội địa TQ</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon purple">🌏</div><h3>Tìm kiếm Taobao</h3></div>
+        <ul>
+          <li>Taobao: <strong>phù hợp giai đoạn test</strong> — hàng đa dạng, đặt lẻ dễ</li>
+          <li>Sau khi có volume lớn mới chuyển sang 1688/Alibaba để tối ưu giá</li>
+          <li>Dùng napkin.ai để mindmap tổng quan nguồn hàng Taobao</li>
+          <li>Seller 2 giai đoạn: Test (Taobao) → Scale (1688/Alibaba)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOPIC 4: ĐỌC HIỂU SELLER 1688 ── -->
+  <div class="content-section" id="topic4">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 4</span>
+      <h2>Đọc Hiểu & Phân Tích Seller Trên 1688</h2>
+    </div>
+
+    <div class="shop-table-wrap">
+      <table class="shop-table">
+        <thead>
+          <tr>
+            <th>Loại Shop</th>
+            <th>Đặc điểm</th>
+            <th>Ưu điểm</th>
+            <th>Lưu ý</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="shop-type-badge dautru">🐂 Shop Đầu Trâu</span></td>
+            <td>Nhà sản xuất trực tiếp hoặc nhà phân phối lớn. Được 1688 kiểm duyệt chuyên sâu. Vốn &gt;500K NDT, xưởng &gt;800m², &gt;50 lao động.</td>
+            <td>Giấy tờ hợp pháp, cam kết chất lượng, chính sách rõ ràng, giao hàng đúng hạn</td>
+            <td>Không phải lựa chọn duy nhất. Giá có thể cao hơn siêu xưởng</td>
+          </tr>
+          <tr>
+            <td><span class="shop-type-badge sieuxuong">🏭 Siêu Xưởng</span></td>
+            <td>Xưởng quy mô cực lớn, không phải đầu trâu nhưng năng lực cao</td>
+            <td>Nguồn hàng lớn, đa dạng, <strong>giá cạnh tranh hơn shop thường</strong></td>
+            <td>Research kỹ thêm về chất lượng trước khi ký dài hạn</td>
+          </tr>
+          <tr>
+            <td><span class="shop-type-badge thuong">🏪 Shop Thường</span></td>
+            <td>Đa dạng — có shop uy tín cao, có shop kém chất lượng</td>
+            <td>Linh hoạt, số lượng tối thiểu thấp, dễ test</td>
+            <td><strong>Cần research và đánh giá kỹ</strong> trước khi quyết định hợp tác</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-box warn">
+      <span class="nb-icon">⭐</span>
+      <p>THG tổng hợp <strong>danh sách seller uy tín</strong> từ kinh nghiệm thực tế — liên hệ team vận hành để lấy list. Đây là tài sản quan trọng của công ty.</p>
+    </div>
+  </div>
+
+  <!-- ── TOPIC 5: SÀN TMDT TQ ── -->
+  <div class="content-section" id="topic5">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 5</span>
+      <h2>Các Sàn TMĐT Trung Quốc – Nguồn Hàng Dropship</h2>
+    </div>
+
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="pc-icon">🛒</div>
+        <h4>1688</h4>
+        <p>Sỉ giá tốt nhất. Tìm bằng ảnh, lọc doanh số. Phù hợp scale lớn.</p>
+      </div>
+      <div class="platform-card">
+        <div class="pc-icon">🛍️</div>
+        <h4>Taobao</h4>
+        <p>Lẻ, đa dạng, dễ đặt nhỏ. Giai đoạn test sản phẩm — recommended.</p>
+      </div>
+      <div class="platform-card">
+        <div class="pc-icon">🏬</div>
+        <h4>Tmall</h4>
+        <p>Hàng chính hãng, thương hiệu lớn. Chất lượng cao, giá cao hơn.</p>
+      </div>
+      <div class="platform-card">
+        <div class="pc-icon">👗</div>
+        <h4>WSY</h4>
+        <p>Thời trang nữ, hàng Quảng Châu. Phổ biến cho seller apparel.</p>
+      </div>
+      <div class="platform-card">
+        <div class="pc-icon">🧥</div>
+        <h4>VVIC</h4>
+        <p>Quần áo thời trang Quảng Châu. Hàng hot trend, cập nhật nhanh.</p>
+      </div>
+      <div class="platform-card">
+        <div class="pc-icon">🛒</div>
+        <h4>Alibaba</h4>
+        <p>B2B quốc tế. Phù hợp khi đặt số lượng lớn, xuất khẩu chính ngạch.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOPIC 6: CATALOGUE & SUPPLIER ── -->
+  <div class="content-section" id="topic6">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 6</span>
+      <h2>Catalogue Hàng Có Sẵn & Đối Tác Supplier</h2>
+    </div>
+
+    <div class="note-box danger">
+      <span class="nb-icon">🔒</span>
+      <p><strong>Tài liệu NỘI BỘ.</strong> Các link catalogue và password dưới đây chỉ dành cho nhân viên THG. Không chia sẻ ra bên ngoài.</p>
+    </div>
+
+    <div class="supplier-grid">
+
+      <div class="supplier-card">
+        <div class="sc-top">
+          <div class="sc-icon blue-light" style="background:var(--blue-light)">👕</div>
+          <h3>Áo Jersey – Nhà máy Yuzhou</h3>
+        </div>
+        <p>Nhà máy cung cấp áo Jersey POD độc quyền cho THG. Album đầy đủ mẫu mã, màu sắc và thông số kỹ thuật.</p>
+        <div class="sc-tags">
+          <span class="sc-tag blue">Độc quyền THG</span>
+          <span class="sc-tag green">Đối tác lâu dài</span>
+        </div>
+        <p style="margin-top:12px;font-size:11.5px;color:var(--gray-400);">Link Yupoo: <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-size:11px;">yuzhouqiuyi.x.yupoo.com/albums</code></p>
+      </div>
+
+      <div class="supplier-card">
+        <div class="sc-top">
+          <div class="sc-icon" style="background:var(--orange-bg)">👟</div>
+          <h3>Giày – Supplier XY</h3>
+        </div>
+        <p>Album hàng giày các loại. Yêu cầu password để xem catalogue chi tiết.</p>
+        <div class="sc-tags">
+          <span class="sc-tag orange">Cần password</span>
+          <span class="sc-tag purple">Dropship</span>
+        </div>
+        <p style="margin-top:12px;font-size:11.5px;color:var(--gray-400);">Link: <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-size:11px;">x.yupoo.com/photos/xy0594xy/albums</code><br/>Password: <strong style="color:var(--blue)">168998</strong></p>
+      </div>
+
+      <div class="supplier-card">
+        <div class="sc-top">
+          <div class="sc-icon" style="background:var(--green-bg)">📋</div>
+          <h3>Danh Sách Seller Uy Tín THG</h3>
+        </div>
+        <p>Tổng hợp từ kinh nghiệm thực tế của team — các seller đã được verify chất lượng và giao hàng.</p>
+        <div class="sc-tags">
+          <span class="sc-tag green">Quan trọng</span>
+          <span class="sc-tag blue">Internal only</span>
+        </div>
+        <p style="margin-top:12px;font-size:11.5px;color:var(--gray-400);">Xem trên <strong>Lark Suite</strong> → Tổng hợp thông tin THG → Danh sách seller uy tín</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TOPIC 7: CỘNG ĐỒNG ECOMMERCE ── -->
+  <div class="content-section" id="topic7">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 7</span>
+      <h2>Các Group & Cộng Đồng Ecommerce Để Tìm Khách</h2>
+    </div>
+
+    <div class="note-box success">
+      <span class="nb-icon">🎯</span>
+      <p>Đây là nơi seller POD/Dropship đang hoạt động. Tham gia, tương tác, đăng bài đều đặn để tạo mối quan hệ và tìm kiếm khách hàng tiềm năng.</p>
+    </div>
+
+    <div class="community-table-wrap">
+      <table class="community-table">
+        <thead>
+          <tr>
+            <th>Tên Group</th>
+            <th>Thành viên</th>
+            <th>Hoạt động</th>
+            <th>Nền tảng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cuồng Phong Hội – Cộng Đồng Crossborder Ecommerce VN</strong><br/><span style="font-size:11.5px;color:var(--gray-600)">Group to và uy tín nhất — nhiều seller lớn và team E-com lớn</span></td>
+            <td><span class="mem-badge">10,8K</span></td>
+            <td>10+ bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+          <tr>
+            <td><strong>Cộng đồng Dropshipping Việt Nam</strong></td>
+            <td><span class="mem-badge">65,4K</span></td>
+            <td>10+ bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+          <tr>
+            <td><strong>Tìm Supplier – Fulfill POD Dropship</strong></td>
+            <td><span class="mem-badge">11,8K</span></td>
+            <td>10+ bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+          <tr>
+            <td><strong>Dropshipping – Print on Demand Việt Nam</strong></td>
+            <td><span class="mem-badge">54,3K</span></td>
+            <td>7 bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+          <tr>
+            <td><strong>TikTokShop US | Sellers Vietnam</strong></td>
+            <td><span class="mem-badge">39,7K</span></td>
+            <td>10+ bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+          <tr>
+            <td><strong>TikTok Shop US – For Seller VN – Chia Sẻ Kinh Nghiệm</strong><br/><span style="font-size:11.5px;color:var(--gray-600)">Group lớn nhất về TikTok Shop US</span></td>
+            <td><span class="mem-badge">156,6K</span></td>
+            <td>10+ bài/ngày</td>
+            <td>Facebook</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TOPIC 8: VIDEO TRAINING ── -->
+  <div class="content-section" id="topic8">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 8</span>
+      <h2>Video Training Mảng Dropship</h2>
+    </div>
+
+    <div class="note-box warn">
+      <span class="nb-icon">🔒</span>
+      <p>Video <strong>unlisted / Lark internal</strong> — chỉ dành cho nhân viên THG. Không chia sẻ ra bên ngoài.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <iframe src="https://www.youtube.com/embed/fvPBt_l9Er8" allowfullscreen loading="lazy"></iframe>
+          <div class="thumb-label">Nguồn hàng</div>
+        </div>
+        <div class="video-info">
+          <div class="ep">Sourcing</div>
+          <h4>Tất Tần Tật Về 1688 – Sàn TMĐT Nội Địa Giá Sỉ Tốt Nhất TQ</h4>
+          <p>Hướng dẫn đầy đủ cách tìm hàng, phân tích supplier, đọc chỉ số sản phẩm trên 1688.</p>
+          <div class="vid-meta"><span>⏱ ~45 phút</span><span>📌 Bắt buộc</span></div>
+        </div>
+        <a href="https://youtu.be/fvPBt_l9Er8" target="_blank" class="video-link">Mở trên YouTube ↗</a>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <div style="position:absolute;inset:0;background:var(--gray-800,#1e293b);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+            <span style="font-size:32px">🎬</span>
+            <span style="color:rgba(255,255,255,0.7);font-size:12px;text-align:center;padding:0 12px">Video trên Lark<br/>(đăng nhập để xem)</span>
+          </div>
+          <div class="thumb-label">Liên phòng ban – P1</div>
+        </div>
+        <div class="video-info">
+          <div class="ep">Buổi Training Dropship</div>
+          <h4>Quy Trình Làm Việc Dropship Liên Phòng Ban – Phần 1</h4>
+          <p>Cách phối hợp Sale → Vận hành → Kho khi xử lý đơn dropship từ đầu đến cuối.</p>
+          <div class="vid-meta"><span>⏱ ~40 phút</span><span>📌 Quan trọng</span></div>
+        </div>
+        <a href="https://coach-buy124.larksuite.com/minutes/obus4r142y866733mc33l43s" target="_blank" class="video-link">Mở trên Lark ↗</a>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <div style="position:absolute;inset:0;background:var(--gray-800,#1e293b);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+            <span style="font-size:32px">🎬</span>
+            <span style="color:rgba(255,255,255,0.7);font-size:12px;text-align:center;padding:0 12px">Video trên Lark<br/>(đăng nhập để xem)</span>
+          </div>
+          <div class="thumb-label">Liên phòng ban – P2</div>
+        </div>
+        <div class="video-info">
+          <div class="ep">Buổi Training Dropship</div>
+          <h4>Quy Trình Làm Việc Dropship Liên Phòng Ban – Phần 2</h4>
+          <p>Tiếp nối phần 1 — xử lý trouble, escalation và xác nhận thanh toán liên phòng.</p>
+          <div class="vid-meta"><span>⏱ ~40 phút</span><span>📌 Quan trọng</span></div>
+        </div>
+        <a href="https://coach-buy124.larksuite.com/minutes/obus4sk9ia5153h5kzxi2372" target="_blank" class="video-link">Mở trên Lark ↗</a>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <iframe src="https://www.youtube.com/embed/2QuYsCpvQvM" allowfullscreen loading="lazy"></iframe>
+          <div class="thumb-label">FAQ</div>
+        </div>
+        <div class="video-info">
+          <div class="ep">FAQ khách hàng</div>
+          <h4>Giải Đáp Thắc Mắc Thường Gặp – Dịch Vụ & Giá Cả</h4>
+          <p>Các câu hỏi thực tế từ khách: basecost, tracking, chính sách, thời gian vận chuyển…</p>
+          <div class="vid-meta"><span>⏱ ~30 phút</span><span>📌 CSKH</span></div>
+        </div>
+        <a href="https://www.youtube.com/watch?v=2QuYsCpvQvM" target="_blank" class="video-link">Mở trên YouTube ↗</a>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <iframe src="https://www.youtube.com/embed/Ayo-KK_gazU" allowfullscreen loading="lazy"></iframe>
+          <div class="thumb-label">Lời khuyên</div>
+        </div>
+        <div class="video-info">
+          <div class="ep">Tư vấn chiến lược</div>
+          <h4>Lời Khuyên Từ THG Fulfill Cho Seller</h4>
+          <p>Định hướng phát triển: giai đoạn test vs scale, chọn sàn, tối ưu basecost và giảm dispute.</p>
+          <div class="vid-meta"><span>⏱ ~20 phút</span><span>📌 Sale</span></div>
+        </div>
+        <a href="https://www.youtube.com/watch?v=Ayo-KK_gazU" target="_blank" class="video-link">Mở trên YouTube ↗</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TOPIC 9: FAQ & CHÍNH SÁCH ── -->
+  <div class="content-section" id="topic9">
+    <div class="section-hd">
+      <span class="topic-badge">TOPIC 9</span>
+      <h2>FAQ & Chính Sách Dropship</h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q1</span>
+        Thời gian vận chuyển Dropship CN → US là bao lâu?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a open">
+        <strong>8–10 ngày</strong> tổng thời gian từ Trung Quốc đến USA.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q2</span>
+        Basecost tính như thế nào? Có phát sinh thêm phí không?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        <strong>Basecost = Giá sản phẩm Taobao + phí vận chuyển cuối</strong><br/>
+        (Đã bao gồm: phí ship + phí xử lý đơn + phí active tracking)<br/>
+        <strong>Không phát sinh thêm bất kỳ chi phí nào nữa.</strong>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q3</span>
+        Có hỗ trợ tracking theo đúng policy TikTok không?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        <strong>Có.</strong> Tracking active theo đúng policy TikTok trong <strong>48 giờ</strong>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q4</span>
+        THG đền bù bao nhiêu nếu đơn hàng gặp sự cố?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        Giai đoạn đầu hợp tác: tối đa <strong>$20/đơn</strong>.<br/>
+        Khi đạt volume doanh thu cao: tăng lên tối đa <strong>$50/đơn</strong>.<br/>
+        Lỗi do nhà máy POD: THG gửi hàng mới hoặc đền 100% basecost.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q5</span>
+        Tại sao giai đoạn đầu nên đi Taobao thay vì 1688/Alibaba?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        Seller dropship trải qua <strong>2 giai đoạn</strong>:<br/>
+        🔹 <strong>Giai đoạn test:</strong> Taobao — nhanh, lẻ dễ đặt, ít rủi ro, phù hợp test sản phẩm<br/>
+        🔹 <strong>Giai đoạn scale:</strong> 1688 / Alibaba — tối ưu giá khi đặt số lượng lớn
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q6</span>
+        Muốn stock kho tại US để giao nhanh hơn thì làm thế nào?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        Seller nhập hàng stock kho tại <strong>108 Almond CT, Milford, Pennsylvania 18337</strong>.<br/>
+        Khi có đơn, THG fulfill ngay tại kho Mỹ — giao hàng <strong>1–3 ngày nội địa US</strong>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q7</span>
+        Cách giảm tỉ lệ dispute và tạo mối quan hệ lâu dài với khách?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        <ul style="list-style:disc;padding-left:20px;margin-top:4px;">
+          <li>Áp dụng công nghệ vào hệ thống quản lý nhanh chóng, hiệu quả</li>
+          <li>Tăng cường hợp tác với nhiều nhà cung cấp &amp; đơn vị vận chuyển</li>
+          <li>Nâng cao chất lượng sản phẩm, hạ basecost</li>
+          <li>Đảm bảo quy trình vận chuyển và giao nhận chặt chẽ</li>
+          <li>Phân tích và rút kinh nghiệm từ trouble thực tế</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="fq-num">Q8</span>
+        THG có chia sẻ mã hàng hot / best seller không?
+        <span class="fq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        <strong>Không.</strong> Đây là <strong>chính sách bảo mật thông tin</strong> giữa THG và từng khách hàng. Không tiết lộ dù khách yêu cầu.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOPIC 10: XỬ LÝ SỰ CỐ -->
+  <div class="content-section" id="topic10">
+    <div class="section-hd">
+      <span class="topic-badge" style="background:#ef4444">TOPIC 10</span>
+      <h2>Xử Lý Sự Cố – POD / Dropship</h2>
+    </div>
+    <div class="note-box warn">
+      <span class="nb-icon">🚨</span>
+      <p>Tổng hợp các sự cố thực tế mảng POD/Dropship (T1–T9/2025). Nhận biết sớm — xử lý đúng SLA — báo cáo kịp thời.</p>
+    </div>
+
+    <div style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap">
+      <span style="background:#fef2f2;color:#ef4444;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🔴 Critical — SLA 2–4h</span>
+      <span style="background:#fffbeb;color:#b45309;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🟡 Warning — SLA 4–24h</span>
+    </div>
+
+    <div class="info-grid" style="margin-bottom:16px">
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-POD-003 — Đổi link/SKU không báo Ops</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Sale thay đổi link sau khi Ops nhận đơn → mua sai sản phẩm. <strong>Quy tắc: Mọi thay đổi PHẢI báo Ops qua Lark ngay.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 2h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Thiệt hại: $43</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-POD-012 — TikTok tự refund do delay</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Thiếu file design → delay → TikTok auto-refund → KH đòi bồi thường. Theo dõi TikTok Ship By Date chặt chẽ.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 4h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Owner: Sale/CSKH → Manager</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #f59e0b">
+        <div class="ic-header"><div class="ic-icon" style="background:#fffbeb">🟡</div><h3 style="color:#b45309">T-POD-002 — Hàng Taobao bị dơ/nhăn</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">THG mua hộ Taobao/1688, không kiểm soát chất lượng. <strong>Clear với KH từ đầu: THG không chịu trách nhiệm chất lượng sản phẩm.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fffbeb;color:#b45309;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 24h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Thiệt hại: $13–$20</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #f59e0b">
+        <div class="ic-header"><div class="ic-icon" style="background:#fffbeb">🟡</div><h3 style="color:#b45309">T-POD-005 — Tìm hàng không đúng 100%</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Sale tìm hàng chỉ giống ~80%, không cho KH confirm link trước → KH refund. <strong>Bắt buộc: KH confirm link trước khi Ops đặt hàng.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fffbeb;color:#b45309;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 24h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Thiệt hại: $13.99</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#eff6ff;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-weight:700;color:#1e293b;margin-bottom:4px">📖 Xem đầy đủ 34 trouble cases</div>
+        <div style="font-size:12px;color:#64748b">POD · Dropship · Express · Warehouse — với step-by-step, owner, SLA, real case</div>
+      </div>
+      <a href="trouble.html" style="background:#1B4FBB;color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;white-space:nowrap">Mở Trouble Hub 🚨 →</a>
+    </div>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <div class="page-footer">
+    <div class="nav-btns">
+      <a href="pod.html"     class="btn-nav prev">← POD – Print on Demand</a>
+      <a href="fulfill.html" class="btn-nav next">Tiếp theo: Fulfill TQ → USA →</a>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400)">THG Internal Training Hub · Chỉ dành cho nhân viên THG Fulfill Corp · <a href="mailto:info@thgfulfill.com" style="color:var(--blue)">Báo lỗi / góp ý</a></p>
+  </div>
+
+</main>
+
+<script>
+
+function runQuiz(btn){
+  var section=btn.closest('.quiz-section');
+  var qs=section.querySelectorAll('.quiz-q');
+  var score=0;
+  qs.forEach(function(q){
+    var correct=q.dataset.correct;
+    var sel=q.querySelector('input[type=radio]:checked');
+    var opts=q.querySelectorAll('.quiz-opt');
+    opts.forEach(function(o){
+      var v=o.querySelector('input').value;
+      if(v===correct)o.classList.add('correct');
+      else if(sel&&o.querySelector('input')===sel&&v!==correct)o.classList.add('wrong');
+    });
+    q.classList.add('done');
+    if(sel&&sel.value===correct)score++;
+  });
+  btn.disabled=true;
+  var total=qs.length;
+  var res=section.querySelector('.quiz-result');
+  res.style.display='block';
+  if(score>=Math.ceil(total*0.7)){
+    res.className='quiz-result pass';
+    res.textContent='✅ Xuất sắc! Bạn đúng '+score+'/'+total+' câu. Module này đã hoàn thành!';
+  } else {
+    res.className='quiz-result fail';
+    res.textContent='📖 Bạn đúng '+score+'/'+total+' câu. Hãy đọc lại phần còn sai và thử lại!';
+  }
+}
+function doSearch(e){
+  e.preventDefault();
+  var q=e.target.querySelector('input').value.trim();
+  if(q)window.location='search.html?q='+encodeURIComponent(q);
+}
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('visible');
+  }
+  function toggleFaq(qEl) {
+    const a = qEl.nextElementSibling;
+    const arrow = qEl.querySelector('.fq-arrow');
+    a.classList.toggle('open');
+    arrow.style.transform = a.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+  const sections = document.querySelectorAll('.content-section');
+  const navItems = document.querySelectorAll('.topic-nav-item');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navItems.forEach(i => { i.classList.toggle('current', i.getAttribute('href') === '#' + cur); });
+  });
+
+  /* ── SIDEBAR DROPDOWN TOGGLE ── */
+  (function(){
+    var K='thg_nav2',S;
+    try{S=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){S={}}
+    function sv(k,v){S[k]=v;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+    var sb=document.getElementById('sidebar');
+    if(!sb)return;
+    // 1. nav-section-label toggles
+    sb.querySelectorAll('.nav-section').forEach(function(sec,i){
+      var lbl=sec.querySelector('.nav-section-label');
+      if(!lbl)return;
+      var key='sec'+i;
+      var body=document.createElement('div');
+      body.className='nav-section-body';
+      var kids=[].slice.call(sec.children).filter(function(c){return c!==lbl});
+      kids.forEach(function(c){body.appendChild(c)});
+      sec.appendChild(body);
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';lbl.appendChild(arr);
+      var open=S[key]!==undefined?S[key]:true;
+      body.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      lbl.addEventListener('click',function(){
+        var o=body.style.maxHeight==='0px';
+        body.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+    // 2. nav-item sub-topic toggles
+    sb.querySelectorAll('.nav-item').forEach(function(item,i){
+      var next=item.nextElementSibling,sub=null;
+      if(next&&(next.classList.contains('topic-nav')||next.classList.contains('nav-sub'))){
+        sub=next;
+      } else {
+        var coll=[],n=item.nextElementSibling;
+        while(n&&n.classList.contains('topic-nav-item')){coll.push(n);n=n.nextElementSibling;}
+        if(coll.length){
+          var w=document.createElement('div');w.className='topic-nav';
+          item.parentNode.insertBefore(w,coll[0]);
+          coll.forEach(function(x){w.appendChild(x)});
+          sub=w;
+        }
+      }
+      if(!sub)return;
+      sub.classList.add('nav-sub');
+      sub.style.overflow='hidden';sub.style.transition='max-height .3s ease';
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';
+      item.appendChild(arr);item.style.cursor='pointer';
+      var href=item.getAttribute('href')||'';
+      var key='itm'+i;
+      var open=S[key]!==undefined?S[key]:item.classList.contains('active');
+      sub.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      item.addEventListener('click',function(e){
+        if(href&&href!=='#'&&!item.classList.contains('active'))return;
+        e.preventDefault();
+        var o=sub.style.maxHeight==='0px';
+        sub.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

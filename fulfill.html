@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulfill TQ → USA | THG Training Hub</title>
+  <style>
+    :root {
+      --blue:#1B4FBB; --blue-dark:#143d94; --blue-light:#e8eefb;
+      --orange:#F97316; --orange-bg:#fff4ed;
+      --green:#16a34a; --green-bg:#f0fdf4;
+      --red:#dc2626; --red-bg:#fef2f2;
+      --yellow:#ca8a04; --yellow-bg:#fefce8;
+      --purple:#7c3aed; --purple-bg:#f3e8ff;
+      --gray-50:#f8fafc; --gray-100:#f1f5f9; --gray-200:#e2e8f0;
+      --gray-400:#94a3b8; --gray-600:#475569; --gray-700:#334155; --gray-900:#0f172a;
+      --sidebar-w:260px; --header-h:56px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray-50);color:var(--gray-700);font-size:14px;line-height:1.6}
+
+    /* TOPBAR */
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 1px 8px rgba(0,0,0,.25)}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .menu-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
+    .topbar-logo{display:flex;align-items:center;gap:8px}
+    .topbar-logo .badge{background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+    .topbar-logo span{color:#fff;font-size:15px;font-weight:700}
+    .user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 6px}
+    .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .user-pill span{color:rgba(255,255,255,.85);font-size:12px}
+
+    /* SIDEBAR */
+    .sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--gray-200);overflow-y:auto;z-index:100;transition:transform .25s ease}
+    .sidebar::-webkit-scrollbar{width:4px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
+    .nav-section{padding:16px 0 4px}
+    .nav-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--gray-400);padding:0 16px 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;text-decoration:none;color:var(--gray-700);font-size:13.5px;font-weight:500;transition:background .15s;position:relative}
+    .nav-item:hover{background:var(--gray-50)}
+    .nav-item.active{background:var(--green-bg);color:var(--green);font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--green);border-radius:0 3px 3px 0}
+    .nav-item .nav-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+    .nav-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+    .nav-badge.blue{background:var(--blue)} .nav-badge.green{background:var(--green)}
+    .nav-divider{height:1px;background:var(--gray-100);margin:8px 16px}
+    .topic-nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px 7px 32px;font-size:12.5px;color:var(--gray-600);text-decoration:none;transition:color .15s,background .15s}
+    .topic-nav-item:hover{background:var(--gray-50);color:var(--green)}
+    .topic-nav-item.current{color:var(--green);font-weight:600}
+    .topic-num{font-size:10px;font-weight:700;background:var(--gray-200);color:var(--gray-600);padding:1px 6px;border-radius:10px;flex-shrink:0}
+    .topic-nav-item.current .topic-num{background:var(--green-bg);color:var(--green)}
+
+    /* MAIN */
+    .main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:28px 32px 64px}
+
+    /* BREADCRUMB */
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--gray-400);margin-bottom:20px}
+    .breadcrumb a{color:var(--blue);text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+
+    /* HERO */
+    .module-hero{background:linear-gradient(135deg,var(--green-bg) 0%,#f0fff8 100%);border:1px solid #bbf7d0;border-radius:16px;padding:28px 32px;margin-bottom:28px;display:flex;align-items:flex-start;gap:20px}
+    .module-hero-icon{font-size:48px;flex-shrink:0}
+    .module-hero-body{flex:1}
+    .module-hero-body .tag{display:inline-block;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;margin-bottom:10px;letter-spacing:.5px}
+    .module-hero-body h1{font-size:22px;font-weight:800;color:var(--gray-900);margin-bottom:8px}
+    .module-hero-body p{font-size:13.5px;color:var(--gray-600);max-width:600px}
+    .module-meta-row{display:flex;gap:20px;margin-top:16px;flex-wrap:wrap}
+    .meta-item{font-size:12px;color:var(--gray-600)}
+    .progress-hero-wrap{flex-shrink:0;text-align:right}
+    .progress-circle{width:72px;height:72px}
+    .pct{font-size:13px;font-weight:700;color:var(--green);margin-top:6px;text-align:center}
+
+    /* QUICK NAV */
+    .module-progress-nav{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .mpn-label{font-size:12px;font-weight:600;color:var(--gray-400);margin-right:4px}
+    .mpn-item{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:background .15s,color .15s;border:1.5px solid var(--gray-200);color:var(--gray-600);background:var(--gray-50)}
+    .mpn-item:hover{border-color:var(--green);color:var(--green)}
+
+    /* SECTIONS */
+    .content-section{margin-bottom:36px;scroll-margin-top:calc(var(--header-h) + 16px)}
+    .section-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gray-100)}
+    .section-hd .topic-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.5px;flex-shrink:0}
+    .section-hd h2{font-size:16px;font-weight:700;color:var(--gray-900)}
+
+    /* NOTE BOXES */
+    .note-box{border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+    .note-box.info  {background:var(--blue-light); border-left:4px solid var(--blue)}
+    .note-box.warn  {background:var(--yellow-bg);  border-left:4px solid var(--yellow)}
+    .note-box.danger{background:var(--red-bg);     border-left:4px solid var(--red)}
+    .note-box.success{background:var(--green-bg);  border-left:4px solid var(--green)}
+    .note-box .nb-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+    .note-box p{font-size:13px;line-height:1.6}
+    .note-box.info   p{color:#1e3a8a}
+    .note-box.warn   p{color:#713f12}
+    .note-box.danger p{color:#991b1b}
+    .note-box.success p{color:#14532d}
+
+    /* INFO GRID */
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .info-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px}
+    .info-card .ic-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .info-card .ic-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .ic-icon.orange{background:var(--orange-bg)} .ic-icon.blue{background:var(--blue-light)}
+    .ic-icon.green{background:var(--green-bg)}   .ic-icon.purple{background:var(--purple-bg)}
+    .ic-icon.yellow{background:var(--yellow-bg)} .ic-icon.red{background:var(--red-bg)}
+    .info-card h3{font-size:13.5px;font-weight:700;color:var(--gray-900)}
+    .info-card ul{list-style:none}
+    .info-card ul li{display:flex;gap:8px;font-size:12.5px;color:var(--gray-600);margin-bottom:7px;align-items:flex-start;line-height:1.5}
+    .info-card ul li::before{content:'›';color:var(--green);font-weight:700;font-size:14px;flex-shrink:0;margin-top:-1px}
+
+    /* PROCESS FLOW */
+    .process-flow{display:flex;align-items:flex-start;gap:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;margin-bottom:20px}
+    .pf-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
+    .pf-box{background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;padding:12px 10px;text-align:center;min-width:90px;max-width:100px;transition:border-color .2s}
+    .pf-box:hover{border-color:var(--green)}
+    .pf-box .pf-icon{font-size:22px;margin-bottom:4px}
+    .pf-box .pf-label{font-size:11px;font-weight:600;color:var(--gray-700);line-height:1.3}
+    .pf-box.highlight{background:var(--green-bg);border-color:var(--green)}
+    .pf-box.highlight .pf-label{color:var(--green)}
+    .pf-arrow{font-size:18px;color:var(--gray-400);flex-shrink:0;padding:0 4px;margin-top:20px}
+
+    /* SPEC CARDS */
+    .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .spec-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+    .spec-card .sc-head{padding:12px 18px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+    .spec-card .sc-head.cn{background:#fef3c7;color:#92400e}
+    .spec-card .sc-head.vn{background:var(--blue-light);color:var(--blue)}
+    .spec-card table{width:100%;border-collapse:collapse}
+    .spec-card table td{padding:9px 18px;border-top:1px solid var(--gray-100);font-size:12.5px}
+    .spec-card table td:first-child{color:var(--gray-400);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;width:44%}
+    .spec-card table td:last-child{color:var(--gray-900);font-weight:500}
+    .formula-box{background:var(--gray-50);border:1px dashed var(--gray-300);border-radius:8px;padding:12px 16px;margin:10px 16px 14px;font-size:12.5px;font-family:monospace;color:var(--gray-700);text-align:center}
+
+    /* FORBIDDEN TABLE */
+    .forbidden-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .forbidden-item{background:var(--red-bg);border:1px solid #fecaca;border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start}
+    .forbidden-item .fi-icon{font-size:20px;flex-shrink:0}
+    .forbidden-item .fi-text{font-size:12.5px;color:#991b1b;line-height:1.5}
+    .forbidden-item .fi-text strong{display:block;font-weight:700;margin-bottom:3px;color:#7f1d1d}
+
+    /* POLICY ACCORDION */
+    .policy-block{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:10px}
+    .policy-header{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;background:var(--gray-50);border-bottom:1px solid var(--gray-200);user-select:none}
+    .policy-header:hover{background:var(--gray-100)}
+    .policy-header .ph-id{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;flex-shrink:0}
+    .policy-header h3{font-size:13.5px;font-weight:700;color:var(--gray-900);flex:1}
+    .policy-header .toggle{font-size:14px;color:var(--gray-400);transition:transform .2s}
+    .policy-body{padding:16px 18px;font-size:13px;color:var(--gray-600);line-height:1.7;display:none}
+    .policy-body.open{display:block}
+    .policy-body ul{list-style:disc;padding-left:20px;margin-top:6px}
+    .policy-body ul li{margin-bottom:6px}
+    .policy-body .hl{background:var(--yellow-bg);border-left:3px solid var(--yellow);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#713f12}
+    .policy-body .ok{background:var(--green-bg);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#14532d}
+    .policy-body .err{background:var(--red-bg);border-left:3px solid var(--red);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#991b1b}
+
+    /* TIMELINE GRID */
+    .timeline-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .tl-card{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:16px;text-align:center}
+    .tl-card .tl-icon{font-size:26px;margin-bottom:8px}
+    .tl-card .tl-num{font-size:22px;font-weight:900;color:var(--green);line-height:1}
+    .tl-card .tl-unit{font-size:11px;color:var(--gray-400);margin-bottom:2px}
+    .tl-card .tl-label{font-size:12px;color:var(--gray-600);margin-top:4px}
+
+    /* COMPENSATION TABLE */
+    .comp-table-wrap{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;overflow-x:auto}
+    .comp-table{width:100%;border-collapse:collapse}
+    .comp-table th{background:var(--green);color:#fff;padding:10px 16px;text-align:left;font-size:12px;font-weight:600}
+    .comp-table td{padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:12.5px;vertical-align:top}
+    .comp-table tr:last-child td{border-bottom:none}
+    .comp-table tr:hover td{background:var(--gray-50)}
+    .amount-badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px}
+    .amount-badge.upto20{background:var(--yellow-bg);color:var(--yellow)}
+    .amount-badge.upto50{background:var(--green-bg);color:var(--green)}
+    .amount-badge.full{background:var(--blue-light);color:var(--blue)}
+    .amount-badge.zero{background:var(--red-bg);color:var(--red)}
+
+    /* PAGE FOOTER */
+    .page-footer{text-align:center;padding-top:32px;border-top:1px solid var(--gray-200);margin-top:20px}
+    .nav-btns{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+    .btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s}
+    .btn-nav.prev{background:var(--gray-100);color:var(--gray-700)}
+    .btn-nav.prev:hover{background:var(--gray-200)}
+    .btn-nav.next{background:var(--green);color:#fff}
+    .btn-nav.next:hover{background:#15803d}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+      .overlay.visible{display:block}
+      .main{margin-left:0;padding:20px 16px 48px}
+      .module-hero{flex-direction:column;padding:20px}
+      .spec-grid{grid-template-columns:1fr}
+      .forbidden-grid{grid-template-columns:1fr}
+      .process-flow{gap:0}
+    }
+  
+    /* ── SIDEBAR DROPDOWN TOGGLE ── */
+    .nav-section-label{cursor:pointer;user-select:none;display:flex!important;align-items:center}
+    .nav-arrow{margin-left:auto;font-size:9px;opacity:.45;transition:transform .3s ease;display:inline-block;flex-shrink:0;line-height:1;pointer-events:none}
+    .nav-section-body{overflow:hidden;transition:max-height .3s ease}
+    .nav-sub{overflow:hidden;transition:max-height .3s ease}
+  
+/* ── KNOWLEDGE CHECK ── */
+.quiz-section{background:#fff;border:2px solid var(--blue);border-radius:16px;padding:28px;margin-top:36px;margin-bottom:8px}
+.quiz-badge{display:inline-block;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.5px;margin-bottom:10px}
+.quiz-section>h2{font-size:17px;font-weight:800;color:var(--gray-900);margin-bottom:4px}
+.quiz-desc{font-size:13px;color:var(--gray-600);margin-bottom:20px}
+.quiz-q{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.quiz-q-text{font-size:13.5px;font-weight:600;color:var(--gray-900);margin-bottom:10px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:6px}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--gray-700);border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.quiz-opt:hover{background:var(--blue-light);border-color:var(--blue)}
+.quiz-opt input{cursor:pointer;accent-color:var(--blue);margin-top:2px;flex-shrink:0}
+.quiz-opt.correct{background:var(--green-bg)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600}
+.quiz-opt.wrong{background:var(--red-bg)!important;border-color:var(--red)!important;color:var(--red)!important}
+.quiz-q.done .quiz-opt{pointer-events:none}
+.quiz-submit{margin-top:18px;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+.quiz-submit:hover{background:var(--blue-dark)}
+.quiz-submit:disabled{opacity:.5;cursor:default}
+.quiz-result{margin-top:18px;padding:14px 18px;border-radius:10px;font-size:14px;font-weight:600;display:none}
+.quiz-result.pass{background:var(--green-bg);color:var(--green);border:1px solid #86efac}
+.quiz-result.fail{background:var(--orange-bg);color:#c2410c;border:1px solid #fed7aa}
+/* ── SEARCH BAR ── */
+.search-wrap{display:flex;align-items:center;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;gap:8px;min-width:0}
+.search-wrap input{background:transparent;border:none;outline:none;color:#fff;font-size:12.5px;width:160px;min-width:0}
+.search-wrap input::placeholder{color:rgba(255,255,255,.55)}
+.search-wrap button{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0}
+@media(max-width:768px){.search-wrap input{width:90px}.quiz-section{padding:18px 14px}}
+/* ── ONBOARDING NAV BADGE ── */
+.nav-badge.teal{background:#0d9488}
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);z-index:150;padding:6px 0 env(safe-area-inset-bottom,0)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--gray-600);font-size:10px;font-weight:500;min-width:54px;padding:4px 0}
+.bn-item .bn-icon{font-size:20px;line-height:1}
+.bn-item.active{color:var(--blue)}
+@media(max-width:768px){.bottom-nav{display:block}.main{padding-bottom:80px!important}}
+
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">
+      <span>🦅 THG Training Hub</span>
+      <span class="badge">INTERNAL</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="user-pill"><div class="avatar">TH</div><span>Team THG</span></div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Tổng quan</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">4 Mảng Dịch Vụ</div>
+    <a href="pod.html"      class="nav-item"><span class="nav-icon">🖨️</span> POD – Print on Demand</a>
+    <a href="dropship.html" class="nav-item"><span class="nav-icon">📦</span> Dropship</a>
+    <a href="fulfill.html"  class="nav-item active"><span class="nav-icon">✈️</span> Fulfill – TQ → USA <span class="nav-badge">Đây</span></a>
+    <div style="padding:4px 0 4px;">
+      <a href="#topic1" class="topic-nav-item"><span class="topic-num">T1</span> Tổng quan 3 dịch vụ</a>
+      <a href="#topic2" class="topic-nav-item"><span class="topic-num">T2</span> Quy trình VN → Toàn cầu</a>
+      <a href="#topic3" class="topic-nav-item"><span class="topic-num">T3</span> Quy trình TQ → USA</a>
+      <a href="#topic4" class="topic-nav-item"><span class="topic-num">T4</span> Kho tổng US</a>
+      <a href="#topic5" class="topic-nav-item"><span class="topic-num">T5</span> Cách tính cước</a>
+      <a href="#topic6" class="topic-nav-item"><span class="topic-num">T6</span> Danh mục cấm</a>
+      <a href="#topic7" class="topic-nav-item"><span class="topic-num">T7</span> Chính sách đền bù</a>
+      <a href="#topic8" class="topic-nav-item"><span class="topic-num">T8</span> Điều khoản & Thời hạn</a>
+      <a href="#topic9" class="topic-nav-item"><span class="topic-num">T9</span> Thông tin kho bãi</a>
+      <a href="#topic10" class="topic-nav-item"><span class="topic-num">T10</span> Xử Lý Sự Cố 🚨</a>
+    </div>
+    <a href="express.html"  class="nav-item"><span class="nav-icon">🚚</span> Express – Nội địa</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">SOP Vận Hành</div>
+    <a href="sop-sale.html"    class="nav-item"><span class="nav-icon">📣</span> Sale & Marketing <span class="nav-badge blue">2</span></a>
+    <a href="sop-cskh.html"    class="nav-item"><span class="nav-icon">🤝</span> CSKH & Operations <span class="nav-badge green">3</span></a>
+    <a href="sop-finance.html" class="nav-item"><span class="nav-icon">💰</span> Kế toán <span class="nav-badge" style="background:#dc2626">!</span></a>
+    <a href="sop-cross.html"   class="nav-item"><span class="nav-icon">🔗</span> Liên phòng ban</a>
+    <a href="trouble.html" class="nav-item"><span class="nav-icon">🚨</span> Trouble Handling <span class="nav-badge" style="background:#ef4444">34</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 Dashboard</a>
+    <span>›</span><span>4 Mảng Dịch Vụ</span>
+    <span>›</span><strong style="color:var(--green)">✈️ Fulfill – TQ → USA</strong>
+  </div>
+
+  <!-- HERO -->
+  <div class="module-hero">
+    <div class="module-hero-icon">✈️</div>
+    <div class="module-hero-body">
+      <span class="tag">MODULE · MẢNG DỊCH VỤ</span>
+      <h1>Fulfill – Trung Quốc → USA & Toàn Cầu</h1>
+      <p>Toàn bộ quy trình fulfillment: từ cách tính cước, kích thước kiện hàng, danh mục cấm đến chính sách đền bù đầy đủ. Dành cho Team Sale, CSKH & Operations.</p>
+      <div class="module-meta-row">
+        <span class="meta-item">📄 9 chủ đề</span>
+        <span class="meta-item">🏭 2 kho (TQ + US)</span>
+        <span class="meta-item">🌍 100+ quốc gia</span>
+        <span class="meta-item">🗂 Cập nhật: 2025</span>
+      </div>
+    </div>
+    <div class="progress-hero-wrap">
+      <svg class="progress-circle" viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#e2e8f0" stroke-width="6"/>
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#16a34a" stroke-width="6"
+          stroke-dasharray="188.5" stroke-dashoffset="103.7"
+          stroke-linecap="round" transform="rotate(-90 36 36)"/>
+        <text x="36" y="41" text-anchor="middle" font-size="14" font-weight="800" fill="#16a34a">45%</text>
+      </svg>
+      <div class="pct">Team tiến độ</div>
+    </div>
+  </div>
+
+  <!-- QUICK NAV -->
+  <div class="module-progress-nav">
+    <span class="mpn-label">Chủ đề:</span>
+    <a href="#topic1" class="mpn-item">T1 Tổng quan</a>
+    <a href="#topic2" class="mpn-item">T2 VN→Toàn cầu</a>
+    <a href="#topic3" class="mpn-item">T3 TQ→USA</a>
+    <a href="#topic4" class="mpn-item">T4 Kho US</a>
+    <a href="#topic5" class="mpn-item">T5 Tính cước</a>
+    <a href="#topic6" class="mpn-item">T6 Hàng cấm</a>
+    <a href="#topic7" class="mpn-item">T7 Đền bù</a>
+    <a href="#topic8" class="mpn-item">T8 Điều khoản</a>
+    <a href="#topic9" class="mpn-item">T9 Kho bãi</a>
+    <a href="#topic10" class="mpn-item" style="border-color:#ef4444;color:#ef4444">🚨 T10 Trouble</a>
+  </div>
+
+  <!-- ── T1: TỔNG QUAN ── -->
+  <div class="content-section" id="topic1">
+    <div class="section-hd"><span class="topic-badge">TOPIC 1</span><h2>Tổng Quan 3 Dịch Vụ Fulfill THG</h2></div>
+
+    <div class="info-grid" style="margin-bottom:20px">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🇻🇳</div><h3>① Vận chuyển VN → US & EU</h3></div>
+        <ul>
+          <li>Nhận hàng tại VN, kiểm tra, đóng gói chuẩn</li>
+          <li>Gửi trực tiếp đến Mỹ & châu Âu qua hãng vận chuyển quốc tế</li>
+          <li>Hoặc gửi qua cửa Móng Cái → Kho TQ → Vận chuyển toàn cầu</li>
+          <li>Line ePacket VN-US: max 2kg / tổng D+R+C ≤ 90cm</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon orange">🇨🇳</div><h3>② Fulfill từ TQ → US & EU</h3></div>
+        <ul>
+          <li>Sourcing hàng từ TQ, báo giá, đặt hàng về kho THG tại Đông Hoản</li>
+          <li>Nhập kho, xử lý đơn hàng, đóng gói theo yêu cầu seller</li>
+          <li>Line ePacket CN-US: max 30kg, size 55×40×35cm (thường)</li>
+          <li>Tracking tự động, theo dõi realtime</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon green">🇺🇸</div><h3>③ Kho Tổng Hàng tại Mỹ</h3></div>
+        <ul>
+          <li>Stock hàng tại kho Pennsylvania — fulfill ngay khi có đơn</li>
+          <li>Hỗ trợ <strong>TikTok Shipping</strong> và <strong>Seller Shipping</strong></li>
+          <li>Giao hàng nội địa US qua USPS / FedEx / UPS</li>
+          <li>Tối ưu thời gian khi seller có volume lớn</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Timeline tổng quan -->
+    <div class="timeline-grid">
+      <div class="tl-card"><div class="tl-icon">👥</div><div class="tl-num">20+</div><div class="tl-unit">nhân viên</div><div class="tl-label">THG Fulfill</div></div>
+      <div class="tl-card"><div class="tl-icon">🏢</div><div class="tl-num">2</div><div class="tl-unit">văn phòng</div><div class="tl-label">Trung Quốc & Việt Nam</div></div>
+      <div class="tl-card"><div class="tl-icon">🌍</div><div class="tl-num">100+</div><div class="tl-unit">quốc gia</div><div class="tl-label">Vận chuyển đến</div></div>
+      <div class="tl-card"><div class="tl-icon">⏱</div><div class="tl-num">8-10</div><div class="tl-unit">ngày</div><div class="tl-label">TQ → USA (Dropship)</div></div>
+      <div class="tl-card"><div class="tl-icon">🔔</div><div class="tl-num">48h</div><div class="tl-unit">active</div><div class="tl-label">Tracking TikTok</div></div>
+      <div class="tl-card"><div class="tl-icon">⚡</div><div class="tl-num">21</div><div class="tl-unit">ngày</div><div class="tl-label">Tracking chết → xét thất lạc</div></div>
+    </div>
+  </div>
+
+  <!-- ── T2: QUY TRÌNH VN → TOÀN CẦU ── -->
+  <div class="content-section" id="topic2">
+    <div class="section-hd"><span class="topic-badge">TOPIC 2</span><h2>Quy Trình Vận Chuyển từ Việt Nam → Toàn Cầu</h2></div>
+
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;">THG hỗ trợ 2 hướng vận chuyển từ Việt Nam — tuỳ hàng hóa và điểm đến sẽ chọn tuyến phù hợp:</p>
+
+    <div class="note-box info" style="margin-bottom:10px">
+      <span class="nb-icon">🛣️</span>
+      <p><strong>Tuyến 1: VN → TQ → Toàn cầu</strong> — Gửi Móng Cái sang kho TQ, từ đó vận chuyển quốc tế. Phù hợp hàng cần consolidate hoặc seller đã có kho TQ.</p>
+    </div>
+
+    <div class="process-flow" style="margin-bottom:24px">
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">📥</div><div class="pf-label">Nhận hàng tại VN</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🔍</div><div class="pf-label">Kiểm tra &amp; Đóng gói</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🚌</div><div class="pf-label">Gửi Móng Cái</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🏭</div><div class="pf-label">Kho TQ</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">✈️</div><div class="pf-label">Vận chuyển Toàn cầu</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🛃</div><div class="pf-label">Thông quan</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🚚</div><div class="pf-label">Vận chuyển nội địa</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">🏠</div><div class="pf-label">Khách hàng</div></div></div>
+    </div>
+
+    <div class="note-box success" style="margin-bottom:10px">
+      <span class="nb-icon">🛣️</span>
+      <p><strong>Tuyến 2: VN → Toàn cầu trực tiếp</strong> — Gửi thẳng qua hãng vận chuyển quốc tế, không transit TQ. Nhanh hơn, phù hợp hàng nhẹ &amp; kích thước nhỏ.</p>
+    </div>
+
+    <div class="process-flow">
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">📥</div><div class="pf-label">Nhận hàng tại VN</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🔍</div><div class="pf-label">Kiểm tra &amp; Đóng gói</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">✈️</div><div class="pf-label">Gửi hãng vận chuyển</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">🏠</div><div class="pf-label">Khách hàng</div></div></div>
+    </div>
+  </div>
+
+  <!-- ── T3: QUY TRÌNH TQ → USA ── -->
+  <div class="content-section" id="topic3">
+    <div class="section-hd"><span class="topic-badge">TOPIC 3</span><h2>Quy Trình Fulfill từ Trung Quốc → USA & EU</h2></div>
+
+    <div class="process-flow">
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">🔍</div><div class="pf-label">Tìm kiếm hàng</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">💬</div><div class="pf-label">Báo giá</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">🛒</div><div class="pf-label">Đặt hàng về kho</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">📦</div><div class="pf-label">Nhập kho TQ</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">⚙️</div><div class="pf-label">Xử lý đơn hàng</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box"><div class="pf-icon">✈️</div><div class="pf-label">Vận chuyển</div></div></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-step"><div class="pf-box highlight"><div class="pf-icon">📊</div><div class="pf-label">Theo dõi đơn hàng</div></div></div>
+    </div>
+
+    <div class="note-box warn" style="margin-top:16px">
+      <span class="nb-icon">📌</span>
+      <p>Hàng tại kho TQ do <strong>nhân viên tại Đông Hoản (Quảng Đông)</strong> trực tiếp đóng gói, quay video kiểm tra và gửi hàng. Seller có thể yêu cầu video trước khi xuất kho.</p>
+    </div>
+  </div>
+
+  <!-- ── T4: KHO US ── -->
+  <div class="content-section" id="topic4">
+    <div class="section-hd"><span class="topic-badge">TOPIC 4</span><h2>Dịch Vụ Kho Tổng Hàng Tại Mỹ</h2></div>
+
+    <div class="note-box info">
+      <span class="nb-icon">🏭</span>
+      <p>Kho US cho phép seller stock hàng sẵn tại Mỹ, fulfill ngay khi có đơn — giao hàng chỉ <strong>1–3 ngày nội địa</strong> thay vì 8–10 ngày từ TQ. Tối ưu cho seller có volume lớn hoặc muốn tăng chuyển đổi.</p>
+    </div>
+
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">THG hỗ trợ <strong>2 hình thức Shipping</strong> từ kho US:</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon purple">🎵</div><h3>TikTok Shipping (Ship By TikTok)</h3></div>
+        <ul>
+          <li>Khách gửi thông tin đơn hàng → Kho xử lý</li>
+          <li>Mang hàng ra bưu cục USPS</li>
+          <li>TikTok tự quản lý tracking</li>
+          <li>Ship nội địa US → Theo dõi đơn hàng</li>
+        </ul>
+        <div style="margin-top:10px;background:var(--purple-bg);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--purple)">
+          <strong>Lưu ý:</strong> TikTok mua tracking — seller không cần lo phần này
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🛒</div><h3>Seller Shipping (Ship By Seller)</h3></div>
+        <ul>
+          <li>Seller gửi thông tin đơn hàng</li>
+          <li>Kho mua tracking cho từng đơn</li>
+          <li>Xử lý đóng gói, bàn giao cho đơn vị vận chuyển</li>
+          <li>Ship nội địa US → Theo dõi đơn hàng</li>
+        </ul>
+        <div style="margin-top:10px;background:var(--blue-light);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--blue)">
+          <strong>Lưu ý:</strong> THG mua tracking — tính vào phí xử lý đơn
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T5: CÁCH TÍNH CƯỚC ── -->
+  <div class="content-section" id="topic5">
+    <div class="section-hd"><span class="topic-badge">TOPIC 5</span><h2>Cách Tính Cước Vận Chuyển</h2></div>
+
+    <div class="note-box warn">
+      <span class="nb-icon">⚖️</span>
+      <p>Cước tính theo <strong>giá trị lớn hơn</strong> giữa trọng lượng thực (Gross Weight) và trọng lượng thể tích (Volume Weight). Nhân viên phải kiểm tra và tính đúng để báo bill chính xác cho khách.</p>
+    </div>
+
+    <div class="spec-grid">
+      <!-- CN-US -->
+      <div class="spec-card">
+        <div class="sc-head cn">🇨🇳 Line ePacket CHINA → US</div>
+        <div class="formula-box">Volume Weight (VW) = Dài × Rộng × Cao ÷ 8000</div>
+        <table>
+          <tr><td>Trọng lượng tối đa</td><td><strong>30 kg</strong></td></tr>
+          <tr><td>Kích thước tối thiểu</td><td><strong>10 × 15 cm</strong></td></tr>
+          <tr><td>Size chuẩn (không phụ phí)</td><td><strong>55 × 40 × 35 cm</strong></td></tr>
+          <tr><td>Size tối đa (phụ phí)</td><td><strong>68 × 43 × 43 cm</strong></td></tr>
+          <tr><td>Khu vực KHÔNG ship</td><td>Alaska, Hawaii, Puerto Rico, Guam, APO/FPO</td></tr>
+        </table>
+      </div>
+
+      <!-- VN-US -->
+      <div class="spec-card">
+        <div class="sc-head vn">🇻🇳 Line ePacket VIETNAM → US</div>
+        <div class="formula-box">Volume Weight (VW) = Dài × Rộng × Cao ÷ 5000</div>
+        <table>
+          <tr><td>Trọng lượng tối đa (GW)</td><td><strong>2 kg</strong></td></tr>
+          <tr><td>VW tối đa</td><td><strong>4 kg</strong></td></tr>
+          <tr><td>Chiều dài tối đa</td><td><strong>55 cm</strong></td></tr>
+          <tr><td>D + R + C tối đa</td><td><strong>90 cm</strong></td></tr>
+          <tr><td>Khu vực KHÔNG ship</td><td>FPO, AE, AP, PR, VI, HI, GU, MP, AS, APO, AK</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="note-box info">
+      <span class="nb-icon">📐</span>
+      <p><strong>Ví dụ tính cước:</strong> Kiện hàng GW = 0.9kg, VW = 1.1kg → Cước tính theo <strong>1.1kg</strong> (lấy giá trị lớn hơn). Luôn đo kỹ trước khi báo giá cho khách.</p>
+    </div>
+  </div>
+
+  <!-- ── T6: HÀNG CẤM ── -->
+  <div class="content-section" id="topic6">
+    <div class="section-hd"><span class="topic-badge">TOPIC 6</span><h2>Danh Mục Hàng Hóa Cấm Vận Chuyển</h2></div>
+
+    <div class="note-box danger">
+      <span class="nb-icon">🚫</span>
+      <p>Nhân viên phải thuộc danh mục cấm này để từ chối kịp thời khi khách yêu cầu vận chuyển hàng không hợp lệ. Nhận hàng cấm có thể dẫn đến hàng bị giữ, phạt hải quan, và THG chịu trách nhiệm.</p>
+    </div>
+
+    <div class="forbidden-grid">
+      <div class="forbidden-item">
+        <div class="fi-icon">💣</div>
+        <div class="fi-text"><strong>Chất nổ & Vũ khí</strong>Chất nổ, kíp nổ, dây cháy chậm, mìn, lựu đạn, thuốc súng, súng, đạn dược, vật liệu phóng xạ (urani, plutoni)</div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">🔥</div>
+        <div class="fi-text"><strong>Chất cháy nổ</strong>Bật lửa có gas/xăng/đá lửa, chất dễ cháy, chất ăn mòn (axit, kiềm), các sản phẩm sinh học nguy hiểm</div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">🐾</div>
+        <div class="fi-text"><strong>Sản phẩm động/thực vật</strong>Da thuộc, tiêu bản, xương, sừng, gỗ tự nhiên và các sản phẩm từ thực vật bị kiểm soát</div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">💊</div>
+        <div class="fi-text"><strong>Dược phẩm & Thực phẩm</strong>Thuốc, dược phẩm, thực phẩm, chất dạng bột, dạng lỏng, dạng gel không được phép vận chuyển</div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">💵</div>
+        <div class="fi-text"><strong>Tiền tệ</strong>Các loại tiền tệ của bất kỳ quốc gia nào trên thế giới</div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">🚬</div>
+        <div class="fi-text"><strong>Chất gây nghiện</strong>Chất kích thích, chất gây nghiện theo quy định pháp luật</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T7: CHÍNH SÁCH ĐỀN BÙ ── -->
+  <div class="content-section" id="topic7">
+    <div class="section-hd"><span class="topic-badge">TOPIC 7</span><h2>Chính Sách Đền Bù Chi Tiết</h2></div>
+
+    <div class="comp-table-wrap" style="margin-bottom:16px">
+      <table class="comp-table">
+        <thead>
+          <tr><th>Trường hợp</th><th>Điều kiện</th><th>Mức đền bù</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hàng thất lạc / hư hỏng</strong><br/><span style="font-size:11.5px;color:var(--gray-600)">Lỗi từ hãng vận chuyển hoặc THG</span></td>
+            <td>Khách khai báo giá trị hàng hóa với thị trường Mỹ</td>
+            <td>
+              <span class="amount-badge upto20">Tối đa $20</span> giai đoạn đầu<br/>
+              <span class="amount-badge upto50">Tối đa $50</span> khi có volume cao
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Hãng giao nhưng người nhận chưa nhận được</strong></td>
+            <td>Cung cấp email xác nhận mất hàng từ hãng VẬN CHUYỂN <strong>hoặc</strong> trích xuất CCTV tại thời điểm giao hàng</td>
+            <td>
+              <span class="amount-badge upto20">Tối đa $20</span> giai đoạn đầu<br/>
+              <span class="amount-badge upto50">Tối đa $50</span> khi có volume cao
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Lỗi chất lượng POD từ nhà máy</strong></td>
+            <td>Khách cung cấp bằng chứng thỏa đáng</td>
+            <td>
+              <span class="amount-badge full">Gửi hàng mới</span> THG chịu phí<br/>
+              hoặc <span class="amount-badge full">100% basecost</span> nếu từ chối resent
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Ship VN → TQ (không bảo hiểm)</strong></td>
+            <td>Hàng bị mất trong quá trình vận chuyển</td>
+            <td><span class="amount-badge upto50">Gấp đôi tiền cước</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ship VN → TQ (có bảo hiểm)</strong></td>
+            <td>Hàng bị mất trong quá trình vận chuyển</td>
+            <td><span class="amount-badge full">100% giá trị đơn hàng</span></td>
+          </tr>
+          <tr style="background:#fff9f9">
+            <td><strong>Bất khả kháng</strong><br/><span style="font-size:11.5px;color:var(--gray-600)">Thiên tai, dịch bệnh, chiến tranh, thay đổi pháp lý…</span></td>
+            <td>—</td>
+            <td><span class="amount-badge zero">Không đền bù</span></td>
+          </tr>
+          <tr style="background:#fff9f9">
+            <td><strong>Hàng dễ vỡ — đóng gói không đủ</strong></td>
+            <td>Seller không trang bị chống sốc đầy đủ</td>
+            <td><span class="amount-badge zero">Không đền bù</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id">7.1</span>
+        <h3>Thời gian bồi hoàn sau khi xác nhận</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body open">
+        <ul>
+          <li><strong>Cấn trừ vào đơn hàng tiếp theo:</strong> trong vòng <strong>90 ngày</strong> kể từ khi xác nhận bồi thường</li>
+          <li><strong>Hoàn tiền về tài khoản:</strong> trong vòng <strong>15 ngày làm việc</strong> kể từ ngày THG gửi thông tin xác nhận</li>
+          <li><strong>Cấn trừ công nợ:</strong> trừ vào kỳ thanh toán tiếp theo của khách hàng</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T8: ĐIỀU KHOẢN & THỜI HẠN ── -->
+  <div class="content-section" id="topic8">
+    <div class="section-hd"><span class="topic-badge">TOPIC 8</span><h2>Điều Khoản Dịch Vụ & Thời Hạn Khiếu Nại</h2></div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon yellow">⏰</div><h3>Thời hạn tiếp nhận khiếu nại</h3></div>
+        <ul>
+          <li><strong>Mất hàng:</strong> trong vòng <strong>2 tháng</strong> kể từ ngày đơn hàng được chấp nhận vận chuyển</li>
+          <li><strong>Hư hỏng / giá cước sai:</strong> trong <strong>3 ngày làm việc</strong> kể từ ngày phát hàng cho người nhận</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🔄</div><h3>Thời gian xử lý khiếu nại</h3></div>
+        <ul>
+          <li>Trong quá trình vận chuyển: sau <strong>20 ngày làm việc</strong> tính từ khi THG nhận hàng</li>
+          <li>Tracking không cập nhật: THG kiểm tra thông tin và giải quyết theo từng trường hợp</li>
+          <li>Hàng xét thất lạc: tracking <strong>quá 21 ngày không hoạt động</strong></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon orange">📋</div><h3>Trách nhiệm của khách hàng</h3></div>
+        <ul>
+          <li>Cung cấp <strong>chính xác</strong> thông tin kiện hàng, địa chỉ người nhận và nội dung hàng hóa</li>
+          <li>THG không chịu trách nhiệm nếu thông tin sai gây phát sinh chi phí</li>
+          <li>Hàng bị hoàn về kho: cần xác nhận lại địa chỉ trước khi báo gửi lại</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon red">🚫</div><h3>Điều THG KHÔNG hỗ trợ</h3></div>
+        <ul>
+          <li><strong>Không</strong> cung cấp dịch vụ trả hàng về Việt Nam</li>
+          <li><strong>Không</strong> cung cấp dịch vụ trả hàng về Trung Quốc</li>
+          <li>Thuế và phí phát sinh do yêu cầu của cơ quan sở tại: <strong>khách hàng chịu</strong></li>
+          <li>Thời gian giao hàng là <strong>dự kiến</strong> — không gồm cuối tuần &amp; ngày lễ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T9: KHO BÃI ── -->
+  <div class="content-section" id="topic9">
+    <div class="section-hd"><span class="topic-badge">TOPIC 9</span><h2>Thông Tin Kho Bãi THG</h2></div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon orange">🇨🇳</div><h3>Kho Fulfillment – Trung Quốc</h3></div>
+        <ul>
+          <li><strong>Tên:</strong> 阿文431391</li>
+          <li><strong>Số ĐT:</strong> 15822501137</li>
+          <li><strong>Địa chỉ:</strong> 广东省东莞市常平镇霞坑新宅二区三街101 阿文物流431391</li>
+          <li><strong>Khu vực:</strong> Đông Hoản, Quảng Đông, Trung Quốc</li>
+          <li><strong>Chức năng:</strong> Nhập kho, đóng gói, quay video, gửi hàng CN → US</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon blue">🇺🇸</div><h3>Kho Fulfillment – Pennsylvania, USA</h3></div>
+        <ul>
+          <li><strong>Tên:</strong> THG Fulfill – NL</li>
+          <li><strong>Địa chỉ:</strong> 108 Almond CT, Milford, Pennsylvania. Zip: 18337</li>
+          <li><strong>Phone:</strong> +1 (570) 618-1169</li>
+          <li><strong>Chức năng:</strong> Stock hàng, fulfill nội địa US 1–3 ngày</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-header"><div class="ic-icon green">🏢</div><h3>Văn Phòng Việt Nam</h3></div>
+        <ul>
+          <li><strong>Địa chỉ:</strong> 58 DC11, Phường Sơn Kỳ, Quận Tân Phú, TP.HCM</li>
+          <li><strong>Hotline:</strong> 033 512 4089</li>
+          <li><strong>Email:</strong> info@thgfulfill.com</li>
+          <li><strong>Website:</strong> www.thgfulfill.com</li>
+          <li><strong>Pháp nhân:</strong> Công ty TNHH Quốc Anh Global · MST: 0316629933</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPIC 10: XỬ LÝ SỰ CỐ WAREHOUSE -->
+  <div class="content-section" id="topic10">
+    <div class="section-hd">
+      <span class="topic-badge" style="background:#ef4444">TOPIC 10</span>
+      <h2>Xử Lý Sự Cố – Warehouse US</h2>
+    </div>
+    <div class="note-box warn">
+      <span class="nb-icon">🚨</span>
+      <p>Tổng hợp <strong>8 sự cố thực tế</strong> mảng Warehouse US (T6–T9/2025). Phần lớn liên quan đến OMS, USPS, đóng gói và kho bãi.</p>
+    </div>
+
+    <div style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap">
+      <span style="background:#fef2f2;color:#ef4444;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🔴 Critical — 4 cases</span>
+      <span style="background:#fffbeb;color:#b45309;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🟡 Warning — 3 cases</span>
+      <span style="background:#f0fdf4;color:#15803d;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🟢 Minor — 1 case</span>
+    </div>
+
+    <div class="info-grid" style="margin-bottom:16px">
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-WH-001 — Kho off dài ngày không báo trước</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Kho off 5 ngày → hàng dồn → nhiều đơn dispute. <strong>Ràng buộc hợp đồng: kho báo trước 7 ngày nếu off >2 ngày.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 4h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Active đơn tạm thời cho KH</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-WH-003 — Copy lệch SKU OMS (18 đơn)</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Upload thủ công không double-check → copy lệch SKU → 18 đơn sai. Khi OMS hỗ trợ API → dùng API thay vì thủ công.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 4h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">Resend 18 đơn</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-WH-004 — OMS tự mua bảo hiểm USPS ($179)</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">KH khai giá trị đơn trên OMS → tự mua bảo hiểm USPS → phí +$2-3/đơn. <strong>Hướng dẫn KH không điền giá trị vào field khai giá.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 4h</span>
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">Thiệt hại $179</span>
+        </div>
+      </div>
+      <div class="info-card" style="border-left:4px solid #ef4444">
+        <div class="ic-header"><div class="ic-icon" style="background:#fef2f2">🔴</div><h3 style="color:#ef4444">T-WH-006 — Tracking USPS bị MID fraud</h3></div>
+        <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:6px">Label từ Shippo nhưng tracking đã được sử dụng trước đó. <strong>Check status tracking USPS ngay sau khi mua label, trước khi gán cho đơn.</strong></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fef2f2;color:#ef4444;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600">SLA 4h</span>
+          <span style="background:#f1f5f9;font-size:11px;padding:2px 8px;border-radius:10px">20 đơn VET bị ảnh hưởng</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#eff6ff;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-weight:700;color:#1e293b;margin-bottom:4px">📖 Xem đầy đủ 8 Warehouse + 26 cases khác</div>
+        <div style="font-size:12px;color:#64748b">POD · Dropship · Express · Warehouse — step-by-step, owner, SLA, real case</div>
+      </div>
+      <a href="trouble.html#warehouse" style="background:#1B4FBB;color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;white-space:nowrap">Mở Trouble Hub 🚨 →</a>
+    </div>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <div class="page-footer">
+    <div class="nav-btns">
+      <a href="dropship.html" class="btn-nav prev">← Dropship</a>
+      <a href="express.html"  class="btn-nav next">Tiếp theo: Express Nội địa →</a>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400)">THG Internal Training Hub · Chỉ dành cho nhân viên THG Fulfill Corp · <a href="mailto:info@thgfulfill.com" style="color:var(--blue)">Báo lỗi / góp ý</a></p>
+  </div>
+</main>
+
+<script>
+
+function runQuiz(btn){
+  var section=btn.closest('.quiz-section');
+  var qs=section.querySelectorAll('.quiz-q');
+  var score=0;
+  qs.forEach(function(q){
+    var correct=q.dataset.correct;
+    var sel=q.querySelector('input[type=radio]:checked');
+    var opts=q.querySelectorAll('.quiz-opt');
+    opts.forEach(function(o){
+      var v=o.querySelector('input').value;
+      if(v===correct)o.classList.add('correct');
+      else if(sel&&o.querySelector('input')===sel&&v!==correct)o.classList.add('wrong');
+    });
+    q.classList.add('done');
+    if(sel&&sel.value===correct)score++;
+  });
+  btn.disabled=true;
+  var total=qs.length;
+  var res=section.querySelector('.quiz-result');
+  res.style.display='block';
+  if(score>=Math.ceil(total*0.7)){
+    res.className='quiz-result pass';
+    res.textContent='✅ Xuất sắc! Bạn đúng '+score+'/'+total+' câu. Module này đã hoàn thành!';
+  } else {
+    res.className='quiz-result fail';
+    res.textContent='📖 Bạn đúng '+score+'/'+total+' câu. Hãy đọc lại phần còn sai và thử lại!';
+  }
+}
+function doSearch(e){
+  e.preventDefault();
+  var q=e.target.querySelector('input').value.trim();
+  if(q)window.location='search.html?q='+encodeURIComponent(q);
+}
+
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('visible');
+  }
+  function togglePolicy(header){
+    const body=header.nextElementSibling;
+    const t=header.querySelector('.toggle');
+    body.classList.toggle('open');
+    t.style.transform=body.classList.contains('open')?'rotate(180deg)':'';
+  }
+  const sections=document.querySelectorAll('.content-section');
+  const navItems=document.querySelectorAll('.topic-nav-item');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id});
+    navItems.forEach(i=>i.classList.toggle('current',i.getAttribute('href')==='#'+cur));
+  });
+
+  /* ── SIDEBAR DROPDOWN TOGGLE ── */
+  (function(){
+    var K='thg_nav2',S;
+    try{S=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){S={}}
+    function sv(k,v){S[k]=v;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+    var sb=document.getElementById('sidebar');
+    if(!sb)return;
+    // 1. nav-section-label toggles
+    sb.querySelectorAll('.nav-section').forEach(function(sec,i){
+      var lbl=sec.querySelector('.nav-section-label');
+      if(!lbl)return;
+      var key='sec'+i;
+      var body=document.createElement('div');
+      body.className='nav-section-body';
+      var kids=[].slice.call(sec.children).filter(function(c){return c!==lbl});
+      kids.forEach(function(c){body.appendChild(c)});
+      sec.appendChild(body);
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';lbl.appendChild(arr);
+      var open=S[key]!==undefined?S[key]:true;
+      body.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      lbl.addEventListener('click',function(){
+        var o=body.style.maxHeight==='0px';
+        body.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+    // 2. nav-item sub-topic toggles
+    sb.querySelectorAll('.nav-item').forEach(function(item,i){
+      var next=item.nextElementSibling,sub=null;
+      if(next&&(next.classList.contains('topic-nav')||next.classList.contains('nav-sub'))){
+        sub=next;
+      } else {
+        var coll=[],n=item.nextElementSibling;
+        while(n&&n.classList.contains('topic-nav-item')){coll.push(n);n=n.nextElementSibling;}
+        if(coll.length){
+          var w=document.createElement('div');w.className='topic-nav';
+          item.parentNode.insertBefore(w,coll[0]);
+          coll.forEach(function(x){w.appendChild(x)});
+          sub=w;
+        }
+      }
+      if(!sub)return;
+      sub.classList.add('nav-sub');
+      sub.style.overflow='hidden';sub.style.transition='max-height .3s ease';
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';
+      item.appendChild(arr);item.style.cursor='pointer';
+      var href=item.getAttribute('href')||'';
+      var key='itm'+i;
+      var open=S[key]!==undefined?S[key]:item.classList.contains('active');
+      sub.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      item.addEventListener('click',function(e){
+        if(href&&href!=='#'&&!item.classList.contains('active'))return;
+        e.preventDefault();
+        var o=sub.style.maxHeight==='0px';
+        sub.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

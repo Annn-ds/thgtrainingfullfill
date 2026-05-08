@@ -1,0 +1,628 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "generated": "2026-04-22",
+    "source": ["TỔNG HỢP TROUBLE.pdf (T1-T9/2025)", "Team Sale _ CSKH.xlsx (105 records)"],
+    "total": 34
+  },
+  "troubles": [
+    {
+      "id": "T-POD-001",
+      "department": "POD",
+      "title": "Không yêu cầu file design trước khi lên đơn POD",
+      "keywords": ["file design", "thiếu design", "xưởng không in được", "delay đơn POD", "không cần design"],
+      "warning_signs": [
+        "Đơn POD sản phẩm mới chưa từng đi",
+        "Sale giả định xưởng tự in được mà không check",
+        "Không có file design đính kèm trong đơn"
+      ],
+      "severity": "warning",
+      "cause": "Sale giả định xưởng CN in được mà không cần file design, không check kỹ với xưởng trước khi lên đơn",
+      "solution": "Yêu cầu file design từ khách với các đơn POD sản phẩm mới hoặc gần đây không đi. Note check lại với từng đơn mới.",
+      "prevention": "Luôn confirm với xưởng trước khi báo KH về timeline. Đơn mới = bắt buộc có file design.",
+      "owner": "Sale / CSKH",
+      "escalate_to": "Ops",
+      "sla_hours": 4,
+      "damage_range": "Delay 1-3 ngày, có thể mất đơn",
+      "real_case": "Tháng 6/2025 - Duy: Đơn POD áo, mặc định xưởng CN in được dẫn đến delay"
+    },
+    {
+      "id": "T-POD-002",
+      "department": "POD/Dropship",
+      "title": "Hàng Taobao/1688 bị dơ, nhăn - khách refund",
+      "keywords": ["hàng dơ", "hàng nhăn", "chất lượng taobao", "refund chất lượng", "sản phẩm dơ"],
+      "warning_signs": [
+        "KH báo ảnh sản phẩm bị dơ hoặc nhăn",
+        "Đơn dropship hàng từ Taobao/1688",
+        "KH yêu cầu refund do chất lượng sản phẩm"
+      ],
+      "severity": "warning",
+      "cause": "THG mua hộ hàng từ Taobao/1688, không kiểm soát được chất lượng từ nhà cung cấp TQ",
+      "solution": "Clear rõ với KH từ đầu: THG không chịu trách nhiệm lỗi refund do chất lượng sản phẩm từ Taobao/1688. KH confirm link + giá bán → THG mua hộ và ship.",
+      "prevention": "Ghi rõ điều khoản trong hợp đồng: THG chỉ refund phần vận chuyển khi ship >20 bsd.",
+      "owner": "Sale",
+      "escalate_to": "Manager",
+      "sla_hours": 24,
+      "damage_range": "$13–$20 (công ty chịu 80%)",
+      "real_case": "Tháng 6/2025: Hàng dơ, nhăn. Tổng thiệt hại $17.35, công ty chịu 80% = $13.88"
+    },
+    {
+      "id": "T-POD-003",
+      "department": "POD/Dropship",
+      "title": "Thay đổi SKU/link sản phẩm không thông báo Ops",
+      "keywords": ["thay đổi link", "đổi sku", "không thông báo", "mua sai link", "sai sản phẩm"],
+      "warning_signs": [
+        "Sale thay đổi link mua hàng sau khi đã báo Ops",
+        "Ops đang xử lý đơn nhưng thông tin thay đổi"
+      ],
+      "severity": "critical",
+      "cause": "Sale thay đổi link mua hàng sau khi đã báo Ops process, không thông báo lại cho Ops",
+      "solution": "Thương lượng chia sẻ chi phí: lỗi Sale = Sale chịu 50%, công ty chịu 50%. Ops đặt lại đơn đúng.",
+      "prevention": "Quy tắc bắt buộc: Mọi thay đổi thông tin sản phẩm PHẢI thông báo ngay cho Ops qua Lark. Không được sửa file sau khi Ops đã nhận đơn mà không báo.",
+      "owner": "Sale (lỗi) → Ops (xử lý)",
+      "escalate_to": "Manager",
+      "sla_hours": 2,
+      "damage_range": "$43 (Sale 50% + công ty 50%)",
+      "real_case": "Tháng 6/2025 - Duy: Thay đổi link mua hàng không báo Ops → mua sai. Tổng $43"
+    },
+    {
+      "id": "T-POD-004",
+      "department": "POD/Dropship",
+      "title": "Gắn sai hình ảnh variant - Ops mua nhầm phân loại",
+      "keywords": ["sai variant", "sai hình ảnh", "nhầm phân loại", "hình ảnh khác variant", "mua nhầm"],
+      "warning_signs": [
+        "File đơn có hình ảnh không khớp với tên variant cần mua",
+        "KH gửi hình sản phẩm nhưng muốn variant khác màu/size"
+      ],
+      "severity": "warning",
+      "cause": "Sale gắn hình ảnh của variant khác (dù cùng sản phẩm), Ops mua theo hình ảnh",
+      "solution": "Ops đặt lại đúng variant. Chia sẻ chi phí thiệt hại.",
+      "prevention": "Quy tắc: Gắn đúng hình ảnh của PHÂN LOẠI cần mua, không gắn hình ảnh khác phân loại dù cùng sản phẩm. Luôn có cột 'Tên variant chính xác' riêng với cột 'Hình ảnh'.",
+      "owner": "Sale (lỗi) → Ops (xử lý)",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "$10–$30",
+      "real_case": "Tháng 6/2025 - Duy: Sai variant, Ops mua theo hình ảnh"
+    },
+    {
+      "id": "T-POD-005",
+      "department": "POD/Dropship",
+      "title": "Tìm hàng không đúng 100% - KH bị refund",
+      "keywords": ["tìm hàng sai", "hàng giống 80%", "không đúng mẫu", "sai sản phẩm", "refund tìm hàng sai"],
+      "warning_signs": [
+        "Sale tìm sản phẩm chỉ giống ~80% ảnh gốc KH gửi",
+        "Chưa cho KH confirm link trước khi đặt hàng"
+      ],
+      "severity": "warning",
+      "cause": "Sale tìm sản phẩm không đúng 100% với mẫu khách cần, không cho KH confirm trước",
+      "solution": "Hoàn tiền 50% + công ty chịu 50%. Luôn cho KH confirm link sản phẩm trước khi mua.",
+      "prevention": "Bắt buộc: KH phải confirm link mua hàng trước khi Ops đặt. Gắn đúng hình ảnh của sản phẩm trong link đó.",
+      "owner": "Sale",
+      "escalate_to": "Manager",
+      "sla_hours": 24,
+      "damage_range": "$13.99 (Sale 50% + công ty 50%)",
+      "real_case": "Tháng 6/2025 - Duy: Hàng giống 80%, KH refund $13.99"
+    },
+    {
+      "id": "T-POD-006",
+      "department": "POD",
+      "title": "Import đơn lệch SKU - hệ thống map sai size",
+      "keywords": ["import sai sku", "lệch sku", "onos sai size", "sai size", "import lệch"],
+      "warning_signs": [
+        "Import đơn hàng loạt vào hệ thống",
+        "Không check lại SKU sau khi import",
+        "KH báo nhận sai hàng nhiều đơn cùng lúc"
+      ],
+      "severity": "critical",
+      "cause": "Copy/import lệch SKU dẫn đến hệ thống Onos map sai SKU với size. Xảy ra khi xử lý đơn hàng loạt.",
+      "solution": "Làm lại 10 đơn, refund 11 đơn (KH đã refund cho buyer), đổi tracking đúng 13 đơn. Tổng thiệt hại $420.",
+      "prevention": "Check kỹ SKU sau khi import, không chỉ xem số lượng. Có quy trình double-check trước khi đẩy loạt đơn vào hệ thống.",
+      "owner": "Ops",
+      "escalate_to": "Manager + Finance",
+      "sla_hours": 2,
+      "damage_range": "$420 (10 đơn làm lại, 11 đơn refund)",
+      "real_case": "Tháng 8/2025: Import lệch SKU → Onos map sai size → 34 đơn bị ảnh hưởng, tổng $420"
+    },
+    {
+      "id": "T-POD-007",
+      "department": "POD",
+      "title": "Label thiếu địa chỉ (address line 2) - đơn bị return",
+      "keywords": ["label thiếu địa chỉ", "address line 2", "label sai địa chỉ", "đơn return", "thiếu số nhà"],
+      "warning_signs": [
+        "KH có địa chỉ 2 dòng (apartment number, unit...)",
+        "Label tạo từ hệ thống không hiển thị đủ địa chỉ"
+      ],
+      "severity": "warning",
+      "cause": "Hệ thống tạo label không show hết address line 2 → USPS không nhận biết chính xác địa chỉ → đơn return",
+      "solution": "Hệ thống đã refund KH, THG chịu $11. Check lại hệ thống tạo label.",
+      "prevention": "Kiểm tra thủ công label trước khi gửi cho KH có địa chỉ 2 dòng. Test lại field address line 2 trên hệ thống.",
+      "owner": "Ops",
+      "escalate_to": "Tech/Manager",
+      "sla_hours": 4,
+      "damage_range": "$11/đơn",
+      "real_case": "Tháng 8/2025: Label không show address line 2 → USPS return đơn. THG chịu $11"
+    },
+    {
+      "id": "T-POD-008",
+      "department": "POD",
+      "title": "Phone case S2BDIY sai kích thước - không vừa máy",
+      "keywords": ["phone case sai size", "ốp không vừa", "s2bdiy sai", "phone case kích thước sai"],
+      "warning_signs": [
+        "Đơn phone case S2BDIY",
+        "KH báo ốp không sử dụng được"
+      ],
+      "severity": "minor",
+      "cause": "Kích thước ốp điện thoại nhỏ hơn thực tế, không vừa model máy KH yêu cầu",
+      "solution": "Refund $6 cho KH",
+      "prevention": "Check lại danh sách model máy tương thích từ xưởng S2BDIY trước khi nhận đơn.",
+      "owner": "CSKH",
+      "escalate_to": "Ops",
+      "sla_hours": 8,
+      "damage_range": "$5–$10/đơn",
+      "real_case": "Tháng 8/2025: Phone case S2BDIY không vừa → refund $6"
+    },
+    {
+      "id": "T-POD-009",
+      "department": "POD",
+      "title": "Xưởng POD gắn sai tag size (áo Hawaii, Jersey)",
+      "keywords": ["sai tag size", "sai nhãn size", "gắn nhầm size", "áo sai size", "xưởng sai"],
+      "warning_signs": [
+        "KH báo nhận áo size khác đặt",
+        "Đơn áo Hawaii, Jersey từ xưởng VN/CN"
+      ],
+      "severity": "warning",
+      "cause": "Xưởng sản xuất gắn nhầm tag size khi đóng gói (XL → L, 2XL → 4XL)",
+      "solution": "Xưởng sản xuất resend lại đơn đúng size cho KH. THG phối hợp theo dõi đến khi KH nhận đủ.",
+      "prevention": "Yêu cầu xưởng có quy trình QC tag size trước khi đóng gói. Spot-check ngẫu nhiên khi nhận hàng.",
+      "owner": "Ops (phối hợp xưởng)",
+      "escalate_to": "Manager nếu xưởng không hợp tác",
+      "sla_hours": 48,
+      "damage_range": "Chi phí resend (xưởng chịu)",
+      "real_case": "Tháng 8/2025 - Misu Trần: Đặt XL nhận L, đặt 2XL nhận 4XL → xưởng resend"
+    },
+    {
+      "id": "T-POD-010",
+      "department": "POD/Dropship",
+      "title": "USPS báo delivered nhưng KH không nhận được hàng",
+      "keywords": ["usps báo delivered", "không nhận được hàng", "delivery nhưng không nhận", "missing package", "hàng mất sau delivery"],
+      "warning_signs": [
+        "Tracking USPS hiển thị 'Delivered' nhưng KH báo chưa nhận",
+        "Địa chỉ giao hàng là apartment complex hoặc khu đông dân"
+      ],
+      "severity": "warning",
+      "cause": "USPS giao sai địa chỉ hoặc đặt hàng ở chỗ KH không thấy. USPS không cung cấp ảnh giao hàng cho đơn không có bảo hiểm.",
+      "solution": "Hỗ trợ 50% basecost. Mail USPS xin ảnh giao hàng (chỉ có nếu đơn có bảo hiểm). Tổng 6 đơn $64.",
+      "prevention": "Đề xuất KH mua bảo hiểm USPS cho đơn có giá trị cao. Tư vấn KH theo dõi tracking và lấy hàng sớm sau khi có thông báo delivery.",
+      "owner": "CSKH → Ops",
+      "escalate_to": "Finance (nếu cần bồi thường)",
+      "sla_hours": 24,
+      "damage_range": "$20–$64 (6 đơn)",
+      "real_case": "Tháng 7/2025 - VLL: 6 đơn USPS báo deli nhưng KH không nhận được. THG hỗ trợ $64"
+    },
+    {
+      "id": "T-POD-011",
+      "department": "POD/Dropship",
+      "title": "Đơn bị hoàn vì kích thước vượt giới hạn line vận chuyển",
+      "keywords": ["vượt kích thước", "đơn bị return", "quá size", "kích thước đặc biệt", "line epacket không nhận"],
+      "warning_signs": [
+        "Sản phẩm có chiều dài >55cm hoặc D+R+C >90cm (VN–US)",
+        "Hàng cồng kềnh (màn che, curtain rod, canvas frame...)"
+      ],
+      "severity": "warning",
+      "cause": "Không check kích thước sản phẩm với giới hạn của line vận chuyển. ePacket chỉ phù hợp hàng nhỏ nhẹ.",
+      "solution": "Đổi sang line vận chuyển phù hợp (chi phí cao hơn) hoặc chuyển qua kho US gửi lẻ.",
+      "prevention": "Bắt buộc check kích thước VÀ trọng lượng trước khi xác nhận line ship. Đừng chỉ check VW mà bỏ qua kích thước thực.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Chi phí đổi line + delay",
+      "real_case": "Tháng 7/2025 - Encycom: Màn che 71.5×8.5×6.5cm, quá giới hạn Yun 55×40×35cm → bị return"
+    },
+    {
+      "id": "T-POD-012",
+      "department": "POD",
+      "title": "TikTok tự hoàn tiền do giao hàng delay quá hạn",
+      "keywords": ["tiktok hoàn tiền", "tiktok refund tự động", "delay tiktok", "quá hạn ship tiktok", "tiktok policy ship"],
+      "warning_signs": [
+        "Đơn TikTok Shop bị delay hơn 10 ngày",
+        "KH đã cảnh báo trước về policy ship",
+        "Không phản hồi kịp cảnh báo của KH"
+      ],
+      "severity": "critical",
+      "cause": "Đơn delay do thiếu file design, giao sau deadline TikTok → TikTok tự hoàn tiền buyer → KH đòi THG bồi thường",
+      "solution": "Thương lượng với KH. Case cụ thể: đơn ngày 25/6 mãi đến 5/7 mới báo KH thiếu design, giao 15/7 nhưng TikTok hoàn tiền.",
+      "prevention": "Theo dõi deadline TikTok Ship By Date. Nếu phát hiện delay → báo KH ngay và xin thêm thời gian. Luôn phản hồi cảnh báo của KH.",
+      "owner": "Sale / CSKH",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Theo giá bán của seller (có thể lớn)",
+      "real_case": "Tháng 7/2025 - Vũ Long: TikTok tự refund do delay. KH đòi bồi thường nhưng hàng đã giao 15/7"
+    },
+    {
+      "id": "T-POD-013",
+      "department": "POD/Dropship",
+      "title": "Đơn hàng thất lạc trong quá trình bàn giao ĐVVC",
+      "keywords": ["thất lạc bàn giao", "mất hàng khi giao", "lost in transit", "hàng mất", "bàn giao bị mất"],
+      "warning_signs": [
+        "Tracking không cập nhật sau khi bàn giao ĐVVC",
+        "ĐVVC xác nhận nhận hàng nhưng tracking không nhảy"
+      ],
+      "severity": "critical",
+      "cause": "Hàng bị thất lạc trong quá trình bàn giao cho đơn vị vận chuyển",
+      "solution": "Thông báo KH, hỏi có muốn tiếp tục đặt lại đơn không. Nếu đồng ý → đặt lại sản phẩm + gửi theo tracking cũ.",
+      "prevention": "Yêu cầu xác nhận bàn giao có chữ ký/scan từ ĐVVC. Theo dõi tracking trong 24h đầu sau khi bàn giao.",
+      "owner": "Ops",
+      "escalate_to": "Finance (bồi thường)",
+      "sla_hours": 48,
+      "damage_range": "Basecost + shipping (max $50 theo chính sách)",
+      "real_case": "Tháng 8/2025: Đơn 112-0024390-9549013 thất lạc khi bàn giao ĐVVC"
+    },
+    {
+      "id": "T-POD-014",
+      "department": "POD/Dropship",
+      "title": "Tracking đứng >30 ngày - bị hải quan giữ",
+      "keywords": ["tracking đứng 30 ngày", "hải quan giữ", "tracking không update", "bị giữ hải quan", "17track delivered nhầm"],
+      "warning_signs": [
+        "Tracking không update >7 ngày",
+        "17track hiển thị 'delivered' nhưng KH chưa nhận",
+        "Hàng đi qua các nước có kiểm tra hải quan nghiêm (DE, UK)"
+      ],
+      "severity": "critical",
+      "cause": "Hàng bị hải quan giữ, 17track hiển thị nhầm delivered. Yun báo bị giữ hải quan.",
+      "solution": "Theo chính sách miễn trừ bất khả kháng THG không phải hoàn tiền, nhưng BGĐ duyệt bồi thường 100% basecost giới hạn $20.",
+      "prevention": "Theo dõi tracking chặt chẽ. Nếu tracking đứng >5 ngày → chủ động liên hệ ĐVVC xác minh.",
+      "owner": "Ops → Manager → BGĐ",
+      "escalate_to": "BGĐ (quyết định bồi thường)",
+      "sla_hours": 72,
+      "damage_range": "$20 (BGĐ duyệt bồi thường)",
+      "real_case": "Tháng 8/2025: Đơn 114-7645689 tracking >30 ngày, 17track nhầm delivered. BGĐ duyệt $20"
+    },
+    {
+      "id": "T-EXP-001",
+      "department": "Express",
+      "title": "Không clear thuế trước khi báo KH - hàng bị giữ hải quan",
+      "keywords": ["thuế hải quan", "không clear thuế", "hàng bị giữ", "customs hold", "chất độc hại"],
+      "warning_signs": [
+        "ĐVVC không chắc chắn về thuế",
+        "Hàng hóa thuộc nhóm nhạy cảm (chất độc hại, hóa chất...)"
+      ],
+      "severity": "critical",
+      "cause": "Không check kỹ với ĐVVC về phần thuế hải quan, đặc biệt hàng có chất độc hại. Dẫn đến hàng bị giữ lại.",
+      "solution": "Check giá kỹ hơn với ĐVVC, clear phần thuế rõ ràng trước khi thông báo KH.",
+      "prevention": "Trước khi nhận đơn hàng nhạy cảm: hỏi ĐVVC về khả năng bị giữ hải quan. Ghi rõ 'Giá báo KH chưa bao gồm thuế phát sinh'.",
+      "owner": "Sale / CSKH",
+      "escalate_to": "Ops → Manager",
+      "sla_hours": 4,
+      "damage_range": "Delay + chi phí lưu kho + thiệt hại campaign KH",
+      "real_case": "Tháng 6/2025 - Huyền: Hàng chứa chất độc hại bị HQ giữ do không clear thuế trước"
+    },
+    {
+      "id": "T-EXP-002",
+      "department": "Express",
+      "title": "Nhận hàng TM nhưng hãng không đi được - phải đổi hãng",
+      "keywords": ["đổi hãng vận chuyển", "hãng trả hàng về", "không đi được", "delay đổi hãng", "tm hàng thương mại"],
+      "warning_signs": [
+        "Hàng TM (thương mại) gửi qua kho US đi line 3-5 bsd",
+        "ĐVVC không check kỹ sản phẩm trước khi nhận"
+      ],
+      "severity": "warning",
+      "cause": "Nhận hàng TM gửi line nhanh, nhưng hãng báo lại không đi được → phải trả về → tìm hãng khác → delay 2-3 ngày, thời gian ship tăng lên 5-7 bsd.",
+      "solution": "Tìm hãng khác nhận, gửi lại. Thông báo KH về delay.",
+      "prevention": "Check kỹ sản phẩm với ĐVVC TRƯỚC khi nhận đơn. Tránh gửi xong mới phát hiện hàng bị trả về.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Delay 2-3 ngày + chi phí đổi hãng",
+      "real_case": "Tháng 6/2025 - Huyền: Lô nón TM qua kho US, hãng trả về → đổi hãng → delay 2-3 ngày"
+    },
+    {
+      "id": "T-EXP-003",
+      "department": "Express",
+      "title": "Không nắm mức giá ship - báo sai cho KH",
+      "keywords": ["báo sai giá", "giá ship sai", "không nắm giá", "giá vận chuyển sai", "thiếu nvl đóng gói"],
+      "warning_signs": [
+        "Sale không nhớ mức giá chuẩn VN–US hiện tại",
+        "Nhận được báo giá cao bất thường từ ĐVVC"
+      ],
+      "severity": "warning",
+      "cause": "Không nắm mức giá chung: VN–US hàng lô ~$8.5–$10/kg. Nếu nhận giá cao hơn nhiều không check lại.",
+      "solution": "Kiểm tra lại với ĐVVC nguyên nhân giá cao. Báo lại KH giá đúng.",
+      "prevention": "Mọi nhân viên phải nhớ mức giá chuẩn hiện tại. Nếu giá ĐVVC cao hơn 20% mức chuẩn → bắt buộc check lại.",
+      "owner": "Sale",
+      "escalate_to": "Ops",
+      "sla_hours": 4,
+      "damage_range": "Mất uy tín + sai lệch doanh thu",
+      "real_case": "Tháng 6/2025: Báo sai giá ship VN–US. Mức chuẩn $8.5–$10/kg"
+    },
+    {
+      "id": "T-EXP-004",
+      "department": "Express",
+      "title": "ĐVVC miss scan đơn - tracking không active trên web",
+      "keywords": ["miss scan", "tracking không active", "gle miss scan", "tracking không nhảy", "tracking không hiện"],
+      "warning_signs": [
+        "Đơn đã giao cho GLE/ĐVVC nhưng tracking không cập nhật sau 48h",
+        "Các đơn khác cùng ngày đã active tracking nhưng 1-2 đơn chưa"
+      ],
+      "severity": "warning",
+      "cause": "ĐVVC không take care hết được số lượng đơn bay trong ngày → miss scan → tracking không hiện active trên web.",
+      "solution": "Liên hệ agent ĐVVC tại US để scan bổ sung ngay. Tránh để KH tự active tracking.",
+      "prevention": "Chọn ĐVVC có agent US mạnh, có thể support scan liền khi miss. Theo dõi tracking trong 24-48h đầu sau khi gửi.",
+      "owner": "Ops",
+      "escalate_to": "Manager (nếu ĐVVC không xử lý trong 24h)",
+      "sla_hours": 24,
+      "damage_range": "Ảnh hưởng trải nghiệm KH",
+      "real_case": "Tháng 6/2025: GLE miss scan → tracking không hiện. KH phải tự active"
+    },
+    {
+      "id": "T-EXP-005",
+      "department": "Express",
+      "title": "ĐVVC khai giá trị hàng thấp - hải quan giữ yêu cầu khai thuế",
+      "keywords": ["khai giá thấp", "hải quan nghi ngờ", "khai thuế mậu dịch", "tách kiện", "customs declaration"],
+      "warning_signs": [
+        "Lô hàng lớn (>50kg)",
+        "ĐVVC khai giá trị không hợp lý (quá thấp)",
+        "Sản phẩm nhạy cảm (decal, mực in, điện tử...)"
+      ],
+      "severity": "critical",
+      "cause": "ĐVVC khai giá trị lô 7 kiện decal 120kg không hợp lý → HQ nghi ngờ → chặn lại → tách kiện khai lại → delay cả campaign.",
+      "solution": "Tách kiện, khai lại giá trị, gửi lại. Ảnh hưởng hoàn toàn campaign của KH.",
+      "prevention": "Lô hàng lớn: hỏi ĐVVC có cần tách hàng không. Chọn ĐVVC có kinh nghiệm xử lý lô lớn và khai báo hải quan đúng.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Delay nhiều ngày + chi phí tách kiện",
+      "real_case": "Tháng 6/2025 - Huyền: Lô 7 kiện decal 120kg bị HQ giữ → tách kiện → delay campaign"
+    },
+    {
+      "id": "T-EXP-006",
+      "department": "Express",
+      "title": "Tracking thất lạc 3+ tuần - KH refund 100% giá bán",
+      "keywords": ["tracking thất lạc", "mất hàng 3 tuần", "tracking không cập nhật 21 ngày", "refund 100 phần trăm giá bán", "lost shipment"],
+      "warning_signs": [
+        "Tracking không cập nhật >7 ngày",
+        "Các đơn bay cùng ngày đã delivered nhưng 1-2 đơn không cập nhật",
+        "KH bắt đầu hỏi tracking"
+      ],
+      "severity": "critical",
+      "cause": "2 đơn tracking không active hơn 3 tuần. KH phải tự active tracking. Sau đó tracking dừng hẳn → KH yêu cầu refund 100% giá bán (trong khi THG chỉ thu $9.81 cho 2 đơn).",
+      "solution": "Theo chính sách: bồi thường max $50/đơn. Thương lượng với KH vì KH yêu cầu theo giá bán ($104.59 cho 2 đơn).",
+      "prevention": "Theo dõi sát tracking trong <1 tuần đầu sau khi gửi. Nếu không thấy cập nhật → chủ động làm việc với ĐVVC ngay để tránh kéo dài.",
+      "owner": "Ops → Finance",
+      "escalate_to": "Manager → BGĐ",
+      "sla_hours": 24,
+      "damage_range": "$104.59 (2 đơn, KH yêu cầu 100% giá bán)",
+      "real_case": "Tháng 7/2025 - INL: 2 đơn gửi GLE 29/06, tracking mất 3 tuần. KH yêu cầu refund $104.59"
+    },
+    {
+      "id": "T-EXP-007",
+      "department": "Express",
+      "title": "Giao đến bưu cục chậm do quá tải - KH yêu cầu refund",
+      "keywords": ["giao bưu cục chậm", "delay bưu cục", "quá tải đơn", "vượt 4-6 bsd", "refund giao chậm"],
+      "warning_signs": [
+        "Lượng đơn đầu/giữa tháng tăng đột biến",
+        "ĐVVC báo quá tải",
+        "Tracking delay hơn 24h sau khi giao ĐVVC"
+      ],
+      "severity": "warning",
+      "cause": "Lượng đơn đầu tháng 7 quá tải → thời gian delay đến bưu cục lâu. 9/22 đơn vượt mốc 4-6 bsd.",
+      "solution": "Check từng đơn, add cột ngày nhận hàng/ngày bay/ngày deli. Chỉ refund 9 đơn thực sự vượt 4-6 bsd.",
+      "prevention": "Theo dõi load đơn theo ngày. Khi quá tải → cảnh báo KH về delay trước. Lưu lịch sử fill data để có bằng chứng ngày gửi thực tế.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 8,
+      "damage_range": "$19 (9 đơn eligible refund)",
+      "real_case": "Tháng 8/2025 - Đông Hải: 22 đơn giao bưu cục chậm, 9/22 vượt 4-6 bsd. THG refund $19"
+    },
+    {
+      "id": "T-EXP-008",
+      "department": "Express",
+      "title": "Gửi nhầm tracking - 1 KH nhận 2 đơn (gift card + hàng thật)",
+      "keywords": ["sai tracking", "gửi nhầm tracking", "tracking yun thay usps", "gift card", "2 đơn cùng KH"],
+      "warning_signs": [
+        "KH có sẵn label USPS nhưng hàng đi Yun Express",
+        "Tracking USPS không active sau khi gửi"
+      ],
+      "severity": "critical",
+      "cause": "3 đơn nail có label USPS riêng nhưng Ops gửi nhầm theo tracking Yun → tracking USPS không active → KH mất tiền TikTok. Giải pháp: gửi gift card với tracking USPS để active.",
+      "solution": "Gửi gift card với tracking USPS để tracking nhảy. Đơn hàng thật đi Yun. Nhưng không báo end-customer → KH hiểu lầm bị lừa.",
+      "prevention": "Kiểm tra kỹ tracking nào đi với đơn nào trước khi gửi. Nếu chia đơn → bắt buộc thông báo end-customer về việc nhận 2 kiện.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Chi phí 2 đơn + nguy cơ review xấu trên sàn",
+      "real_case": "Tháng 8-9/2025 - Đông Hải: 3 đơn nail gửi nhầm tracking. Gift card + nail đến 2 lần → KH hiểu lầm bị lừa"
+    },
+    {
+      "id": "T-EXP-009",
+      "department": "Express",
+      "title": "Thông số đóng gói không nhất quán - KH tố tính phí sai",
+      "keywords": ["thông số đóng gói sai", "nhập sai trọng lượng", "tính phí sai", "200gr vs 300gr", "đóng gói không nhất quán"],
+      "warning_signs": [
+        "KH phản ánh bị tính phí cao hơn thực tế",
+        "File làm việc có nhiều người cùng nhập dữ liệu đóng gói",
+        "Không có hình ảnh kiểm hàng làm bằng chứng"
+      ],
+      "severity": "warning",
+      "cause": "Nhập sai trọng lượng đóng gói (200gr → 300gr). Không có hình ảnh chứng minh khi nhận hàng.",
+      "solution": "Gửi thông tin kiểm đếm cho KH, nhờ check lại. Đề xuất chụp ảnh hàng khi kiểm đếm từng ngày.",
+      "prevention": "Cài camera trong phòng kho để quay khi kiểm hàng và đóng gói. Gửi ghi nhận hàng ngày có hình ảnh cho KH.",
+      "owner": "Ops / Kho",
+      "escalate_to": "Manager",
+      "sla_hours": 8,
+      "damage_range": "Tranh chấp phí vận chuyển",
+      "real_case": "Tháng 8/2025 - Đông Hải: 7 đơn bị tố nhập sai 200gr→300gr. Không có ảnh kiểm hàng để chứng minh"
+    },
+    {
+      "id": "T-EXP-010",
+      "department": "Express",
+      "title": "Lô hàng khó (mực in 91kg) bị hải quan Mỹ return vì thiếu giấy tờ",
+      "keywords": ["hải quan mỹ giữ", "thiếu giấy tờ", "lô hàng return", "mực in", "customs documentation", "10 ngày hoàn tất"],
+      "warning_signs": [
+        "Hàng lô lớn, hàng thuộc nhóm khó xuất (mực in, hóa chất, điện tử...)",
+        "Chưa chuẩn bị đầy đủ chứng từ trước khi gửi",
+        "Trao đổi qua điện thoại không có văn bản"
+      ],
+      "severity": "critical",
+      "cause": "4 thùng mực in 91kg đi Texas bị HQ Mỹ chặn yêu cầu bổ sung giấy tờ trong 9 ngày. 3 bên không biết deadline → trễ → hàng bị return về VN.",
+      "solution": "Hủy hàng tại VN (PA nhanh gọn). Chia sẻ chi phí 3 bên: THG + SGL + KH.",
+      "prevention": "Hàng khó xuất: chuẩn bị hồ sơ đầy đủ trước khi gửi. Khi HQ yêu cầu bổ sung → có 10 ngày để hoàn tất. Mọi trao đổi phải có văn bản (mail/nhắn tin), không chỉ điện thoại.",
+      "owner": "Ops → Manager",
+      "escalate_to": "BGĐ",
+      "sla_hours": 24,
+      "damage_range": "Chi phí vận chuyển + phí lưu kho + phí return (lớn)",
+      "real_case": "Tháng 9/2025: Lô mực in 91kg → TX bị HQ chặn. Phát hiện deadline trễ → hàng bị return về VN"
+    },
+    {
+      "id": "T-WH-001",
+      "department": "Warehouse",
+      "title": "Kho off dài ngày không báo trước - nhiều đơn bị delay",
+      "keywords": ["kho off", "kho đóng cửa", "delay do kho off", "kho nghỉ dài ngày", "dispute do kho off"],
+      "warning_signs": [
+        "Kho US có lịch nghỉ dài (>3 ngày)",
+        "Hàng nhiều lô đang giao đến kho cùng thời điểm"
+      ],
+      "severity": "critical",
+      "cause": "Kho off 5 ngày cùng lúc với các kiện hàng giao đến → đơn cần xử lý gấp bị delay → KH dispute → THG phải active đơn trước.",
+      "solution": "Thông báo KH trước khi kho off. Active đơn tạm thời cho KH. Thương lượng với kho về ràng buộc lịch làm việc.",
+      "prevention": "Ràng buộc hợp đồng: kho phải báo trước ít nhất 7 ngày nếu off >2 ngày. Sắp xếp lịch nhận hàng tránh trùng với lịch off kho.",
+      "owner": "Ops",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "Nhiều đơn dispute, active tracking trước",
+      "real_case": "Tháng 6/2025 - Thịnh: Kho off 5 ngày, hàng dồn lại, nhiều đơn dispute"
+    },
+    {
+      "id": "T-WH-002",
+      "department": "Warehouse",
+      "title": "Không clear bao bì đóng gói trước khi KH stock hàng",
+      "keywords": ["thiếu bao bì", "không clear đóng gói", "thiếu nvl", "bao bì đóng gói", "mua bao bì gấp"],
+      "warning_signs": [
+        "KH mới stock hàng lần đầu tại kho US",
+        "Chưa confirm loại bao bì, kích thước, số lượng dự trữ"
+      ],
+      "severity": "warning",
+      "cause": "KH stock hàng tại kho US nhưng không clear trước: khi nào dùng túi, khi nào dùng box, kích thước bao bì. Kho thiếu NVL phải mua gấp tại siêu thị (giá cao) hoặc delay.",
+      "solution": "Mua bao bì gấp tại siêu thị. Delay đơn cho đến khi có đồ đóng gói.",
+      "prevention": "Checklist onboarding KH Warehouse: confirm đầy đủ loại bao bì, kích thước, số lượng tồn kho tối thiểu. Hoặc để KH stock bao bì riêng sang US.",
+      "owner": "Ops / Kho",
+      "escalate_to": "Manager",
+      "sla_hours": 8,
+      "damage_range": "Phí bao bì cao hơn + delay",
+      "real_case": "Tháng 6/2025 - Thịnh: Thiếu NVL đóng gói, mua gấp tại siêu thị, giá cao"
+    },
+    {
+      "id": "T-WH-003",
+      "department": "Warehouse",
+      "title": "Upload đơn vào OMS copy lệch SKU - 18 đơn sai",
+      "keywords": ["copy lệch sku oms", "upload sai sku", "oms sai đơn", "18 đơn sai", "lệch sku hàng loạt"],
+      "warning_signs": [
+        "Upload/copy đơn thủ công từ Lark Sheet sang OMS",
+        "Xử lý đơn hàng loạt (>10 đơn cùng lúc)"
+      ],
+      "severity": "critical",
+      "cause": "Vẫn làm thủ công và không kiểm duyệt kỹ trước khi đẩy đơn lên OMS → copy lệch SKU → 18 đơn sai → mất thời gian + tiền resend.",
+      "solution": "Resend đúng hàng cho 18 đơn. Cảnh báo KH nguy cơ mất KH.",
+      "prevention": "Kiểm duyệt double-check trước khi đẩy đơn hàng loạt. Khi OMS đã hỗ trợ API → ưu tiên dùng API thay vì upload thủ công.",
+      "owner": "Ops",
+      "escalate_to": "Manager + Finance",
+      "sla_hours": 4,
+      "damage_range": "Chi phí resend 18 đơn + nguy cơ mất KH",
+      "real_case": "Tháng 6/2025 - Huyền: Copy lệch SKU khi lên OMS → 18 đơn sai"
+    },
+    {
+      "id": "T-WH-004",
+      "department": "Warehouse",
+      "title": "OMS tự mua bảo hiểm USPS - phí tăng 2-3$/đơn",
+      "keywords": ["bảo hiểm usps tự động", "oms insurance", "phí bảo hiểm tăng", "khai giá đơn hàng", "usps insurance fee"],
+      "warning_signs": [
+        "KH khai báo phần 'giá bán' hoặc 'giá trị đơn hàng' trên OMS",
+        "Giá label USPS cao bất thường so với bình thường"
+      ],
+      "severity": "critical",
+      "cause": "OMS lấy thông tin 'Khai giá' từ KH nhập để tự mua bảo hiểm vận chuyển USPS → phí tăng 2-3$/đơn. Tổng $179 cho team HNLE.",
+      "solution": "CSKH warning tất cả KH về việc tránh khai giá đơn trên OMS. Finance check lại giá thu vs giá mua label Shippo. Ops check giá vài đơn trước khi tạo loạt label.",
+      "prevention": "Hướng dẫn KH không điền giá trị đơn hàng vào field khai giá trên OMS (hoặc ẩn field này).",
+      "owner": "CSKH + Ops + Finance",
+      "escalate_to": "Manager",
+      "sla_hours": 4,
+      "damage_range": "$179 (team HNLE)",
+      "real_case": "Tháng 7/2025 - HNLE: OMS tự mua bảo hiểm USPS do KH khai giá. Tổng $179"
+    },
+    {
+      "id": "T-WH-005",
+      "department": "Warehouse",
+      "title": "Label USPS trả giá khác nhau theo zipcode - KH từ chối trả chênh lệch",
+      "keywords": ["giá usps theo zipcode", "chênh lệch giá label", "zone giá khác", "bảng giá cố định sai", "shippo giá chênh"],
+      "warning_signs": [
+        "KH nhận bảng giá cố định theo zone",
+        "Địa chỉ giao hàng có zipcode không chuẩn zone"
+      ],
+      "severity": "warning",
+      "cause": "THG báo giá cố định theo 8 zone, nhưng thực tế Shippo tính chênh 6-7% do cùng zone khác zipcode. KH không chấp nhận phần chênh.",
+      "solution": "Thông báo toàn bộ KH Warehouse. Confirm 'Giá vận chuyển chỉ mang tính tham khảo, thực tế theo từng đơn trên OMS'.",
+      "prevention": "Sửa cách báo giá: không dùng bảng giá cố định theo zone. Luôn note rõ giá chỉ tham khảo.",
+      "owner": "Sale / CSKH",
+      "escalate_to": "Finance",
+      "sla_hours": 24,
+      "damage_range": "$56.29 (VET Global Brand)",
+      "real_case": "Tháng 7/2025 - VET Global Brand: Chênh 6-7% do zipcode. KH không chấp nhận → $56.29"
+    },
+    {
+      "id": "T-WH-006",
+      "department": "Warehouse",
+      "title": "Tracking USPS bị MID fraud - tracking đã sử dụng (USED)",
+      "keywords": ["mid fraud", "tracking used", "tracking đã dùng", "gian lận mã usps", "shippo tracking used"],
+      "warning_signs": [
+        "Label mua từ Shippo nhưng tracking hiển thị đã được sử dụng trước đó",
+        "Nhiều đơn cùng gặp vấn đề tracking"
+      ],
+      "severity": "critical",
+      "cause": "MID fraud (gian lận Mailer ID USPS) - tracking bị tái sử dụng. Ngày càng phổ biến trên hệ thống USPS. Phát hiện muộn do KH báo trước.",
+      "solution": "Mail cho Shippo để kiện USPS. Khi nhận label từ Shippo → xuất ra check kỹ trước khi báo KH.",
+      "prevention": "Check status tracking USPS ngay sau khi mua label trước khi gán cho đơn hàng.",
+      "owner": "Ops",
+      "escalate_to": "Manager → BGĐ",
+      "sla_hours": 4,
+      "damage_range": "20 đơn VET bị ảnh hưởng",
+      "real_case": "Tháng 8/2025 - VET: 20 đơn tracking bị MID fraud. Đang thương lượng đền bù"
+    },
+    {
+      "id": "T-WH-007",
+      "department": "Warehouse",
+      "title": "Hàng đến KH bị hư hỏng - không có bubble wrap bảo vệ",
+      "keywords": ["hàng hư hỏng", "không bọc bubble", "đóng gói sai", "hàng bị hỏng khi vận chuyển", "thiếu chống sốc"],
+      "warning_signs": [
+        "Sản phẩm dễ vỡ, decal, sản phẩm nhạy cảm",
+        "Kho không có record đóng gói"
+      ],
+      "severity": "warning",
+      "cause": "2 đơn decal không được bọc bubble wrap → hàng hư hỏng khi vận chuyển. Kho không có record đóng gói để kiểm tra.",
+      "solution": "Kho chịu phí vận chuyển + fulfill. Claim USPS để được bồi thường tiền hàng.",
+      "prevention": "Quy định rõ sản phẩm nào BẮT BUỘC có bubble wrap. Kho phải chụp ảnh khi đóng gói và lưu lại.",
+      "owner": "Kho → Ops",
+      "escalate_to": "Finance",
+      "sla_hours": 24,
+      "damage_range": "Phí vận chuyển + fulfill (kho chịu)",
+      "real_case": "Tháng 8/2025 - VET: 2 đơn decal không bọc bubble → hàng hỏng. Kho chịu ship + fulfill"
+    },
+    {
+      "id": "T-WH-008",
+      "department": "Warehouse",
+      "title": "Kiểm đếm SKU hàng hóa không có barcode mất nhiều thời gian",
+      "keywords": ["kiểm đếm sku", "không có barcode", "mất thời gian kiểm hàng", "phụ thu kiểm đếm", "hàng không phân loại"],
+      "warning_signs": [
+        "KH chuyển hàng qua kho nhưng không phân loại theo SKU",
+        "Hàng hóa không dán barcode sẵn"
+      ],
+      "severity": "minor",
+      "cause": "KH không phân loại hàng theo SKU trước khi gửi, không dán barcode → kho phải dò từng cái → mất thời gian → phát sinh phí nhân công.",
+      "solution": "Phụ thu phí nhân công kiểm đếm thêm.",
+      "prevention": "Checklist onboarding Warehouse: KH phải dán barcode sẵn trên hàng. Nếu không, phải phân loại đóng từng túi/hộp riêng theo SKU.",
+      "owner": "Ops / Kho",
+      "escalate_to": "Manager",
+      "sla_hours": 24,
+      "damage_range": "Phí nhân công kiểm đếm",
+      "real_case": "Tháng 6/2025 - Thịnh: Kiểm đếm SKU mất nhiều thời gian, kho muốn phụ thu"
+    }
+  ]
+}

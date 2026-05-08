@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tìm kiếm | THG Training Hub</title>
+  <style>
+    :root{--blue:#1B4FBB;--blue-dark:#143d94;--blue-light:#e8eefb;--orange:#F97316;--orange-bg:#fff4ed;--green:#16a34a;--green-bg:#f0fdf4;--red:#dc2626;--red-bg:#fef2f2;--yellow:#ca8a04;--yellow-bg:#fefce8;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-400:#94a3b8;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;--sidebar-w:260px;--header-h:56px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray-50);color:var(--gray-700);font-size:14px;line-height:1.6}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 1px 8px rgba(0,0,0,.25)}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .menu-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px}
+    .topbar-logo{display:flex;align-items:center;gap:8px}
+    .topbar-logo span{color:#fff;font-size:15px;font-weight:700}
+    .badge-internal{background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 6px}
+    .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .user-pill span{color:rgba(255,255,255,.85);font-size:12px}
+    .sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--gray-200);overflow-y:auto;z-index:100;transition:transform .25s ease}
+    .sidebar::-webkit-scrollbar{width:4px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
+    .nav-section{padding:16px 0 4px}
+    .nav-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--gray-400);padding:0 16px 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;text-decoration:none;color:var(--gray-700);font-size:13.5px;font-weight:500;transition:background .15s;position:relative}
+    .nav-item:hover{background:var(--gray-50)}
+    .nav-item.active{background:var(--blue-light);color:var(--blue);font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+    .nav-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+    .nav-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+    .nav-divider{height:1px;background:var(--gray-100);margin:8px 16px}
+    .main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:28px 32px 80px}
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+    .overlay.visible{display:block}
+    /* Search UI */
+    .search-hero{text-align:center;padding:40px 20px 32px}
+    .search-hero h1{font-size:26px;font-weight:800;color:var(--gray-900);margin-bottom:8px}
+    .search-hero p{font-size:13.5px;color:var(--gray-600)}
+    .search-box-wrap{max-width:600px;margin:24px auto 0;position:relative}
+    .search-box-wrap input{width:100%;padding:14px 50px 14px 18px;border:2px solid var(--blue);border-radius:12px;font-size:15px;color:var(--gray-900);outline:none;background:#fff}
+    .search-box-wrap button{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:20px;cursor:pointer;color:var(--blue)}
+    .results-meta{font-size:13px;color:var(--gray-400);margin-bottom:16px}
+    .result-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:18px 20px;margin-bottom:12px;cursor:pointer;transition:border-color .2s,box-shadow .2s;text-decoration:none;display:block;color:inherit}
+    .result-card:hover{border-color:var(--blue);box-shadow:0 2px 12px rgba(27,79,187,.1)}
+    .result-card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .result-icon{font-size:22px}
+    .result-page{font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-light);padding:2px 8px;border-radius:6px}
+    .result-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px}
+    .result-snippet{font-size:13px;color:var(--gray-600);line-height:1.5}
+    .result-snippet mark{background:var(--yellow-bg);color:var(--yellow);border-radius:3px;padding:0 2px}
+    .no-results{text-align:center;padding:48px 20px;color:var(--gray-400)}
+    .no-results .nr-icon{font-size:48px;margin-bottom:12px}
+    .no-results h3{font-size:16px;font-weight:700;color:var(--gray-700);margin-bottom:6px}
+    .tag-section{margin-top:32px}
+    .tag-section h3{font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:12px}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px}
+    .tag-chip{padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:600;text-decoration:none;border:1.5px solid var(--gray-200);color:var(--gray-700);background:#fff;cursor:pointer;transition:border-color .15s,color .15s}
+    .tag-chip:hover{border-color:var(--blue);color:var(--blue)}
+    /* bottom nav */
+    .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);z-index:150;padding:6px 0}
+    .bottom-nav-inner{display:flex;justify-content:space-around}
+    .bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--gray-600);font-size:10px;font-weight:500;min-width:54px;padding:4px 0}
+    .bn-item .bn-icon{font-size:20px;line-height:1}
+    .bn-item.active{color:var(--blue)}
+    @media(max-width:768px){.menu-toggle{display:block}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:20px 16px 80px}.bottom-nav{display:block}}
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">
+      <span>🦅 THG Training Hub</span>
+      <span class="badge-internal">INTERNAL</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="user-pill">
+      <div class="avatar">TH</div>
+      <span>Team THG</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Tổng quan</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span>Dashboard</a>
+    <a href="onboarding.html" class="nav-item"><span class="nav-icon">🎓</span>Onboarding Roadmap</a>
+    <a href="search.html" class="nav-item active"><span class="nav-icon">🔍</span>Tìm kiếm</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">4 Mảng Dịch Vụ</div>
+    <a href="pod.html" class="nav-item"><span class="nav-icon">🖨️</span>POD</a>
+    <a href="dropship.html" class="nav-item"><span class="nav-icon">📦</span>Dropship</a>
+    <a href="fulfill.html" class="nav-item"><span class="nav-icon">✈️</span>Fulfill TQ→USA</a>
+    <a href="express.html" class="nav-item"><span class="nav-icon">🚚</span>Express</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">SOP Vận Hành</div>
+    <a href="sop-sale.html" class="nav-item"><span class="nav-icon">📣</span>Sale & Marketing</a>
+    <a href="sop-cskh.html" class="nav-item"><span class="nav-icon">🤝</span>CSKH & Operations</a>
+    <a href="sop-finance.html" class="nav-item"><span class="nav-icon">💰</span>Kế toán</a>
+    <a href="sop-cross.html" class="nav-item"><span class="nav-icon">🔗</span>Liên phòng ban</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">Xử Lý Sự Cố</div>
+    <a href="trouble.html" class="nav-item"><span class="nav-icon">🚨</span>Trouble Handling <span class="nav-badge" style="background:#ef4444">34</span></a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="search-hero">
+    <h1>🔍 Tìm kiếm trong THG Hub</h1>
+    <p>Tìm kiếm quy trình, SOP, case xử lý sự cố, chính sách và hướng dẫn</p>
+  </div>
+
+  <div class="search-box-wrap">
+    <input type="search" id="searchInput" placeholder="Ví dụ: SLA, bồi thường, 1688, tracking..." autocomplete="off" />
+    <button onclick="performSearch()" aria-label="Tìm kiếm">🔍</button>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0">
+    <div class="results-meta" id="resultsMeta"></div>
+    <div id="resultsContainer"></div>
+
+    <div class="tag-section" id="tagSection">
+      <h3>Tìm nhanh theo chủ đề:</h3>
+      <div class="tag-list">
+        <span class="tag-chip" onclick="setSearch('SLA')">SLA & Deadline</span>
+        <span class="tag-chip" onclick="setSearch('bồi thường')">Bồi thường</span>
+        <span class="tag-chip" onclick="setSearch('tracking')">Tracking</span>
+        <span class="tag-chip" onclick="setSearch('1688')">Sourcing 1688</span>
+        <span class="tag-chip" onclick="setSearch('công nợ')">Công nợ</span>
+        <span class="tag-chip" onclick="setSearch('escalate')">Escalation</span>
+        <span class="tag-chip" onclick="setSearch('kho')">Kho hàng</span>
+        <span class="tag-chip" onclick="setSearch('customs')">Hải quan</span>
+        <span class="tag-chip" onclick="setSearch('refund')">Refund</span>
+        <span class="tag-chip" onclick="setSearch('Lark')">Lark</span>
+        <span class="tag-chip" onclick="setSearch('Telegram')">Telegram</span>
+        <span class="tag-chip" onclick="setSearch('FedEx')">FedEx</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="index.html" class="bn-item"><span class="bn-icon">🏠</span>Dashboard</a>
+    <a href="onboarding.html" class="bn-item"><span class="bn-icon">🎓</span>Onboarding</a>
+    <a href="search.html" class="bn-item active"><span class="bn-icon">🔍</span>Tìm kiếm</a>
+    <a href="trouble.html" class="bn-item"><span class="bn-icon">🚨</span>Sự cố</a>
+  </div>
+</nav>
+
+<script>
+const INDEX = [
+  {page:'POD – Print on Demand',url:'pod.html',icon:'🖨️',keywords:[
+    'POD print on demand in ấn theo yêu cầu jersey hoodie áo thun phone case',
+    'SLA critical 2 4 giờ warning 24 giờ minor sự cố incident',
+    'bồi thường $20 $50 compensation đền bù',
+    'kho Pennsylvania Guangdong Trung Quốc',
+    'FedEx USPS UPS proof delivery giao hàng',
+    'tracking theo dõi đơn hàng',
+    'SKU design file thiết kế',
+    'Type 86 Section 321 customs hải quan'
+  ]},
+  {page:'Dropship',url:'dropship.html',icon:'📦',keywords:[
+    'Dropship vận chuyển thẳng trực tiếp',
+    '8 10 ngày TQ USA Trung Quốc Mỹ shipping',
+    '1688 Taobao Tmall sourcing nhà cung cấp',
+    'tracking 48 giờ kích hoạt',
+    'bồi thường $20 compensation',
+    'Telegram group khách hàng',
+    'report Thứ 3 Thứ 6',
+    'Facebook cộng đồng ecommerce TikTok Shop'
+  ]},
+  {page:'Fulfill TQ → USA',url:'fulfill.html',icon:'✈️',keywords:[
+    'Fulfill fulfillment kho Trung Quốc USA',
+    '30kg trọng lượng kiện hàng',
+    'volume weight thể tích D×R×C÷8000',
+    'kho Milford Pennsylvania Dongguan Guangdong',
+    'prohibited items hàng cấm explosives',
+    'bồi thường $20 $50 compensation',
+    '2 tháng claim thất lạc lost',
+    '3 ngày damage hư hỏng'
+  ]},
+  {page:'Express – Vận chuyển nhanh',url:'express.html',icon:'🚚',keywords:[
+    'Express ePacket VN USA quốc tế 100 quốc gia',
+    '2kg giới hạn trọng lượng',
+    'volume weight VN US D×R×C÷5000',
+    '8 21 ngày thời gian vận chuyển',
+    '$50 bồi thường tối đa',
+    '2 tháng claim thất lạc',
+    '3 ngày damage hư hỏng',
+    'insurance bảo hiểm'
+  ]},
+  {page:'SOP CSKH & Operations',url:'sop-cskh.html',icon:'🤝',keywords:[
+    'CSKH customer service khách hàng',
+    '30 phút phản hồi tin nhắn',
+    '48 giờ tracking kích hoạt',
+    '21 ngày lost package mất hàng',
+    'SOP-003 POD Dropship Operations',
+    'SOP-004 Express Shipping',
+    'SOP-005 Warehouse Management',
+    'escalation 4 cấp leo thang',
+    'template script mẫu câu'
+  ]},
+  {page:'SOP Sale & Marketing',url:'sop-sale.html',icon:'📣',keywords:[
+    'Sale Marketing lead khách hàng tiềm năng',
+    'SOP-001 Lead Management',
+    'SOP-002 Customer Handoff bàn giao',
+    '3 leads tuần KPI',
+    '2 video content',
+    'Thứ 3 Thứ 6 báo cáo report',
+    '2 giờ phản hồi Telegram',
+    'Facebook group 156K ecommerce TikTok Shop'
+  ]},
+  {page:'SOP Finance & Công Nợ',url:'sop-finance.html',icon:'💰',keywords:[
+    'Finance kế toán công nợ thanh toán',
+    'SOP-006 debt management',
+    'TPBank Vietcombank tỷ giá',
+    'T+0 thanh toán trước',
+    'D+1 D+3 D+7 D+15 leo thang collection',
+    'lãi suất NHNN phạt trả chậm',
+    'báo cáo Thứ 3 Thứ 6 tháng quý',
+    'refund bồi hoàn hoàn tiền 15 ngày',
+    'cấn trừ 90 ngày'
+  ]},
+  {page:'SOP Liên Phòng Ban',url:'sop-cross.html',icon:'🔗',keywords:[
+    'liên phòng ban cross department phối hợp',
+    'SOP-007 escalation flow',
+    'Lark request nội bộ hệ thống',
+    'Telegram khách hàng',
+    'RACI matrix trách nhiệm',
+    'L1 L2 L3 L4 escalate',
+    'SLA 2 giờ trouble ticket 4 giờ handoff',
+    '30 phút emergency khẩn cấp'
+  ]},
+  {page:'Trouble Handling – 34 Cases',url:'trouble.html',icon:'🚨',keywords:[
+    'trouble sự cố xử lý incident',
+    'critical warning minor',
+    'POD Dropship Express US Warehouse',
+    'design file SKU import error',
+    'customs hải quan carrier restriction',
+    'OMS error packaging kho',
+    'fraud gian lận insurance bảo hiểm',
+    'SLA 2 4 24 giờ'
+  ]},
+];
+
+function highlight(text, query) {
+  if (!query) return text;
+  const words = query.split(/\s+/).filter(w => w.length > 1);
+  let result = text;
+  words.forEach(w => {
+    const re = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    result = result.replace(re, '<mark>$1</mark>');
+  });
+  return result;
+}
+
+function score(item, query) {
+  const q = query.toLowerCase();
+  const words = q.split(/\s+/).filter(w => w.length > 1);
+  let s = 0;
+  const haystack = (item.page + ' ' + item.keywords.join(' ')).toLowerCase();
+  words.forEach(w => {
+    if (haystack.includes(w)) s++;
+    if (item.page.toLowerCase().includes(w)) s += 2;
+  });
+  return s;
+}
+
+function performSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const container = document.getElementById('resultsContainer');
+  const meta = document.getElementById('resultsMeta');
+  const tagSec = document.getElementById('tagSection');
+
+  if (!q) { container.innerHTML=''; meta.textContent=''; tagSec.style.display=''; return; }
+
+  tagSec.style.display = 'none';
+
+  const scored = INDEX.map(item => ({ item, s: score(item, q) }))
+    .filter(x => x.s > 0)
+    .sort((a,b) => b.s - a.s);
+
+  meta.textContent = scored.length > 0
+    ? `Tìm thấy ${scored.length} kết quả cho "${q}":`
+    : '';
+
+  if (scored.length === 0) {
+    container.innerHTML = `<div class="no-results">
+      <div class="nr-icon">🔎</div>
+      <h3>Không tìm thấy kết quả</h3>
+      <p>Thử tìm từ khác hoặc chọn chủ đề ở trên</p>
+    </div>`;
+    tagSec.style.display = '';
+    return;
+  }
+
+  container.innerHTML = scored.map(({ item }) => {
+    const snippet = highlight(item.keywords[0], q);
+    return `<a href="${item.url}" class="result-card">
+      <div class="result-card-top">
+        <span class="result-icon">${item.icon}</span>
+        <span class="result-page">${item.page}</span>
+      </div>
+      <div class="result-title">${item.page}</div>
+      <div class="result-snippet">${snippet}</div>
+    </a>`;
+  }).join('');
+}
+
+function setSearch(q) {
+  document.getElementById('searchInput').value = q;
+  performSearch();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('visible');
+}
+
+// Auto-search from URL param
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q');
+  if (q) {
+    document.getElementById('searchInput').value = q;
+    performSearch();
+  }
+});
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') performSearch();
+});
+</script>
+</body>
+</html>

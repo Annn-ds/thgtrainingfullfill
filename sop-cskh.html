@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOP CSKH & Operations | THG Training Hub</title>
+  <style>
+    :root {
+      --blue:#1B4FBB; --blue-dark:#143d94; --blue-light:#e8eefb;
+      --orange:#F97316; --orange-bg:#fff4ed;
+      --green:#16a34a; --green-bg:#f0fdf4;
+      --red:#dc2626; --red-bg:#fef2f2;
+      --yellow:#ca8a04; --yellow-bg:#fefce8;
+      --purple:#7c3aed; --purple-bg:#f3e8ff;
+      --teal:#0d9488; --teal-bg:#f0fdfa;
+      --gray-50:#f8fafc; --gray-100:#f1f5f9; --gray-200:#e2e8f0;
+      --gray-400:#94a3b8; --gray-600:#475569; --gray-700:#334155; --gray-900:#0f172a;
+      --sidebar-w:260px; --header-h:56px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray-50);color:var(--gray-700);font-size:14px;line-height:1.6}
+
+    /* TOPBAR */
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 1px 8px rgba(0,0,0,.25)}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .menu-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
+    .topbar-logo{display:flex;align-items:center;gap:8px}
+    .topbar-logo .badge{background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+    .topbar-logo span{color:#fff;font-size:15px;font-weight:700}
+    .user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 6px}
+    .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .user-pill span{color:rgba(255,255,255,.85);font-size:12px}
+
+    /* SIDEBAR */
+    .sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--gray-200);overflow-y:auto;z-index:100;transition:transform .25s ease}
+    .sidebar::-webkit-scrollbar{width:4px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
+    .nav-section{padding:16px 0 4px}
+    .nav-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--gray-400);padding:0 16px 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;text-decoration:none;color:var(--gray-700);font-size:13.5px;font-weight:500;transition:background .15s;position:relative}
+    .nav-item:hover{background:var(--gray-50)}
+    .nav-item.active{background:var(--orange-bg);color:#c2410c;font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--orange);border-radius:0 3px 3px 0}
+    .nav-item .nav-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+    .nav-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+    .nav-badge.blue{background:var(--blue)} .nav-badge.green{background:var(--green)}
+    .nav-divider{height:1px;background:var(--gray-100);margin:8px 16px}
+    .topic-nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px 7px 32px;font-size:12.5px;color:var(--gray-600);text-decoration:none;transition:color .15s,background .15s}
+    .topic-nav-item:hover{background:var(--gray-50);color:var(--orange)}
+    .topic-nav-item.current{color:var(--orange);font-weight:600}
+    .topic-num{font-size:10px;font-weight:700;background:var(--gray-200);color:var(--gray-600);padding:1px 6px;border-radius:10px;flex-shrink:0}
+    .topic-nav-item.current .topic-num{background:var(--orange-bg);color:var(--orange)}
+
+    /* MAIN */
+    .main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:28px 32px 64px}
+
+    /* BREADCRUMB */
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--gray-400);margin-bottom:20px}
+    .breadcrumb a{color:var(--blue);text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+
+    /* HERO */
+    .module-hero{background:linear-gradient(135deg,var(--orange-bg) 0%,#fff8f5 100%);border:1px solid #fed7aa;border-radius:16px;padding:28px 32px;margin-bottom:28px;display:flex;align-items:flex-start;gap:20px}
+    .module-hero-icon{font-size:48px;flex-shrink:0}
+    .module-hero-body .tag{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;margin-bottom:10px;letter-spacing:.5px}
+    .module-hero-body h1{font-size:22px;font-weight:800;color:var(--gray-900);margin-bottom:8px}
+    .module-hero-body p{font-size:13.5px;color:var(--gray-600);max-width:600px}
+    .module-meta-row{display:flex;gap:20px;margin-top:16px;flex-wrap:wrap}
+    .meta-item{font-size:12px;color:var(--gray-600)}
+
+    /* QUICK NAV */
+    .module-progress-nav{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:14px 20px;margin-bottom:28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .mpn-label{font-size:12px;font-weight:600;color:var(--gray-400);margin-right:4px}
+    .mpn-item{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:background .15s,color .15s;border:1.5px solid var(--gray-200);color:var(--gray-600);background:var(--gray-50)}
+    .mpn-item:hover{border-color:var(--orange);color:var(--orange)}
+
+    /* SOP BLOCKS */
+    .sop-block{background:#fff;border:1px solid var(--gray-200);border-radius:14px;overflow:hidden;margin-bottom:24px;scroll-margin-top:calc(var(--header-h) + 16px)}
+    .sop-header{padding:18px 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--gray-200)}
+    .sop-header.cskh  {background:linear-gradient(135deg,var(--orange-bg),#fff8f5)}
+    .sop-header.ops   {background:linear-gradient(135deg,var(--blue-light),#f0f4ff)}
+    .sop-header.wh    {background:linear-gradient(135deg,var(--green-bg),#f0fff8)}
+    .sop-id-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.5px;flex-shrink:0}
+    .sop-id-badge.cskh {background:var(--orange);color:#fff}
+    .sop-id-badge.ops  {background:var(--blue);color:#fff}
+    .sop-id-badge.wh   {background:var(--green);color:#fff}
+    .sop-header h2{font-size:16px;font-weight:800;color:var(--gray-900)}
+    .sop-header p{font-size:12.5px;color:var(--gray-600);margin-top:2px}
+    .sop-meta{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+    .sop-meta .sm-tag{font-size:11px;font-weight:600;padding:2px 9px;border-radius:12px;background:var(--green-bg);color:var(--green)}
+    .sop-meta .sm-dept{font-size:11px;color:var(--gray-400)}
+    .sop-body{padding:24px}
+
+    /* CONTENT SECTION */
+    .content-section{margin-bottom:36px;scroll-margin-top:calc(var(--header-h) + 16px)}
+    .section-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gray-100)}
+    .section-hd .topic-badge{background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.5px;flex-shrink:0}
+    .section-hd h2{font-size:16px;font-weight:700;color:var(--gray-900)}
+
+    /* NOTE BOXES */
+    .note-box{border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+    .note-box.info  {background:var(--blue-light); border-left:4px solid var(--blue)}
+    .note-box.warn  {background:var(--yellow-bg);  border-left:4px solid var(--yellow)}
+    .note-box.danger{background:var(--red-bg);     border-left:4px solid var(--red)}
+    .note-box.success{background:var(--green-bg);  border-left:4px solid var(--green)}
+    .note-box.orange{background:var(--orange-bg);  border-left:4px solid var(--orange)}
+    .note-box .nb-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+    .note-box p{font-size:13px;line-height:1.6}
+    .note-box.info p{color:#1e3a8a} .note-box.warn p{color:#713f12}
+    .note-box.danger p{color:#991b1b} .note-box.success p{color:#14532d}
+    .note-box.orange p{color:#7c2d12}
+
+    /* STEPS */
+    .steps-wrap{display:flex;flex-direction:column;gap:0}
+    .step-row{display:flex;gap:16px;align-items:flex-start}
+    .step-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+    .step-dot{width:34px;height:34px;border-radius:50%;background:var(--orange);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .step-dot.blue{background:var(--blue)} .step-dot.green{background:var(--green)} .step-dot.red{background:var(--red)}
+    .step-line{width:2px;flex:1;background:var(--gray-200);margin:4px 0;min-height:20px}
+    .step-row:last-child .step-line{display:none}
+    .step-body{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px 18px;margin-bottom:12px;flex:1}
+    .step-body .step-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px}
+    .step-tag.daily{background:var(--green-bg);color:var(--green)}
+    .step-tag.weekly{background:var(--yellow-bg);color:var(--yellow)}
+    .step-tag.on-demand{background:var(--blue-light);color:var(--blue)}
+    .step-tag.urgent{background:var(--red-bg);color:var(--red)}
+    .step-body h4{font-size:13.5px;font-weight:700;color:var(--gray-900);margin-bottom:6px}
+    .step-body ul{list-style:none}
+    .step-body ul li{font-size:12.5px;color:var(--gray-600);margin-bottom:5px;padding-left:14px;position:relative;line-height:1.5}
+    .step-body ul li::before{content:'·';position:absolute;left:0;color:var(--orange);font-weight:900;font-size:16px;line-height:1}
+    .step-body .step-note{margin-top:8px;background:#fff;border:1px solid var(--gray-200);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--gray-600)}
+
+    /* RESPONSIBILITY MATRIX */
+    .matrix-wrap{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;overflow-x:auto;margin-bottom:16px}
+    .matrix-table{width:100%;border-collapse:collapse}
+    .matrix-table th{padding:10px 14px;text-align:left;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--gray-200)}
+    .matrix-table th:first-child{background:var(--gray-50);color:var(--gray-600);width:35%}
+    .matrix-table th.sale{background:#f3e8ff;color:var(--purple)}
+    .matrix-table th.cskh{background:var(--orange-bg);color:#c2410c}
+    .matrix-table th.ops{background:var(--blue-light);color:var(--blue)}
+    .matrix-table th.acct{background:var(--green-bg);color:var(--green)}
+    .matrix-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);font-size:12.5px;vertical-align:middle;text-align:center}
+    .matrix-table td:first-child{text-align:left;font-weight:500;color:var(--gray-700)}
+    .matrix-table tr:last-child td{border-bottom:none}
+    .matrix-table tr:hover td{background:var(--gray-50)}
+    .r-primary{font-size:16px} .r-support{font-size:14px;opacity:.6} .r-none{color:var(--gray-200)}
+
+    /* POLICY ACCORDION */
+    .policy-block{background:#fff;border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:8px}
+    .policy-header{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;background:var(--gray-50);border-bottom:1px solid var(--gray-200);user-select:none;transition:background .15s}
+    .policy-header:hover{background:var(--gray-100)}
+    .ph-id{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;flex-shrink:0}
+    .ph-id.orange{background:var(--orange);color:#fff}
+    .ph-id.red{background:var(--red);color:#fff}
+    .ph-id.blue{background:var(--blue);color:#fff}
+    .ph-id.green{background:var(--green);color:#fff}
+    .policy-header h3{font-size:13.5px;font-weight:700;color:var(--gray-900);flex:1}
+    .policy-header .toggle{font-size:13px;color:var(--gray-400);transition:transform .2s}
+    .policy-body{padding:16px 18px;font-size:13px;color:var(--gray-600);line-height:1.7;display:none}
+    .policy-body.open{display:block}
+    .policy-body ul{list-style:disc;padding-left:20px;margin-top:6px}
+    .policy-body ul li{margin-bottom:5px}
+    .hl{background:var(--yellow-bg);border-left:3px solid var(--yellow);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#713f12}
+    .ok{background:var(--green-bg);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#14532d}
+    .err{background:var(--red-bg);border-left:3px solid var(--red);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#991b1b}
+
+    /* TIMELINE TABLE */
+    .timeline-table-wrap{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;overflow-x:auto}
+    .timeline-table{width:100%;border-collapse:collapse}
+    .timeline-table th{background:var(--orange);color:#fff;padding:10px 16px;text-align:left;font-size:12px;font-weight:600}
+    .timeline-table td{padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:12.5px;vertical-align:top}
+    .timeline-table tr:last-child td{border-bottom:none}
+    .timeline-table tr:hover td{background:var(--gray-50)}
+    .tl-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px}
+    .tl-badge.fast {background:var(--green-bg);color:var(--green)}
+    .tl-badge.slow {background:var(--yellow-bg);color:var(--yellow)}
+    .tl-badge.urgent{background:var(--red-bg);color:var(--red)}
+
+    /* SCRIPT BLOCK */
+    .script-block{background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:12px}
+    .script-header{background:var(--gray-900);padding:10px 16px;display:flex;align-items:center;gap:10px}
+    .script-header .sh-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--orange);color:#fff}
+    .script-header .sh-title{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85)}
+    .script-body{padding:14px 18px;font-size:13px;color:var(--gray-700);line-height:1.8;background:var(--gray-50);font-style:italic}
+    .script-body strong{font-style:normal;color:var(--gray-900)}
+    .script-body .placeholder{color:var(--orange);font-weight:600;font-style:normal}
+
+    /* ESCALATION FLOW */
+    .escalation-wrap{display:flex;flex-direction:column;gap:2px}
+    .esc-level{display:flex;align-items:stretch;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);margin-bottom:10px}
+    .esc-level-num{padding:16px 14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0;min-width:48px}
+    .esc-level-num.l1{background:var(--green)}
+    .esc-level-num.l2{background:var(--yellow)}
+    .esc-level-num.l3{background:var(--orange)}
+    .esc-level-num.l4{background:var(--red)}
+    .esc-content{padding:14px 18px;flex:1;background:#fff}
+    .esc-content h4{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:4px}
+    .esc-content p{font-size:12.5px;color:var(--gray-600);line-height:1.5}
+    .esc-content .esc-time{display:inline-block;font-size:11px;font-weight:600;background:var(--gray-100);color:var(--gray-600);padding:2px 8px;border-radius:10px;margin-top:6px}
+
+    /* LARK GUIDE */
+    .lark-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .lark-step{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:16px;display:flex;gap:12px}
+    .lark-step .ls-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .lark-step h4{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:4px}
+    .lark-step p{font-size:12px;color:var(--gray-600);line-height:1.5}
+
+    /* PAGE FOOTER */
+    .page-footer{text-align:center;padding-top:32px;border-top:1px solid var(--gray-200);margin-top:20px}
+    .nav-btns{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+    .btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s}
+    .btn-nav.prev{background:var(--gray-100);color:var(--gray-700)}
+    .btn-nav.prev:hover{background:var(--gray-200)}
+    .btn-nav.next{background:var(--orange);color:#fff}
+    .btn-nav.next:hover{background:#ea6b0f}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+      .overlay.visible{display:block}
+      .main{margin-left:0;padding:20px 16px 48px}
+      .module-hero{flex-direction:column;padding:20px}
+      .sop-meta{display:none}
+    }
+  
+    /* ── SIDEBAR DROPDOWN TOGGLE ── */
+    .nav-section-label{cursor:pointer;user-select:none;display:flex!important;align-items:center}
+    .nav-arrow{margin-left:auto;font-size:9px;opacity:.45;transition:transform .3s ease;display:inline-block;flex-shrink:0;line-height:1;pointer-events:none}
+    .nav-section-body{overflow:hidden;transition:max-height .3s ease}
+    .nav-sub{overflow:hidden;transition:max-height .3s ease}
+  
+/* ── KNOWLEDGE CHECK ── */
+.quiz-section{background:#fff;border:2px solid var(--blue);border-radius:16px;padding:28px;margin-top:36px;margin-bottom:8px}
+.quiz-badge{display:inline-block;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.5px;margin-bottom:10px}
+.quiz-section>h2{font-size:17px;font-weight:800;color:var(--gray-900);margin-bottom:4px}
+.quiz-desc{font-size:13px;color:var(--gray-600);margin-bottom:20px}
+.quiz-q{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.quiz-q-text{font-size:13.5px;font-weight:600;color:var(--gray-900);margin-bottom:10px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:6px}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--gray-700);border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.quiz-opt:hover{background:var(--blue-light);border-color:var(--blue)}
+.quiz-opt input{cursor:pointer;accent-color:var(--blue);margin-top:2px;flex-shrink:0}
+.quiz-opt.correct{background:var(--green-bg)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600}
+.quiz-opt.wrong{background:var(--red-bg)!important;border-color:var(--red)!important;color:var(--red)!important}
+.quiz-q.done .quiz-opt{pointer-events:none}
+.quiz-submit{margin-top:18px;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+.quiz-submit:hover{background:var(--blue-dark)}
+.quiz-submit:disabled{opacity:.5;cursor:default}
+.quiz-result{margin-top:18px;padding:14px 18px;border-radius:10px;font-size:14px;font-weight:600;display:none}
+.quiz-result.pass{background:var(--green-bg);color:var(--green);border:1px solid #86efac}
+.quiz-result.fail{background:var(--orange-bg);color:#c2410c;border:1px solid #fed7aa}
+/* ── SEARCH BAR ── */
+.search-wrap{display:flex;align-items:center;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;gap:8px;min-width:0}
+.search-wrap input{background:transparent;border:none;outline:none;color:#fff;font-size:12.5px;width:160px;min-width:0}
+.search-wrap input::placeholder{color:rgba(255,255,255,.55)}
+.search-wrap button{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0}
+@media(max-width:768px){.search-wrap input{width:90px}.quiz-section{padding:18px 14px}}
+/* ── ONBOARDING NAV BADGE ── */
+.nav-badge.teal{background:#0d9488}
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);z-index:150;padding:6px 0 env(safe-area-inset-bottom,0)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--gray-600);font-size:10px;font-weight:500;min-width:54px;padding:4px 0}
+.bn-item .bn-icon{font-size:20px;line-height:1}
+.bn-item.active{color:var(--blue)}
+@media(max-width:768px){.bottom-nav{display:block}.main{padding-bottom:80px!important}}
+
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">
+      <span>🦅 THG Training Hub</span>
+      <span class="badge">INTERNAL</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="user-pill"><div class="avatar">TH</div><span>Team THG</span></div>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Tổng quan</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">4 Mảng Dịch Vụ</div>
+    <a href="pod.html"      class="nav-item"><span class="nav-icon">🖨️</span> POD – Print on Demand</a>
+    <a href="dropship.html" class="nav-item"><span class="nav-icon">📦</span> Dropship</a>
+    <a href="fulfill.html"  class="nav-item"><span class="nav-icon">✈️</span> Fulfill – TQ → USA</a>
+    <a href="express.html"  class="nav-item"><span class="nav-icon">🚚</span> Express – Nội địa</a>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section">
+    <div class="nav-section-label">SOP Vận Hành</div>
+    <a href="sop-sale.html"    class="nav-item"><span class="nav-icon">📣</span> Sale & Marketing</a>
+    <a href="sop-cskh.html"    class="nav-item active"><span class="nav-icon">🤝</span> CSKH & Operations <span class="nav-badge">Đây</span></a>
+    <div style="padding:4px 0 4px">
+      <a href="#sop003" class="topic-nav-item"><span class="topic-num">003</span> POD/Dropship Ops</a>
+      <a href="#sop004" class="topic-nav-item"><span class="topic-num">004</span> Express Shipping</a>
+      <a href="#sop005" class="topic-nav-item"><span class="topic-num">005</span> Warehouse</a>
+      <a href="#boiduong" class="topic-nav-item"><span class="topic-num">BĐ</span> Chính sách bồi thường</a>
+      <a href="#escalation" class="topic-nav-item"><span class="topic-num">ESC</span> Escalation Flow</a>
+      <a href="#script" class="topic-nav-item"><span class="topic-num">TXT</span> Script & Template</a>
+      <a href="#lark" class="topic-nav-item"><span class="topic-num">LARK</span> Lên request Lark</a>
+    </div>
+    <a href="sop-finance.html" class="nav-item"><span class="nav-icon">💰</span> Kế toán <span class="nav-badge" style="background:#dc2626">!</span></a>
+    <a href="sop-cross.html"   class="nav-item"><span class="nav-icon">🔗</span> Liên phòng ban</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 Dashboard</a>
+    <span>›</span><span>SOP Vận Hành</span>
+    <span>›</span><strong style="color:var(--orange)">🤝 CSKH & Operations</strong>
+  </div>
+
+  <div class="module-hero">
+    <div class="module-hero-icon">🤝</div>
+    <div class="module-hero-body">
+      <span class="tag">SOP VẬN HÀNH · PHÒNG CSKH</span>
+      <h1>CSKH & Operations – SOP 003 · 004 · 005</h1>
+      <p>Quy trình chuẩn cho phòng CSKH và Vận hành: xử lý đơn POD/Dropship, theo dõi shipping, quản lý kho, chính sách bồi thường, escalation flow và template tin nhắn thực tế.</p>
+      <div class="module-meta-row">
+        <span class="meta-item">📋 3 SOP</span>
+        <span class="meta-item">🎯 7 chủ đề</span>
+        <span class="meta-item">👥 Sale · CSKH · Ops · Kế toán</span>
+        <span class="meta-item">🗂 Cập nhật: 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="module-progress-nav">
+    <span class="mpn-label">Nhanh:</span>
+    <a href="#sop003" class="mpn-item">SOP-003 POD/Drop</a>
+    <a href="#sop004" class="mpn-item">SOP-004 Express</a>
+    <a href="#sop005" class="mpn-item">SOP-005 Kho</a>
+    <a href="#boiduong" class="mpn-item">Bồi thường</a>
+    <a href="#escalation" class="mpn-item">Escalation</a>
+    <a href="#script" class="mpn-item">Script</a>
+    <a href="#lark" class="mpn-item">Lark Request</a>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SOP-003: POD/DROPSHIP OPERATIONS -->
+  <!-- ════════════════════════════════ -->
+  <div class="sop-block" id="sop003">
+    <div class="sop-header cskh">
+      <span class="sop-id-badge cskh">SOP-003</span>
+      <div>
+        <h2>POD / Dropship Operations</h2>
+        <p>Quy trình tiếp nhận, xử lý đơn hàng và chăm sóc khách hàng POD & Dropship</p>
+      </div>
+      <div class="sop-meta">
+        <span class="sm-tag">Đang hoạt động</span>
+        <span class="sm-dept">CSKH · Sale · Ops</span>
+      </div>
+    </div>
+    <div class="sop-body">
+
+      <div class="note-box orange">
+        <span class="nb-icon">🎯</span>
+        <p><strong>Mục tiêu SOP-003:</strong> Đảm bảo mọi đơn hàng POD và Dropship được tiếp nhận, xử lý, và theo dõi đúng quy trình — không bỏ sót, không để tracking chết quá 21 ngày.</p>
+      </div>
+
+      <!-- Quy trình CSKH hàng ngày -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:14px">📋 Quy trình công việc CSKH hàng ngày</h3>
+
+      <div class="steps-wrap">
+        <div class="step-row">
+          <div class="step-left"><div class="step-dot">1</div><div class="step-line"></div></div>
+          <div class="step-body">
+            <span class="step-tag daily">Hàng ngày – sáng</span>
+            <h4>Kiểm tra group Telegram & tiếp nhận yêu cầu</h4>
+            <ul>
+              <li>Đọc hết tin nhắn trong các group Telegram khách hàng phụ trách</li>
+              <li>Phân loại: yêu cầu lên đơn mới / hỏi tracking / khiếu nại</li>
+              <li>Phản hồi trong vòng <strong>30 phút</strong> kể từ khi nhận tin</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-left"><div class="step-dot">2</div><div class="step-line"></div></div>
+          <div class="step-body">
+            <span class="step-tag on-demand">Khi có đơn mới</span>
+            <h4>Xử lý lên đơn hàng</h4>
+            <ul>
+              <li>Check file làm việc nội bộ: thông tin đã điền đủ chưa (design, địa chỉ, size, màu…)</li>
+              <li>Tính phí xử lý đơn, điền giá vận chuyển, thông báo bill cho khách xác nhận</li>
+              <li>Truyền thông tin sang bộ phận vận hành/kho để xử lý</li>
+              <li>Ghi nhận và lưu vào file tracking nội bộ</li>
+              <li>Gửi báo cáo hàng ngày: <em>"Hôm nay khách lên X đơn, confirm giúp em nhé"</em></li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-left"><div class="step-dot blue">3</div><div class="step-line"></div></div>
+          <div class="step-body">
+            <span class="step-tag weekly">Thứ 3 & Thứ 6 — 16:00</span>
+            <h4>Báo cáo tracking định kỳ</h4>
+            <ul>
+              <li>Kiểm tra toàn bộ đơn đang vận chuyển trong danh sách phụ trách</li>
+              <li>Cập nhật trạng thái: <code style="background:var(--gray-100);padding:1px 5px;border-radius:3px;font-size:11.5px">in transit</code> / <code style="background:var(--green-bg);color:var(--green);padding:1px 5px;border-radius:3px;font-size:11.5px">delivered</code> / <code style="background:var(--red-bg);color:var(--red);padding:1px 5px;border-radius:3px;font-size:11.5px">pending</code></li>
+              <li>Báo ngay cho khách nếu tracking <strong>đứng quá 5 ngày không cập nhật</strong></li>
+              <li>Cập nhật số đơn đã đi + tình hình thanh toán → gửi bộ phận Finance</li>
+            </ul>
+            <div class="step-note">⚠️ Tracking không hoạt động quá <strong>21 ngày</strong> → chuyển sang quy trình xét thất lạc</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-left"><div class="step-dot green">4</div><div class="step-line"></div></div>
+          <div class="step-body">
+            <span class="step-tag on-demand">Khi đơn delivered</span>
+            <h4>Xác nhận giao hàng & chốt đơn</h4>
+            <ul>
+              <li>Cập nhật trạng thái "Delivered" trong file theo dõi</li>
+              <li>Thông báo cho khách: đơn đã giao thành công</li>
+              <li>Hỏi khách feedback nếu cần (đặc biệt đơn POD đầu tiên)</li>
+              <li>Chờ 7 ngày sau delivered để đóng đơn (phòng trường hợp khiếu nại muộn)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-left"><div class="step-dot red">5</div><div class="step-line"></div></div>
+          <div class="step-body">
+            <span class="step-tag urgent">Khi có khiếu nại</span>
+            <h4>Xử lý khiếu nại & trouble</h4>
+            <ul>
+              <li>Yêu cầu khách cung cấp bằng chứng: ảnh/video unboxing, screenshot tracking</li>
+              <li>Phân loại lỗi: lỗi nhà máy / lỗi vận chuyển / lỗi thông tin seller</li>
+              <li>Xử lý theo bảng chính sách bồi thường (xem phần bên dưới)</li>
+              <li>Phối hợp với Ops/Kho và Finance để xử lý trong thời hạn quy định</li>
+              <li>Cập nhật vào file trouble log để phân tích sau</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsibility Matrix SOP-003 -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--gray-900);margin:20px 0 12px">👥 Ma Trận Trách Nhiệm – SOP-003</h3>
+      <div class="matrix-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Công việc</th>
+              <th class="sale">Sale</th>
+              <th class="cskh">CSKH</th>
+              <th class="ops">Ops/Kho</th>
+              <th class="acct">Kế toán</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Tiếp nhận yêu cầu từ Telegram</td><td class="r-support">🔵</td><td class="r-primary">⭐</td><td class="r-none">—</td><td class="r-none">—</td></tr>
+            <tr><td>Check file & tính bill cho khách</td><td class="r-support">🔵</td><td class="r-primary">⭐</td><td class="r-none">—</td><td class="r-none">—</td></tr>
+            <tr><td>Truyền thông tin sang kho xử lý</td><td class="r-none">—</td><td class="r-primary">⭐</td><td class="r-support">🔵</td><td class="r-none">—</td></tr>
+            <tr><td>Đóng gói & xuất kho</td><td class="r-none">—</td><td class="r-none">—</td><td class="r-primary">⭐</td><td class="r-none">—</td></tr>
+            <tr><td>Theo dõi tracking (T3, T6 16h)</td><td class="r-support">🔵</td><td class="r-primary">⭐</td><td class="r-none">—</td><td class="r-none">—</td></tr>
+            <tr><td>Xử lý khiếu nại / trouble</td><td class="r-none">—</td><td class="r-primary">⭐</td><td class="r-support">🔵</td><td class="r-support">🔵</td></tr>
+            <tr><td>Cập nhật số đơn & thanh toán</td><td class="r-support">🔵</td><td class="r-primary">⭐</td><td class="r-none">—</td><td class="r-primary">⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px">⭐ Chủ trì &nbsp;·&nbsp; 🔵 Hỗ trợ &nbsp;·&nbsp; — Không liên quan</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SOP-004: EXPRESS SHIPPING -->
+  <!-- ════════════════════════════════ -->
+  <div class="sop-block" id="sop004">
+    <div class="sop-header ops">
+      <span class="sop-id-badge ops">SOP-004</span>
+      <div>
+        <h2>Express Shipping – Theo dõi & Vận hành</h2>
+        <p>Quy trình theo dõi lộ trình vận chuyển quốc tế và xử lý sự cố shipping</p>
+      </div>
+      <div class="sop-meta">
+        <span class="sm-tag">Đang hoạt động</span>
+        <span class="sm-dept">CSKH · Operations</span>
+      </div>
+    </div>
+    <div class="sop-body">
+
+      <div class="note-box info">
+        <span class="nb-icon">✈️</span>
+        <p><strong>Mục tiêu SOP-004:</strong> Mọi đơn hàng đang vận chuyển phải được theo dõi và cập nhật chủ động. Khách hàng không được tự phát hiện đơn có vấn đề trước CSKH.</p>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:14px">📊 Bảng Thời Gian Xử Lý Chuẩn</h3>
+
+      <div class="timeline-table-wrap" style="margin-bottom:20px">
+        <table class="timeline-table">
+          <thead><tr><th>Tình huống</th><th>Thời hạn xử lý</th><th>Người chịu trách nhiệm</th><th>Mức độ</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Phản hồi tin nhắn khách hàng</td>
+              <td><strong>30 phút</strong> kể từ khi nhận</td>
+              <td>CSKH phụ trách</td>
+              <td><span class="tl-badge fast">Bình thường</span></td>
+            </tr>
+            <tr>
+              <td>Active tracking TikTok</td>
+              <td><strong>48 giờ</strong> sau khi lên đơn</td>
+              <td>Ops / THG Express</td>
+              <td><span class="tl-badge fast">Bình thường</span></td>
+            </tr>
+            <tr>
+              <td>Tracking đứng > 5 ngày</td>
+              <td>Báo khách <strong>ngay hôm đó</strong></td>
+              <td>CSKH → Ops</td>
+              <td><span class="tl-badge slow">Theo dõi</span></td>
+            </tr>
+            <tr>
+              <td>Tracking không hoạt động > 21 ngày</td>
+              <td>Mở case <strong>xét thất lạc ngay</strong></td>
+              <td>CSKH → Manager</td>
+              <td><span class="tl-badge urgent">Khẩn</span></td>
+            </tr>
+            <tr>
+              <td>Khiếu nại hàng hư hỏng</td>
+              <td>Tiếp nhận trong <strong>3–7 ngày</strong> sau delivered</td>
+              <td>CSKH</td>
+              <td><span class="tl-badge slow">Theo dõi</span></td>
+            </tr>
+            <tr>
+              <td>Khiếu nại mất hàng</td>
+              <td>Tiếp nhận trong <strong>2 tháng</strong></td>
+              <td>CSKH → Finance</td>
+              <td><span class="tl-badge slow">Theo dõi</span></td>
+            </tr>
+            <tr>
+              <td>Xử lý bồi thường (đủ bằng chứng)</td>
+              <td><strong>7 ngày làm việc</strong></td>
+              <td>Finance + Manager</td>
+              <td><span class="tl-badge urgent">Ưu tiên</span></td>
+            </tr>
+            <tr>
+              <td>Xử lý bồi thường (thiếu bằng chứng)</td>
+              <td><strong>60 ngày làm việc</strong></td>
+              <td>Finance + Manager</td>
+              <td><span class="tl-badge slow">Theo dõi</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:12px">📋 Checklist theo dõi T3 & T6 (16:00)</h3>
+      <div class="note-box success">
+        <span class="nb-icon">✅</span>
+        <p>Mỗi thứ Ba và thứ Sáu lúc 16h, CSKH phụ trách phải hoàn thành checklist này trước khi kết thúc ngày làm việc:</p>
+      </div>
+      <div style="background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:16px 20px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã kiểm tra toàn bộ đơn đang transit</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã cập nhật trạng thái vào file nội bộ</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã báo khách đơn đứng > 5 ngày</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã flag đơn tracking > 21 ngày</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã cập nhật số đơn đã đi trong tuần</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> Đã gửi báo cáo thanh toán cho Finance</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SOP-005: WAREHOUSE -->
+  <!-- ════════════════════════════════ -->
+  <div class="sop-block" id="sop005">
+    <div class="sop-header wh">
+      <span class="sop-id-badge wh">SOP-005</span>
+      <div>
+        <h2>Warehouse Management</h2>
+        <p>Quy trình phối hợp với kho TQ và kho US trong vận hành đơn hàng</p>
+      </div>
+      <div class="sop-meta">
+        <span class="sm-tag">Đang hoạt động</span>
+        <span class="sm-dept">Ops · CSKH</span>
+      </div>
+    </div>
+    <div class="sop-body">
+
+      <div class="note-box success">
+        <span class="nb-icon">🏭</span>
+        <p><strong>Mục tiêu SOP-005:</strong> CSKH phải biết cách phối hợp chính xác với kho TQ (Đông Hoản) và kho US (Pennsylvania) để đảm bảo đơn được xử lý đúng tiến độ.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:18px">
+          <h4 style="font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:10px">🇨🇳 Kho TQ – Đông Hoản</h4>
+          <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px">Liên hệ: <strong>15822501137</strong> (阿文431391)</p>
+          <ul style="list-style:none;font-size:12.5px;color:var(--gray-600)">
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--green);font-weight:900">›</span> Nhận đơn từ CSKH, kiểm tra design file</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--green);font-weight:900">›</span> Đóng gói, quay video kiểm tra trước xuất kho</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--green);font-weight:900">›</span> Gửi hàng và trả tracking về CSKH</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--green);font-weight:900">›</span> Hỗ trợ CCTV nếu cần xác minh giao nhận</li>
+          </ul>
+        </div>
+        <div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:18px">
+          <h4 style="font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:10px">🇺🇸 Kho US – Pennsylvania</h4>
+          <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px">Liên hệ: <strong>+1 (570) 618-1169</strong></p>
+          <ul style="list-style:none;font-size:12.5px;color:var(--gray-600)">
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--blue);font-weight:900">›</span> Nhận đơn TikTok Shipping và Seller Shipping</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--blue);font-weight:900">›</span> Mua tracking (Seller Shipping) hoặc dùng tracking TikTok</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--blue);font-weight:900">›</span> Bàn giao USPS/FedEx/UPS, cập nhật tracking</li>
+            <li style="margin-bottom:5px;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:var(--blue);font-weight:900">›</span> Báo CSKH ngay nếu có vấn đề tại kho</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note-box warn">
+        <span class="nb-icon">⚠️</span>
+        <p>CSKH <strong>không liên hệ thẳng</strong> với kho mà không có thông tin đơn hàng đầy đủ. Luôn gửi kèm: mã đơn, tên khách, địa chỉ, yêu cầu cụ thể khi ping kho.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- CHÍNH SÁCH BỒI THƯỜNG -->
+  <!-- ════════════════════════════════ -->
+  <div class="content-section" id="boiduong">
+    <div class="section-hd"><span class="topic-badge">BỒI THƯỜNG</span><h2>Chính Sách Bồi Thường Chi Tiết – Từ Hợp Đồng Thực Tế</h2></div>
+
+    <div class="note-box danger">
+      <span class="nb-icon">🔴</span>
+      <p>Đây là chính sách <strong>trích từ hợp đồng ký với khách hàng thực tế</strong>. CSKH phải nắm chắc trước khi xử lý bất kỳ khiếu nại nào. Sai sót có thể dẫn đến khiếu nại vượt mức bồi thường được phép.</p>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id orange">2.1.1</span>
+        <h3>Hàng thất lạc / hư hỏng – Lỗi từ hãng vận chuyển hoặc THG</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body open">
+        <p>Nếu lỗi từ hãng vận chuyển, THG tiến hành đền bù dựa trên giá trị hàng hóa khách khai báo:</p>
+        <div class="hl">💰 Giai đoạn đầu hợp tác: tối đa <strong>$20/đơn</strong>. Tăng lên tối đa <strong>$50/đơn</strong> theo volume.</div>
+        <p><strong>Tài liệu CSKH cần yêu cầu khách cung cấp:</strong></p>
+        <ul>
+          <li>Ảnh/video unboxing chứng minh hàng hư hỏng</li>
+          <li>Screenshot tracking tại thời điểm xảy ra sự cố</li>
+          <li>Email xác nhận từ hãng vận chuyển (nếu có)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id orange">2.1.2</span>
+        <h3>Hãng đã giao nhưng người nhận không nhận được hàng</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body">
+        <p>Khách phải cung cấp <strong>một trong hai</strong>:</p>
+        <div class="ok">✅ Email xác nhận mất hàng từ bên vận chuyển có kèm số tracking</div>
+        <div class="ok">✅ Trích xuất CCTV tại thời điểm giao hàng — chứng minh không có nhân viên đến giao</div>
+        <div class="hl">💰 Bồi thường tối đa: <strong>$20/đơn</strong> (giai đoạn đầu)</div>
+        <p><strong>Lưu ý:</strong> Nếu tracking hiện "Delivered" mà khách không có bằng chứng CCTV/email → <strong>không xử lý bồi thường</strong>.</p>
+      </div>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id orange">2.1.3</span>
+        <h3>Hàng lỗi chất lượng – không đúng mô tả</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body">
+        <p>Khách cần cung cấp bằng chứng hàng không đúng: màu sắc, kích thước, chất lượng không như mô tả.</p>
+        <div class="hl">💰 Sau khi xác nhận lỗi: bồi thường <strong>20%–30% giá trị đơn</strong>, tối đa <strong>$50/đơn</strong></div>
+        <div class="err">⏰ <strong>QUAN TRỌNG:</strong> Khách phải thông báo trong vòng <strong>5 ngày làm việc</strong> kể từ khi nhận hàng. Quá hạn → THG không chịu trách nhiệm.</div>
+        <p style="margin-top:8px">Nếu xác minh lỗi <strong>không thuộc về THG</strong> (ví dụ: seller gửi sai file design, địa chỉ sai) → bên A (seller) tự xử lý với khách hàng.</p>
+      </div>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id blue">2.2</span>
+        <h3>Thời gian tiếp nhận & xử lý khiếu nại</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body open">
+        <ul>
+          <li><strong>Mất hàng:</strong> tiếp nhận trong <strong>2 tháng</strong> kể từ ngày chấp nhận vận chuyển</li>
+          <li><strong>Hư hỏng / giá cước sai:</strong> tiếp nhận trong <strong>7 ngày</strong> (hợp đồng) hoặc <strong>3 ngày</strong> (chính sách vận chuyển) — áp dụng thời hạn ngắn hơn để an toàn</li>
+          <li><strong>Xử lý bồi thường (đủ bằng chứng):</strong> trong <strong>7 ngày làm việc</strong></li>
+          <li><strong>Xử lý bồi thường (thiếu bằng chứng):</strong> trong <strong>60 ngày làm việc</strong></li>
+          <li><strong>Lưu ý:</strong> Ngày làm việc không tính T7, CN, ngày lễ Tết</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id green">2.4</span>
+        <h3>Thời gian bồi hoàn sau khi xác nhận</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body">
+        <ul>
+          <li><strong>Cấn trừ vào đơn tiếp theo:</strong> trong <strong>90 ngày</strong> kể từ khi xác nhận bồi thường</li>
+          <li><strong>Hoàn tiền về tài khoản:</strong> trong <strong>15 ngày làm việc</strong> kể từ ngày THG gửi xác nhận</li>
+          <li><strong>Cấn trừ công nợ:</strong> trừ vào kỳ thanh toán tiếp theo của khách hàng</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="policy-block">
+      <div class="policy-header" onclick="togglePolicy(this)">
+        <span class="ph-id red">2.1.4</span>
+        <h3>Các trường hợp miễn trừ – KHÔNG bồi thường</h3>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="policy-body">
+        <div class="err">🚫 Những trường hợp dưới đây THG KHÔNG có trách nhiệm bồi thường:</div>
+        <ul>
+          <li>Khiếu nại <strong>quá thời hạn</strong> quy định</li>
+          <li>Sự kiện <strong>bất khả kháng</strong>: thiên tai, dịch bệnh, chiến tranh, đình công, thay đổi luật pháp, trì hoãn hải quan, sự cố chuyến bay…</li>
+          <li>Người nhận <strong>từ chối nhận hàng</strong> hoặc từ chối đóng thuế → hàng lưu bưu cục</li>
+          <li>Hàng dễ vỡ — seller <strong>không đóng gói chống sốc</strong> đầy đủ</li>
+          <li>THG <strong>không cung cấp dịch vụ trả hàng</strong> về VN hoặc TQ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- ESCALATION FLOW -->
+  <!-- ════════════════════════════════ -->
+  <div class="content-section" id="escalation">
+    <div class="section-hd"><span class="topic-badge">ESCALATION</span><h2>Escalation Flow – Khi Nào Leo Thang Lên Ai</h2></div>
+
+    <div class="note-box info">
+      <span class="nb-icon">📌</span>
+      <p>Không tự xử lý quá thẩm quyền. Nếu vượt quá Level 2 mà không xử lý được — leo thang ngay, đừng để khách chờ quá 24h mà không có phản hồi tiến độ.</p>
+    </div>
+
+    <div class="escalation-wrap">
+      <div class="esc-level">
+        <div class="esc-level-num l1">L1</div>
+        <div class="esc-content">
+          <h4>CSKH phụ trách – Tự xử lý</h4>
+          <p>Khách hỏi tracking, yêu cầu update trạng thái, câu hỏi về dịch vụ, thắc mắc về basecost. Đây là các trường hợp CSKH có thể và cần tự giải quyết ngay.</p>
+          <span class="esc-time">⏱ Xử lý trong 30 phút</span>
+        </div>
+      </div>
+      <div class="esc-level">
+        <div class="esc-level-num l2">L2</div>
+        <div class="esc-content">
+          <h4>CSKH + Ops/Kho – Phối hợp</h4>
+          <p>Tracking đứng > 5 ngày, cần kiểm tra thông tin đơn tại kho TQ hoặc US, đơn hàng bị delay do vận chuyển, cần xác nhận hàng đã xuất kho chưa.</p>
+          <span class="esc-time">⏱ Phản hồi khách trong 4 giờ làm việc</span>
+        </div>
+      </div>
+      <div class="esc-level">
+        <div class="esc-level-num l3">L3</div>
+        <div class="esc-content">
+          <h4>CSKH + Finance + Manager – Khiếu nại bồi thường</h4>
+          <p>Khách yêu cầu bồi thường, đơn thất lạc xác nhận, hàng lỗi chất lượng cần đền bù, dispute/refund trên sàn. Cần có Manager duyệt trước khi cam kết bất kỳ con số bồi thường nào.</p>
+          <span class="esc-time">⏱ Xử lý trong 7 ngày làm việc (đủ bằng chứng)</span>
+        </div>
+      </div>
+      <div class="esc-level">
+        <div class="esc-level-num l4">L4</div>
+        <div class="esc-content">
+          <h4>Giám đốc – Tranh chấp hợp đồng / Vượt mức $50/đơn</h4>
+          <p>Khách đe doạ kiện, yêu cầu bồi thường vượt mức quy định, tranh chấp không thương lượng được, khách có volume lớn muốn đàm phán lại điều khoản hợp đồng.</p>
+          <span class="esc-time">⏱ Manager liên hệ khách trong 24h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SCRIPT & TEMPLATE -->
+  <!-- ════════════════════════════════ -->
+  <div class="content-section" id="script">
+    <div class="section-hd"><span class="topic-badge">SCRIPT</span><h2>Script & Template Tin Nhắn Mẫu</h2></div>
+
+    <div class="note-box warn">
+      <span class="nb-icon">✏️</span>
+      <p>Dùng các template này làm cơ sở — <strong>điều chỉnh phù hợp với từng khách</strong>. Không copy-paste cứng nhắc, khách sẽ cảm nhận được sự thiếu chân thật.</p>
+    </div>
+
+    <div class="script-block">
+      <div class="script-header">
+        <span class="sh-tag">Lên đơn</span>
+        <span class="sh-title">Xác nhận tiếp nhận đơn hàng mới</span>
+      </div>
+      <div class="script-body">
+        "Dạ em đã nhận được thông tin đơn hàng của anh/chị <span class="placeholder">[Tên KH]</span> rồi ạ.<br/>
+        Em xác nhận: <span class="placeholder">[số đơn]</span> đơn, tổng bill: <span class="placeholder">[số tiền]</span>.<br/>
+        Anh/chị confirm để em báo kho xử lý nhé ạ 🙏"
+      </div>
+    </div>
+
+    <div class="script-block">
+      <div class="script-header">
+        <span class="sh-tag">Tracking</span>
+        <span class="sh-title">Báo cáo tracking định kỳ (T3 & T6)</span>
+      </div>
+      <div class="script-body">
+        "Dạ anh/chị <span class="placeholder">[Tên KH]</span> ơi, em báo cáo tình hình đơn hàng tuần này ạ:<br/>
+        ✅ Đơn đã delivered: <span class="placeholder">[X đơn]</span><br/>
+        🚚 Đơn đang transit: <span class="placeholder">[X đơn]</span> — dự kiến giao <span class="placeholder">[ngày]</span><br/>
+        ⏳ Đơn đang xử lý: <span class="placeholder">[X đơn]</span><br/>
+        Anh/chị có đơn nào cần check thêm không ạ? 🙏"
+      </div>
+    </div>
+
+    <div class="script-block">
+      <div class="script-header">
+        <span class="sh-tag">Tracking chậm</span>
+        <span class="sh-title">Báo tracking đứng — chủ động trước khi khách hỏi</span>
+      </div>
+      <div class="script-body">
+        "Dạ anh/chị <span class="placeholder">[Tên KH]</span> ơi, em thấy đơn <span class="placeholder">[mã tracking]</span> đang đứng tại <span class="placeholder">[địa điểm]</span> được <span class="placeholder">[X ngày]</span> rồi ạ.<br/>
+        Em đã báo bên vận chuyển kiểm tra và sẽ cập nhật ngay khi có thông tin mới. Anh/chị yên tâm nhé ạ 🙏"
+      </div>
+    </div>
+
+    <div class="script-block">
+      <div class="script-header">
+        <span class="sh-tag">Khiếu nại</span>
+        <span class="sh-title">Tiếp nhận khiếu nại hàng lỗi / thất lạc</span>
+      </div>
+      <div class="script-body">
+        "Dạ em rất tiếc về sự cố với đơn hàng của anh/chị <span class="placeholder">[Tên KH]</span> ạ.<br/>
+        Để em xử lý nhanh nhất có thể, anh/chị có thể gửi giúp em:<br/>
+        📸 Ảnh/video hàng nhận được (nếu có vấn đề chất lượng)<br/>
+        📧 Email xác nhận hoặc screenshot tracking bất thường<br/>
+        Em sẽ kiểm tra và phản hồi trong vòng <span class="placeholder">[24h / 7 ngày làm việc]</span> nhé ạ 🙏"
+      </div>
+    </div>
+
+    <div class="script-block">
+      <div class="script-header">
+        <span class="sh-tag">Báo cáo ngày</span>
+        <span class="sh-title">Gửi báo cáo đơn hàng cuối ngày cho khách</span>
+      </div>
+      <div class="script-body">
+        "Dạ anh/chị ơi, hôm nay khách lên <span class="placeholder">[X]</span> đơn, anh/chị confirm giúp em nhé ạ. Em sẽ xử lý ngay sau khi có xác nhận 🙏"
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- LÊN REQUEST TRÊN LARK -->
+  <!-- ════════════════════════════════ -->
+  <div class="content-section" id="lark">
+    <div class="section-hd"><span class="topic-badge">LARK</span><h2>Cách Lên Request Trên Lark Suite</h2></div>
+
+    <div class="note-box info">
+      <span class="nb-icon">💬</span>
+      <p>Khi cần phối hợp với phòng ban khác (vận hành, kho, kế toán) — <strong>không nhắn tin riêng</strong> mà phải lên request chính thức trên Lark để đảm bảo có tracking và không bị bỏ sót.</p>
+    </div>
+
+    <div class="lark-steps">
+      <div class="lark-step">
+        <div class="ls-num">1</div>
+        <div>
+          <h4>Vào Lark → Tổng hợp thông tin THG</h4>
+          <p>Tìm file "Tổng hợp thông tin THG" trên Lark Drive của công ty</p>
+        </div>
+      </div>
+      <div class="lark-step">
+        <div class="ls-num">2</div>
+        <div>
+          <h4>Chọn "File yêu cầu báo giá"</h4>
+          <p>Mở file request — chọn đúng loại yêu cầu: tìm sản phẩm / báo giá / vấn đề đơn hàng</p>
+        </div>
+      </div>
+      <div class="lark-step">
+        <div class="ls-num">3</div>
+        <div>
+          <h4>Điền đủ thông tin yêu cầu</h4>
+          <p>Mã đơn, mô tả vấn đề, thông tin sản phẩm, link hình ảnh, yêu cầu cụ thể</p>
+        </div>
+      </div>
+      <div class="lark-step">
+        <div class="ls-num">4</div>
+        <div>
+          <h4>Tag đúng người tiếp nhận</h4>
+          <p>Tag tên nhân sự được chỉ định theo từng loại request (theo hướng dẫn từ team vận hành)</p>
+        </div>
+      </div>
+      <div class="lark-step">
+        <div class="ls-num">5</div>
+        <div>
+          <h4>Chuyển trạng thái → "Chờ tiếp nhận"</h4>
+          <p>Lark sẽ tự động thông báo cho nhân sự liên quan. Theo dõi trạng thái để biết khi nào được xử lý.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-box success" style="margin-top:16px">
+      <span class="nb-icon">📹</span>
+      <p>Xem video hướng dẫn đầy đủ Lark Suite: <a href="https://www.youtube.com/watch?v=guSnD83WMw8" target="_blank" style="color:var(--green);font-weight:600">youtube.com/watch?v=guSnD83WMw8 ↗</a></p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="nav-btns">
+      <a href="sop-sale.html"    class="btn-nav prev">← SOP Sale & Marketing</a>
+      <a href="sop-finance.html" class="btn-nav next">Tiếp theo: SOP Kế toán →</a>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400)">THG Internal Training Hub · Chỉ dành cho nhân viên THG Fulfill Corp · <a href="mailto:info@thgfulfill.com" style="color:var(--blue)">Báo lỗi / góp ý</a></p>
+  </div>
+</main>
+
+<script>
+
+function runQuiz(btn){
+  var section=btn.closest('.quiz-section');
+  var qs=section.querySelectorAll('.quiz-q');
+  var score=0;
+  qs.forEach(function(q){
+    var correct=q.dataset.correct;
+    var sel=q.querySelector('input[type=radio]:checked');
+    var opts=q.querySelectorAll('.quiz-opt');
+    opts.forEach(function(o){
+      var v=o.querySelector('input').value;
+      if(v===correct)o.classList.add('correct');
+      else if(sel&&o.querySelector('input')===sel&&v!==correct)o.classList.add('wrong');
+    });
+    q.classList.add('done');
+    if(sel&&sel.value===correct)score++;
+  });
+  btn.disabled=true;
+  var total=qs.length;
+  var res=section.querySelector('.quiz-result');
+  res.style.display='block';
+  if(score>=Math.ceil(total*0.7)){
+    res.className='quiz-result pass';
+    res.textContent='✅ Xuất sắc! Bạn đúng '+score+'/'+total+' câu. Module này đã hoàn thành!';
+  } else {
+    res.className='quiz-result fail';
+    res.textContent='📖 Bạn đúng '+score+'/'+total+' câu. Hãy đọc lại phần còn sai và thử lại!';
+  }
+}
+function doSearch(e){
+  e.preventDefault();
+  var q=e.target.querySelector('input').value.trim();
+  if(q)window.location='search.html?q='+encodeURIComponent(q);
+}
+
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('visible');
+  }
+  function togglePolicy(h){
+    const b=h.nextElementSibling,t=h.querySelector('.toggle');
+    b.classList.toggle('open');
+    t.style.transform=b.classList.contains('open')?'rotate(180deg)':'';
+  }
+  const secs=document.querySelectorAll('.sop-block,.content-section');
+  const navs=document.querySelectorAll('.topic-nav-item');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id});
+    navs.forEach(n=>n.classList.toggle('current',n.getAttribute('href')==='#'+cur));
+  });
+
+  /* ── SIDEBAR DROPDOWN TOGGLE ── */
+  (function(){
+    var K='thg_nav2',S;
+    try{S=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){S={}}
+    function sv(k,v){S[k]=v;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+    var sb=document.getElementById('sidebar');
+    if(!sb)return;
+    // 1. nav-section-label toggles
+    sb.querySelectorAll('.nav-section').forEach(function(sec,i){
+      var lbl=sec.querySelector('.nav-section-label');
+      if(!lbl)return;
+      var key='sec'+i;
+      var body=document.createElement('div');
+      body.className='nav-section-body';
+      var kids=[].slice.call(sec.children).filter(function(c){return c!==lbl});
+      kids.forEach(function(c){body.appendChild(c)});
+      sec.appendChild(body);
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';lbl.appendChild(arr);
+      var open=S[key]!==undefined?S[key]:true;
+      body.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      lbl.addEventListener('click',function(){
+        var o=body.style.maxHeight==='0px';
+        body.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+    // 2. nav-item sub-topic toggles
+    sb.querySelectorAll('.nav-item').forEach(function(item,i){
+      var next=item.nextElementSibling,sub=null;
+      if(next&&(next.classList.contains('topic-nav')||next.classList.contains('nav-sub'))){
+        sub=next;
+      } else {
+        var coll=[],n=item.nextElementSibling;
+        while(n&&n.classList.contains('topic-nav-item')){coll.push(n);n=n.nextElementSibling;}
+        if(coll.length){
+          var w=document.createElement('div');w.className='topic-nav';
+          item.parentNode.insertBefore(w,coll[0]);
+          coll.forEach(function(x){w.appendChild(x)});
+          sub=w;
+        }
+      }
+      if(!sub)return;
+      sub.classList.add('nav-sub');
+      sub.style.overflow='hidden';sub.style.transition='max-height .3s ease';
+      var arr=document.createElement('span');
+      arr.className='nav-arrow';arr.textContent='▶';
+      item.appendChild(arr);item.style.cursor='pointer';
+      var href=item.getAttribute('href')||'';
+      var key='itm'+i;
+      var open=S[key]!==undefined?S[key]:item.classList.contains('active');
+      sub.style.maxHeight=open?'2000px':'0';
+      arr.style.transform=open?'rotate(90deg)':'';
+      item.addEventListener('click',function(e){
+        if(href&&href!=='#'&&!item.classList.contains('active'))return;
+        e.preventDefault();
+        var o=sub.style.maxHeight==='0px';
+        sub.style.maxHeight=o?'2000px':'0';
+        arr.style.transform=o?'rotate(90deg)':'';
+        sv(key,o);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
